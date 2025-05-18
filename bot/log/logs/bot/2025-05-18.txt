@@ -1,0 +1,318 @@
+LOG 2025-05-18 19:07:20,888 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:07:20,890 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 31, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 2 required positional arguments: 'user' and 'service'
+LOG 2025-05-18 19:11:01,394 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:11:01,394 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 30, in __call__
+    data[key] = await __depends__[str(value.annotation)]()
+KeyError: "<class 'bot.handlers.command.service.CommandService'>"
+LOG 2025-05-18 19:11:50,371 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:11:50,371 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 31, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:12:19,062 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:12:19,062 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 31, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:13:04,026 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:13:04,026 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 31, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:13:39,526 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:13:39,527 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 32, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:14:10,730 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:14:10,730 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 32, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:14:46,993 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:14:46,993 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 32, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:15:36,190 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:15:36,190 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 32, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:16:42,265 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:16:42,265 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 32, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+TypeError: start() missing 1 required positional argument: 'user'
+LOG 2025-05-18 19:18:04,530 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:18:04,537 ERROR error
+Traceback (most recent call last):
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2435, in _determine_joins
+    self.primaryjoin = join_condition(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\util.py", line 123, in join_condition
+    return Join._join_condition(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\selectable.py", line 1444, in _join_condition
+    raise exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Can't find any foreign key relationships between 'users' and 'skins'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 26, in __call__
+    data[key] = await UserRepository.read(where={"telegram_id": event.from_user.id})
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\db\repository\repository.py", line 25, in read
+    result = await session.execute(sttm)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 463, in execute
+    result = await greenlet_spawn(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1629, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 711, in _compile_w_cache
+    compiled_sql = self._compiler(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 320, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 1446, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 886, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 932, in process
+    return obj._compiler_dispatch(self, **kwargs)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\visitors.py", line 141, in _compiler_dispatch
+    return meth(self, **kw)  # type: ignore  # noqa: E501
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 4728, in visit_select
+    compile_state = select_stmt._compile_state_factory(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\base.py", line 687, in create_for_statement
+    return klass.create_for_statement(statement, compiler, **kw)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\context.py", line 447, in create_for_statement
+    return cls._create_orm_context(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\context.py", line 1175, in _create_orm_context
+    _QueryEntity.to_compile_state(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\context.py", line 2628, in to_compile_state
+    _MapperEntity(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\context.py", line 2708, in __init__
+    entity._post_inspect
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\util\langhelpers.py", line 1338, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 2724, in _post_inspect
+    self._check_configure()
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 2401, in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 4214, in _configure_registries
+    _do_configure_registries(registries, cascade)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 4255, in _do_configure_registries
+    mapper._post_configure_properties()
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\mapper.py", line 2418, in _post_configure_properties
+    prop.init()
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\interfaces.py", line 589, in init
+    self.do_init()
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 1658, in do_init
+    self._setup_join_conditions()
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 1896, in _setup_join_conditions
+    self._join_condition = jc = JoinCondition(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2322, in __init__
+    self._determine_joins()
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\relationships.py", line 2456, in _determine_joins
+    raise sa_exc.NoForeignKeysError(
+sqlalchemy.exc.NoForeignKeysError: Could not determine join condition between parent/child tables on relationship User.skins - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+LOG 2025-05-18 19:24:56,645 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:24:56,658 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 31, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\handlers\command\router.py", line 19, in start
+    await service.start(telegram_id=message.from_user.id)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\handlers\command\service.py", line 17, in start
+    await self.user_repository.create(
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\db\repository\repository.py", line 46, in create
+    await session.execute(sttm)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 463, in execute
+    result = await greenlet_spawn(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\orm\bulk_persistence.py", line 1294, in orm_execute_statement
+    result = conn.execute(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\engine\base.py", line 1629, in _execute_clauseelement
+    compiled_sql, extracted_params, cache_hit = elem._compile_w_cache(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 711, in _compile_w_cache
+    compiled_sql = self._compiler(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\elements.py", line 320, in _compiler
+    return dialect.statement_compiler(dialect, self, **kw)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 1446, in __init__
+    Compiled.__init__(self, dialect, statement, **kwargs)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 886, in __init__
+    self.string = self.process(self.statement, **compile_kwargs)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 932, in process
+    return obj._compiler_dispatch(self, **kwargs)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\annotation.py", line 344, in _compiler_dispatch
+    return self.__element.__class__._compiler_dispatch(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\visitors.py", line 141, in _compiler_dispatch
+    return meth(self, **kw)  # type: ignore  # noqa: E501
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\compiler.py", line 5843, in visit_insert
+    crud_params_struct = crud._get_crud_params(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\sqlalchemy\sql\crud.py", line 335, in _get_crud_params
+    raise exc.CompileError(
+sqlalchemy.exc.CompileError: Unconsumed column names: time
+LOG 2025-05-18 19:26:08,707 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:26:12,573 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:26:12,580 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 36, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 26, in __call__
+    data[key] = await UserRepository.read(where={"telegram_id": event.from_user.id})
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\db\repository\repository.py", line 33, in read
+    return cls.model.dataclass_model.from_orm(scalar)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\schemas\base.py", line 14, in from_orm
+    **{key: value for key, value in obj.items() if key in cls.__dataclass_fields__}
+AttributeError: 'User' object has no attribute 'items'
+LOG 2025-05-18 19:29:58,475 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:29:58,485 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 26, in __call__
+    data[key] = await UserRepository.read(where={"telegram_id": event.from_user.id})
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\db\repository\repository.py", line 33, in read
+    return cls.model.dataclass_model.from_dict(scalar.__dict__)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\schemas\base.py", line 14, in from_dict
+    **{key: value for key, value in obj if key in cls.__dataclass_fields__}
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\schemas\base.py", line 14, in <dictcomp>
+    **{key: value for key, value in obj if key in cls.__dataclass_fields__}
+ValueError: too many values to unpack (expected 2)
+LOG 2025-05-18 19:30:51,441 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:30:55,183 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:21,244 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:22,753 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:28,092 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:28,743 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:30,203 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:31,716 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:34,003 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:34,900 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:31:36,890 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:32:24,368 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:32:57,133 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:32:58,863 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:18,301 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:20,319 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:22,341 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:23,903 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:25,851 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:30,356 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:31,951 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:33,471 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:34,621 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:34:35,679 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:39,486 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:41,627 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:42,746 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:43,906 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:44,835 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:47,146 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:49,111 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 19:35:50,086 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183

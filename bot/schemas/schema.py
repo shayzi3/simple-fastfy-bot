@@ -16,7 +16,7 @@ class UserDataclass(FromOrm["UserDataclass"]):
      def __post_init__(self) -> None:
           if self.skins:
                if isinstance(self.skins[0], BaseSkinDataclass) is False:
-                    self.skins = [BaseSkinDataclass.from_orm(obj.__dict__) for obj in self.skins]
+                    self.skins = [BaseSkinDataclass.from_dict(obj.__dict__) for obj in self.skins]
                
                
      @property
@@ -37,7 +37,7 @@ class SkinDataclass(FromOrm["SkinDataclass"]):
      
      def __post_init__(self) -> None:
           if isinstance(self.user, BaseUserDataclass) is False:
-               self.user = BaseUserDataclass.from_orm(self.user.__dict__)
+               self.user = BaseUserDataclass.from_dict(self.user.__dict__)
           
           
      @property

@@ -9,7 +9,7 @@ from bot.types import DATACLASS
 class FromOrm(Generic[DATACLASS]):
      
      @classmethod
-     def from_orm(cls, obj: dict[str, Any]) -> DATACLASS:
+     def from_dict(cls, obj: dict[str, Any]) -> DATACLASS:
           return cls(
                **{key: value for key, value in obj.items() if key in cls.__dataclass_fields__}
           )

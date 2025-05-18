@@ -37,7 +37,7 @@ class Skin(Base):
      name: Mapped[str] = mapped_column(nullable=False)
      image: Mapped[str] = mapped_column(nullable=False)
      current_price: Mapped[float] = mapped_column(nullable=False)
-     owner: Mapped[int] = ForeignKey("users.telegram_id")
+     owner: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.telegram_id"))
      
      user: Mapped["User"] = relationship(
           back_populates="skins",

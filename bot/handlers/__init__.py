@@ -1,7 +1,7 @@
 from .command.router import command_router
-from .command.service import get_command_service
+from .command.service import get_command_service, CommandService
 
-from.callback.service import get_callback_service
+from.callback.service import get_callback_service, CallbackService
 
 
 
@@ -11,7 +11,6 @@ __routers__ = [
 
 
 __depends__ = {
-     "CommandService": get_command_service,
-     "CallbackService": get_callback_service,
-     "UserDataclass": ...
+     CommandService: get_command_service,
+     CallbackService: get_callback_service
 }

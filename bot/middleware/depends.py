@@ -5,6 +5,8 @@ from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import Message
 
 from bot.handlers import __depends__
+from bot.db.repository import UserRepository
+from bot.schemas import UserDataclass
 
 
 class DependMiddleware(BaseMiddleware):
@@ -20,6 +22,10 @@ class DependMiddleware(BaseMiddleware):
           arguments = inspect.signature(callback_object).parameters
           
           for key, value in arguments.items():
-               if str(value.annotation) in __depends__.keys():
-                    data[key] = await __depends__[str(value.annotation)]()
+               if value.annotation is UserDataclass:
+                    data[key] = await UserRepository.read(where={"telegram_id": event.from_user.id})
+                    continue
+                    
+               if value.annotation in __depends__.keys():
+                    data[key] = await __depends__[value.annotation]()
           return await handler(event, data)

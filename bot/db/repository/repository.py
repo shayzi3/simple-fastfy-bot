@@ -1,6 +1,7 @@
 from typing import Any, Generic
 from sqlalchemy import select, insert, update, delete
 
+from bot.log.logging_ import logging_
 from bot.types import DATACLASS
 from bot.db.session import Session
 from .abstract_repository import AbstractRepository
@@ -8,7 +9,7 @@ from .abstract_repository import AbstractRepository
 
 
 
-class Repository(Generic[DATACLASS], AbstractRepository):
+class Repository(AbstractRepository, Generic[DATACLASS]):
      model = None
      
      @classmethod
@@ -18,6 +19,8 @@ class Repository(Generic[DATACLASS], AbstractRepository):
           return_values: list[str] = []
      ) -> None | DATACLASS | list[Any]:
           async with Session.async_session() as session:
+               logging_.db.info(f"GET DATA FROM {cls.model.__tablename__} WHERE {where}")
+               
                sttm = select(cls.model).filter_by(**where)
                result = await session.execute(sttm)
                scalar = result.scalar()
@@ -27,7 +30,7 @@ class Repository(Generic[DATACLASS], AbstractRepository):
 
           if return_values:
                return [getattr(scalar, name, None) for name in return_values]
-          return cls.model.dataclass_model.from_orm(scalar)
+          return cls.model.dataclass_model.from_dict(scalar.__dict__)
           
           
      
@@ -37,6 +40,8 @@ class Repository(Generic[DATACLASS], AbstractRepository):
           values: dict[str, Any]
      ) -> None:
           async with Session.async_session() as session:
+               logging_.db.info(f"INSERT DATA IN {cls.model.__tablename__} VALUE {values}")
+               
                sttm = insert(cls.model).values(**values)
                await session.execute(sttm)
                await session.commit()
@@ -50,6 +55,8 @@ class Repository(Generic[DATACLASS], AbstractRepository):
           values: dict[str, Any]
      ) -> bool:
           async with Session.async_session() as session:
+               logging_.db.info(f"UPDATE DATA IN {cls.model.__tablename__} WHERE {where} VALUE {values}")
+               
                sttm = (
                     update(cls.model).
                     filter_by(**where).
@@ -72,6 +79,8 @@ class Repository(Generic[DATACLASS], AbstractRepository):
           where: dict[str, Any]
      ) -> bool:
           async with Session.async_session() as session:
+               logging_.db.info(f"DELETE DATA FROM {cls.model.__tablename__} WHERE {where}")
+               
                sttm = (
                     delete(cls.model).
                     filter_by(**where).
