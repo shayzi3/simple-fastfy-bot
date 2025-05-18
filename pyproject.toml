@@ -1,0 +1,26 @@
+[project]
+name = "simple-fastfy"
+version = "1.0.0"
+description = "This monitoring script for CS2 items and bot with simple functional"
+authors = [
+    {name = "Vlad_shayzi1",email = "tecnomega@mail.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi (>=0.115.12,<0.116.0)",
+    "uvicorn (>=0.34.2,<0.35.0)",
+    "aiogram (>=3.20.0.post0,<4.0.0)",
+    "sqlalchemy (>=2.0.41,<3.0.0)",
+    "alembic (>=1.15.2,<2.0.0)",
+    "aiofiles (>=24.1.0,<25.0.0)",
+    "bs4 (>=0.0.2,<0.0.3)",
+    "lxml (>=5.4.0,<6.0.0)",
+    "aiosqlite (>=0.21.0,<0.22.0)",
+    "pydantic-settings (>=2.9.1,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
