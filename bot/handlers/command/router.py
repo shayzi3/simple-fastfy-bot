@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 
 from bot.utils.filter.state import SearchState
-from bot.utils.inline import settings_button
+from bot.utils.inline import settings_button, inventory_button
 from bot.schemas import UserDataclass
 from .service import CommandService
 
@@ -38,7 +38,7 @@ async def settings(
      )
      
      
-     
+   
 @command_router.message(Command("clear"))
 async def clear(
      message: Message,
@@ -52,7 +52,6 @@ async def clear(
 
 
 
-
 @command_router.message(Command("search"))
 async def search(
      message: Message,
@@ -60,3 +59,21 @@ async def search(
 ):
      await state.set_state(SearchState.item)
      await message.answer("Отправь название скина")
+     
+    
+     
+@command_router.message(Command("inventory"))
+async def inventory(
+     message: Message,
+     user: UserDataclass,
+):
+     if not user.skins:
+          return await message.answer("Ваш инвентарь пуст.")
+     
+     await message.answer(
+          text="Инвентарь",
+          reply_markup=await inventory_button(
+               skins=user.sorted_skin_by_6(),
+               index=0
+          )
+     )

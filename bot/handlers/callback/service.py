@@ -1,3 +1,4 @@
+from bot.utils.filter.callback import InventoryPaginateCallbackData
 from bot.core.gen import generate_skin_id
 from bot.http.steam import SteamHttpClient
 from bot.db.repository import UserRepository, SkinRepository
@@ -31,7 +32,7 @@ class CallbackService:
           return update_data.get("notify")
      
      
-     async def items(
+     async def steam_item(
           self,
           user: UserDataclass,
           item: str
@@ -56,6 +57,21 @@ class CallbackService:
                }
           )
           return "Предмет успешно добавлен в инвентарь."
+     
+     
+     async def inventory_item(
+          self,
+          user: UserDataclass,
+          item: str
+     ) -> None:
+          result = await self.skin_repository.delete(
+               where={"owner": user.telegram_id, "name": item}
+          )
+          if result is False:
+               return "Предмет в инвентаре не найден."
+          return "Предмет успешно удалён."
+          
+     
      
      
 async def get_callback_service() -> CallbackService:

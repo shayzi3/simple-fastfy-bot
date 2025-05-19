@@ -26,6 +26,16 @@ class UserDataclass(FromOrm["UserDataclass"]):
      def where(self) -> dict[str, int]:
           return {"telegram_id": self.telegram_id}
      
+     
+     def sorted_skin_by_6(self) -> list[list[BaseSkinDataclass]]:
+          skins_by_6 = []
+          left, right = 0, 6
+          for _ in range((len(self.skins) // 6) + 1):
+               skins_by_6.append(self.skins[left:right])
+               left += 6
+               right += 6
+          return skins_by_6
+     
 
      
 
