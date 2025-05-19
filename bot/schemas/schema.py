@@ -1,6 +1,6 @@
 from datetime import datetime
 from dataclasses import dataclass
-from .base import BaseSkinDataclass, BaseUserDataclass, FromOrm
+from .base import BaseSkinDataclass, BaseUserDataclass, FromOrm, Time
 
 
 
@@ -9,7 +9,7 @@ class UserDataclass(FromOrm["UserDataclass"]):
      telegram_id: int
      created_at: datetime
      notify: bool
-     update_time: str
+     update_time: Time
      skins: list[BaseSkinDataclass]
      
      
@@ -17,6 +17,9 @@ class UserDataclass(FromOrm["UserDataclass"]):
           if self.skins:
                if isinstance(self.skins[0], BaseSkinDataclass) is False:
                     self.skins = [BaseSkinDataclass.from_dict(obj.__dict__) for obj in self.skins]
+                    
+          if isinstance(self.update_time, str) is True:
+               self.update_time = Time.from_str(self.update_time)
                
                
      @property

@@ -17,7 +17,7 @@ async def lifespan(_: FastAPI):
      dp.include_routers(*__routers__)
      for middleware in __middlewares__:
           dp.message.middleware(middleware())
-          dp.callback_query(middleware())
+          dp.callback_query.middleware(middleware())
           
      # start monitoring
      

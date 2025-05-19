@@ -18,7 +18,7 @@ class TimeoutMiddleware(BaseMiddleware):
           event: Message, 
           data: dict[str, Any]
      ):
-          command = data.get("command").command
+          command = data.get("handler").callback.__name__
           
           if self.timeoutes.get(command) is None:
                return await handler(event, data)

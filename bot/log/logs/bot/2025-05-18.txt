@@ -316,3 +316,37 @@ LOG 2025-05-18 19:35:44,835 INFO ROUTER: command_router; COMMAND: start; USER: 2
 LOG 2025-05-18 19:35:47,146 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
 LOG 2025-05-18 19:35:49,111 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
 LOG 2025-05-18 19:35:50,086 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 21:13:46,309 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 21:13:46,320 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 26, in __call__
+    data[key] = await UserRepository.read(where={"telegram_id": event.from_user.id})
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\db\repository\repository.py", line 33, in read
+    return cls.model.dataclass_model.from_dict(scalar.__dict__)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\schemas\base.py", line 13, in from_dict
+    return cls(
+  File "<string>", line 8, in __init__
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\schemas\schema.py", line 22, in __post_init__
+    self.update_time = Time.from_str(self.update_time)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\schemas\base.py", line 38, in from_str
+    if any(day > 5, hour > 24, minute > 60):
+TypeError: any() takes exactly one argument (3 given)
+LOG 2025-05-18 21:14:18,849 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 21:14:22,167 INFO ROUTER: command_router; COMMAND: start; USER: 2054556183
+LOG 2025-05-18 21:14:26,396 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:15:09,144 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:15:37,284 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:15:58,863 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:25:37,424 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:27:25,083 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:28:44,260 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:30:12,568 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:31:20,701 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:34:41,764 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-18 21:34:43,796 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-18 21:34:48,609 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-18 21:34:51,452 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183

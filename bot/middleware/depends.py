@@ -19,6 +19,7 @@ class DependMiddleware(BaseMiddleware):
           data: dict[str, Any]
      ) -> None:
           callback_object = data.get("handler").callback
+          
           arguments = inspect.signature(callback_object).parameters
           
           for key, value in arguments.items():

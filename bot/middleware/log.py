@@ -18,7 +18,7 @@ class LogMiddleware(BaseMiddleware):
           data: dict[str, Any]
      ):
           router = data.get("event_router").name
-          command = data.get("command").command
+          command = data.get("handler").callback.__name__
           
           logging_.bot.info(f"ROUTER: {router}; COMMAND: {command}; USER: {event.from_user.id}")
           
