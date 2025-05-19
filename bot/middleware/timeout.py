@@ -7,7 +7,12 @@ from aiogram.dispatcher.middlewares.base import BaseMiddleware
 
 class TimeoutMiddleware(BaseMiddleware):
      timeoutes = {
-          "start": timedelta(seconds=2)
+          "start": timedelta(seconds=1),
+          "search": timedelta(seconds=1),
+          "settings": timedelta(seconds=2),
+          "settings_notify": timedelta(seconds=2),
+          "settings_update_time": timedelta(seconds=2),
+          "items": timedelta(seconds=2)
      }
      command_users = {}
      

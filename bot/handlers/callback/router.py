@@ -2,7 +2,8 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-from bot.utils.filter.state import UpdateTime
+from bot.utils.filter.callback import SkinNameCallbackData
+from bot.utils.filter.state import UpdateTimeState
 from bot.utils.inline import settings_button
 from bot.schemas import UserDataclass
 from .service import CallbackService
@@ -34,10 +35,25 @@ async def settings_update_time(
      query: CallbackQuery,
      state: FSMContext
 ):
-     await state.set_state(UpdateTime.time)
+     await state.set_state(UpdateTimeState.time)
      await query.message.answer(
           (
                "Отправь дату в виде: day-hour-minute" +
                "\nПример: 0-0-25 Обновление будет происходить каждые 25 минут"
           )
      )
+     
+    
+     
+@callback_router.callback_query(SkinNameCallbackData.filter(F.mode == "skin"))
+async def items(
+     query: CallbackQuery,
+     callback_data: SkinNameCallbackData,
+     user: UserDataclass,
+     service: CallbackService
+):
+     result = await service.items(
+          user=user,
+          item=callback_data.name
+     )
+     await query.answer(text=result)

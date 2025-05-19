@@ -33,7 +33,6 @@ class UserDataclass(FromOrm["UserDataclass"]):
 class SkinDataclass(FromOrm["SkinDataclass"]):
      skin_id: int
      name: str
-     image: str
      current_price: float
      user: BaseUserDataclass
      

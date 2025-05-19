@@ -1,6 +1,8 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from bot.utils.filter.callback import SkinNameCallbackData
+
 
 
 async def settings_button(
@@ -25,4 +27,23 @@ async def settings_button(
      )
      builder.adjust(1, 1)
      return builder.as_markup()
+
+
+
+async def search_item_button(
+     items: list[str]
+) -> InlineKeyboardMarkup:
+     builder = InlineKeyboardBuilder()
+     
+     for name in items:
+          builder.add(
+               InlineKeyboardButton(
+                    text=name,
+                    callback_data=SkinNameCallbackData(name=name, mode="skin").pack()
+               )
+          )
+     builder.adjust(2)
+     return builder.as_markup()
+     
+     
      

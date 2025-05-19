@@ -1,0 +1,86 @@
+LOG 2025-05-19 20:25:29,494 INFO GET REQUEST STEAM FOR SEARCH ITEM: Riptide Case
+LOG 2025-05-19 20:25:29,589 INFO PARSE STEAM ITEMS: <a class="market_listing_row_link" href="https://steamcommunity.com/market/listings/730/Operation%20Riptide%20Case" id="resultlink_0">
+<div class="market_listing_row market_recent_listing_row market_listing_searchresult" data-appid="730" data-hash-name="Operation Riptide Case" id="result_0">
+<img alt="" class="market_listing_item_img" id="result_0_image" src="https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsUFJ5KBFZv668FFU5narKKW4SvIrhw9PZlaPwNuqAxmgBucNz2L3C8dyj31Xn-0VtMW3wdY6LMlhplna0TPI/62fx62f" srcset="https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsUFJ5KBFZv668FFU5narKKW4SvIrhw9PZlaPwNuqAxmgBucNz2L3C8dyj31Xn-0VtMW3wdY6LMlhplna0TPI/62fx62f 1x, https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsUFJ5KBFZv668FFU5narKKW4SvIrhw9PZlaPwNuqAxmgBucNz2L3C8dyj31Xn-0VtMW3wdY6LMlhplna0TPI/62fx62fdpx2x 2x" style="border-color: #D2D2D2;"/>
+<div class="market_listing_price_listings_block">
+<div class="market_listing_right_cell market_listing_num_listings">
+<span class="market_table_value">
+<span class="market_listing_num_listings_qty" data-qty="1243">1,243</span>
+</span>
+</div>
+<div class="market_listing_right_cell market_listing_their_price">
+<span class="market_table_value normal_price">
+					От<br/>
+<span class="normal_price" data-currency="1" data-price="1572">$15.72 USD</span>
+<span class="sale_price">$15.04 USD</span>
+</span>
+<span class="market_arrow_down" style="display: none"></span>
+<span class="market_arrow_up" style="display: none"></span>
+</div>
+</div>
+<div class="market_listing_item_name_block">
+<span class="market_listing_item_name" id="result_0_name" style="color: #D2D2D2;">Кейс операции «Хищные воды»</span>
+<br/>
+<span class="market_listing_game_name">Counter-Strike 2</span>
+</div>
+<div style="clear: both"></div>
+</div>
+</a>
+LOG 2025-05-19 20:26:06,176 INFO GET REQUEST STEAM FOR SEARCH ITEM: Horizon Case
+LOG 2025-05-19 20:26:06,297 INFO PARSE STEAM ITEMS: <a class="market_listing_row_link" href="https://steamcommunity.com/market/listings/730/Horizon%20Case%20Key" id="resultlink_1">
+<div class="market_listing_row market_recent_listing_row market_listing_searchresult" data-appid="730" data-hash-name="Horizon Case Key" id="result_1">
+<img alt="" class="market_listing_item_img" id="result_1_image" src="https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXX7gNTPcUxuxpJSXPbQv2S1MDeXkh6LBBOiej1ZVdhhfebJ28T7trjkIGKxfLwZezUwDIAupUp2b-X9o2tiw3irktlZ23tZNjCvCE2Ut4/62fx62f" srcset="https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXX7gNTPcUxuxpJSXPbQv2S1MDeXkh6LBBOiej1ZVdhhfebJ28T7trjkIGKxfLwZezUwDIAupUp2b-X9o2tiw3irktlZ23tZNjCvCE2Ut4/62fx62f 1x, https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXX7gNTPcUxuxpJSXPbQv2S1MDeXkh6LBBOiej1ZVdhhfebJ28T7trjkIGKxfLwZezUwDIAupUp2b-X9o2tiw3irktlZ23tZNjCvCE2Ut4/62fx62fdpx2x 2x" style="border-color: #D2D2D2;"/>
+<div class="market_listing_price_listings_block">
+<div class="market_listing_right_cell market_listing_num_listings">
+<span class="market_table_value">
+<span class="market_listing_num_listings_qty" data-qty="82">82</span>
+</span>
+</div>
+<div class="market_listing_right_cell market_listing_their_price">
+<span class="market_table_value normal_price">
+					От<br/>
+<span class="normal_price" data-currency="1" data-price="1656">$16.56 USD</span>
+<span class="sale_price">$15.84 USD</span>
+</span>
+<span class="market_arrow_down" style="display: none"></span>
+<span class="market_arrow_up" style="display: none"></span>
+</div>
+</div>
+<div class="market_listing_item_name_block">
+<span class="market_listing_item_name" id="result_1_name" style="color: #D2D2D2;">Ключ от кейса «Горизонт»</span>
+<br/>
+<span class="market_listing_game_name">Counter-Strike 2</span>
+</div>
+<div style="clear: both"></div>
+</div>
+</a>
+LOG 2025-05-19 20:26:09,793 INFO GET REQUEST STEAM FOR SEARCH PRICE ITEM: Horizon Case
+LOG 2025-05-19 20:27:06,465 INFO GET REQUEST STEAM FOR SEARCH ITEM: Revolution
+LOG 2025-05-19 20:27:06,596 INFO PARSE STEAM ITEMS: <a class="market_listing_row_link" href="https://steamcommunity.com/market/listings/730/StatTrak%E2%84%A2%20AK-47%20%7C%20Neon%20Revolution%20%28Factory%20New%29" id="resultlink_9">
+<div class="market_listing_row market_recent_listing_row market_listing_searchresult" data-appid="730" data-hash-name="StatTrak™ AK-47 | Neon Revolution (Factory New)" id="result_9">
+<img alt="" class="market_listing_item_img" id="result_9_image" src="https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV0924lZKIn-7LP7LWnn8f7JMi27iUoNjz2gzl-UFqYjvwI4WUJw8-YA3ZqQS-wufp1pC66JSfz2wj5HeIT2OEaw/62fx62f" srcset="https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV0924lZKIn-7LP7LWnn8f7JMi27iUoNjz2gzl-UFqYjvwI4WUJw8-YA3ZqQS-wufp1pC66JSfz2wj5HeIT2OEaw/62fx62f 1x, https://community.fastly.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV0924lZKIn-7LP7LWnn8f7JMi27iUoNjz2gzl-UFqYjvwI4WUJw8-YA3ZqQS-wufp1pC66JSfz2wj5HeIT2OEaw/62fx62fdpx2x 2x" style="border-color: #CF6A32;"/>
+<div class="market_listing_price_listings_block">
+<div class="market_listing_right_cell market_listing_num_listings">
+<span class="market_table_value">
+<span class="market_listing_num_listings_qty" data-qty="7">7</span>
+</span>
+</div>
+<div class="market_listing_right_cell market_listing_their_price">
+<span class="market_table_value normal_price">
+					От<br/>
+<span class="normal_price" data-currency="1" data-price="23944">$239.44 USD</span>
+<span class="sale_price">$229.03 USD</span>
+</span>
+<span class="market_arrow_down" style="display: none"></span>
+<span class="market_arrow_up" style="display: none"></span>
+</div>
+</div>
+<div class="market_listing_item_name_block">
+<span class="market_listing_item_name" id="result_9_name" style="color: #CF6A32;">StatTrak™ AK-47 | Неоновая революция (Прямо с завода)</span>
+<br/>
+<span class="market_listing_game_name">Counter-Strike 2</span>
+</div>
+<div style="clear: both"></div>
+</div>
+</a>
+LOG 2025-05-19 20:27:09,432 INFO GET REQUEST STEAM FOR SEARCH PRICE ITEM: Revolution Case

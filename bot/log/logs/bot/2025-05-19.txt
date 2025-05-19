@@ -8,3 +8,45 @@ LOG 2025-05-19 07:56:28,198 INFO ROUTER: state_router; COMMAND: update_time; USE
 LOG 2025-05-19 07:56:35,187 INFO ROUTER: state_router; COMMAND: update_time; USER: 2054556183
 LOG 2025-05-19 07:56:40,974 INFO ROUTER: state_router; COMMAND: update_time; USER: 2054556183
 LOG 2025-05-19 07:56:45,727 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-19 18:40:43,040 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-19 18:40:50,630 INFO ROUTER: callback_router; COMMAND: settings_update_time; USER: 2054556183
+LOG 2025-05-19 18:41:02,073 INFO ROUTER: state_router; COMMAND: update_time; USER: 2054556183
+LOG 2025-05-19 18:41:15,412 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-19 20:03:00,366 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-19 20:03:01,907 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-19 20:03:05,425 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-19 20:03:08,165 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-19 20:03:09,069 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-19 20:03:15,186 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-19 20:03:25,157 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-19 20:03:40,657 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-19 20:03:41,943 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-19 20:03:51,350 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-19 20:03:53,773 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-19 20:05:34,627 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-19 20:05:37,212 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-19 20:05:41,088 INFO ROUTER: callback_router; COMMAND: items; USER: 2054556183
+LOG 2025-05-19 20:05:45,166 INFO ROUTER: callback_router; COMMAND: items; USER: 2054556183
+LOG 2025-05-19 20:25:14,948 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-19 20:25:28,590 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-19 20:25:33,721 INFO ROUTER: callback_router; COMMAND: items; USER: 2054556183
+LOG 2025-05-19 20:25:33,753 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 38, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 30, in __call__
+    data[key] = await __depends__[value.annotation]()
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\handlers\callback\service.py", line 58, in get_callback_service
+    return CallbackService(
+TypeError: CallbackService.__init__() missing 1 required positional argument: 'http_client'
+LOG 2025-05-19 20:25:56,808 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-19 20:26:04,893 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-19 20:26:09,200 INFO ROUTER: callback_router; COMMAND: items; USER: 2054556183
+LOG 2025-05-19 20:26:14,842 INFO ROUTER: callback_router; COMMAND: items; USER: 2054556183
+LOG 2025-05-19 20:27:00,510 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-19 20:27:05,043 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-19 20:27:08,850 INFO ROUTER: callback_router; COMMAND: items; USER: 2054556183
+LOG 2025-05-19 20:27:12,392 INFO ROUTER: callback_router; COMMAND: items; USER: 2054556183
+LOG 2025-05-19 20:27:18,153 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183

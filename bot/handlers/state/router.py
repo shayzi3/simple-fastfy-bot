@@ -3,7 +3,8 @@ from aiogram.types import Message
 from aiogram import Router
 
 
-from bot.utils.filter.state import UpdateTime
+from bot.utils.inline import search_item_button
+from bot.utils.filter.state import UpdateTimeState, SearchState
 from bot.schemas import UserDataclass, Time
 from .service import StateService
 
@@ -11,7 +12,7 @@ from .service import StateService
 state_router = Router(name="state_router")
 
 
-@state_router.message(UpdateTime.time)
+@state_router.message(UpdateTimeState.time)
 async def update_time(
      message: Message,
      state: FSMContext,
@@ -28,3 +29,20 @@ async def update_time(
           return await message.answer(f"Время обновлено: {valide_time.pretty_string}")
      await message.answer(valide_time)
      
+     
+     
+@state_router.message(SearchState.item)
+async def search_item(
+     message: Message,
+     state: FSMContext,
+     service: StateService
+):
+     result = await service.search_item(item=message.text)
+     await state.clear()
+     if isinstance(result, str):
+          return await message.answer(result)
+     
+     await message.answer(
+          text=f"Предметы по запросу: {message.text}",
+          reply_markup=await search_item_button(items=result)
+     )

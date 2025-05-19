@@ -26,30 +26,31 @@ class Time:
           """days-hours-minutes"""
           split_obj = obj.split("-")
           if len(split_obj) < 3:
-               return "Недопустимое время! day:hour:minute"
+               return "Недопустимое время! day-hour-minute"
           
           try:
                day = int(split_obj[0])
                hour = int(split_obj[1])
                minute = int(split_obj[2])
           except ValueError:
-               return "Недопустимое время! day:hour:minute"
+               return "Недопустимое время! day-hour-minute"
           
           if any([day > 5, hour > 24, minute > 60]):
-               return "Недопустимое время! day < =5 hour <= 24 minute <= 60"
+               return "day <= 5; hour <= 24; minute <= 60"
           
           if any([day < 0, hour < 0, minute < 0]):
-               return "Недопустимое время! day >= 0 hour >= 0 minute >= 0"
+               return "day >= 0; hour >= 0; minute >= 0"
           
           if (day == 0) and (hour == 0):
                if minute < 25:
-                    return "Недопустимое время! При day = 0 и hour = 0, 25 <= minute <= 60"
+                    return "day = 0; hour = 0; 25 <= minute <= 60"
           return cls(days=day, hours=hour, minutes=minute)
           
           
      @property
      def pretty_string(self) -> str:
-          return f"d: {self.days} h: {self.hours} m: {self.minutes}"
+          # -> 25m
+          return " ".join([f"{value}{key[0]}" for key, value in self.__dict__.items() if value != 0])
      
      
      @property
@@ -76,7 +77,6 @@ class BaseUserDataclass(FromOrm["BaseUserDataclass"]):
 class BaseSkinDataclass(FromOrm["BaseSkinDataclass"]):
      skin_id: int
      name: str
-     image: str
      current_price: float
      owner: int
      

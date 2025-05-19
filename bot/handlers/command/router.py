@@ -3,6 +3,7 @@ from aiogram.types import Message
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 
+from bot.utils.filter.state import SearchState
 from bot.utils.inline import settings_button
 from bot.schemas import UserDataclass
 from .service import CommandService
@@ -48,3 +49,14 @@ async def clear(
           await state.clear()
           return await message.answer("Событие пропущено.")
      return await message.answer("Событий не найдено.")
+
+
+
+
+@command_router.message(Command("search"))
+async def search(
+     message: Message,
+     state: FSMContext
+):
+     await state.set_state(SearchState.item)
+     await message.answer("Отправь название скина")
