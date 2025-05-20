@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 ---
 version: null
->>>>>>> 688bcf08e027b7a3c46e99a83ece645e56d87671
 meta:
   environment: python
   toolchain:
@@ -12,11 +9,5 @@ build:
   requirementsPath: requirements.txt
 run:
   scriptName: main.py
-<<<<<<< HEAD
-  command: null
-  persistenceMount: /bot/db/storage/
-  containerPort: "80"
-=======
   persistenceMount: /bot/db/storage/
   containerPort: 80
->>>>>>> 688bcf08e027b7a3c46e99a83ece645e56d87671
