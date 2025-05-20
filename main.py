@@ -17,7 +17,6 @@ from bot.handlers import __routers__
 
 
 
-
 @asynccontextmanager
 async def lifespan(_: FastAPI):
      dp.include_routers(*__routers__)
