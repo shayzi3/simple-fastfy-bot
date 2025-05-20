@@ -1,6 +1,7 @@
 import asyncio
 
 from typing import Any
+from datetime import datetime
 
 from bot.db.repository import UserRepository, SkinRepository
 from bot.http.steam import SteamHttpClient
@@ -37,7 +38,7 @@ class MonitoringWorker:
                     for index, time_user in enumerate(tasks):
                          try:
                               period = time_user.split(";")[0]
-                              time = time_now().fromisoformat(time_user.split(";")[1])
+                              time = datetime.fromisoformat(time_user.split(";")[1])
                               user = int(time_user.split(";")[2])
                          except Exception as ex:
                               await BotException.send_notify(msg=str(ex))
@@ -120,7 +121,7 @@ class MonitoringWorker:
           notify_data: list[dict[str, Any]], 
           telegram_id: int
      ) -> None:
-          time = time_now().strftime("%Y-%m-%D %H:%M:%S")
+          time = time_now().strftime("%Y-%m-%d %H:%M:%S")
           for skin in notify_data:
                await bot.send_message(
                     chat_id=telegram_id,

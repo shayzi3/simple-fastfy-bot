@@ -18,7 +18,7 @@ from bot.handlers import __routers__
 
 
 
-# @asynccontextmanager
+@asynccontextmanager
 async def lifespan():
      dp.include_routers(*__routers__)
      for middleware in __middlewares__:
@@ -38,29 +38,28 @@ async def lifespan():
                BotCommand(command="/start", description="Приветственное сообщение"),
                BotCommand(command="/settings", description="Пользовательские настройки"),
                BotCommand(command="/search", description="Поиск предметов"),
-               BotCommand(command="/inventory", description="Инвентарь")
+               BotCommand(command="/inventory", description="Инвентарь"),
+               BotCommand(command="/clear", description="Пропуск события")
           ]
      )
-     await dp.start_polling(bot)
-
      
-     # await bot.set_webhook(
-     #      url=base_config.bot_webhook_url,
-     #      secret_token=base_config.webhook_token,
-     #      drop_pending_updates=True,
-     #      allowed_updates=dp.resolve_used_update_types()
-     # )
-     # yield
-     # await bot.delete_webhook(drop_pending_updates=True)
+     await bot.set_webhook(
+          url=base_config.bot_webhook_url,
+          secret_token=base_config.webhook_token,
+          drop_pending_updates=True,
+          allowed_updates=dp.resolve_used_update_types()
+     )
+     yield
+     await bot.delete_webhook(drop_pending_updates=True)
      
      
-# app = FastAPI(
-#      title="SimpleFastFy",
-#      lifespan=lifespan
-# )
-# app.include_router(webhook_router)
+app = FastAPI(
+     title="SimpleFastFy",
+     lifespan=lifespan
+)
+app.include_router(webhook_router)
 
 
 if __name__ == "__main__":
-     asyncio.run(lifespan())
+     uvicorn.run("main:app", host="0.0.0.0", port=8083)
 
