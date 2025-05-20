@@ -1,15 +1,15 @@
 import asyncio
 
-from datetime import datetime
 from typing import Any
 
 from bot.db.repository import UserRepository, SkinRepository
 from bot.http.steam import SteamHttpClient
 from bot.schemas import Time
-from bot.log.logging_ import logging_
 from bot.exception import BotException
 from bot.db.json_storage import JsonStorage
+from bot.log.logging_ import logging_
 from bot.core.bot import bot
+from bot.core.timezone import time_now
 
 
 
@@ -37,14 +37,14 @@ class MonitoringWorker:
                     for index, time_user in enumerate(tasks):
                          try:
                               period = time_user.split(";")[0]
-                              time = datetime.fromisoformat(time_user.split(";")[1])
+                              time = time_now().fromisoformat(time_user.split(";")[1])
                               user = int(time_user.split(";")[2])
                          except Exception as ex:
                               await BotException.send_notify(msg=str(ex))
                               
-                         if time <= datetime.now():
+                         if time <= time_now():
                               new_time = (
-                                   datetime.now() + Time.from_str(period).to_timedelta()
+                                   time_now() + Time.from_str(period).to_timedelta()
                               ).isoformat()
                               new_value = f"{period};{new_time};{user}"
                               
@@ -120,8 +120,9 @@ class MonitoringWorker:
           notify_data: list[dict[str, Any]], 
           telegram_id: int
      ) -> None:
+          time = time_now().strftime("%Y-%m-%D %H:%M:%S")
           for skin in notify_data:
                await bot.send_message(
                     chat_id=telegram_id,
-                    text=f"{skin.get('name')} \n{skin.get('last_price')} -> {skin.get('update_price')} {skin.get('difference')}%"
+                    text=f"{time} \n{skin.get('name')} \n{skin.get('last_price')} -> {skin.get('update_price')} {skin.get('difference')}%"
                )

@@ -1,8 +1,7 @@
-from datetime import datetime
 from bot.http.steam import SteamHttpClient
 from bot.db.repository import UserRepository, SkinRepository
 from bot.schemas import UserDataclass
-from bot.schemas import Time
+from bot.core.timezone import time_now
 from bot.db.json_storage import JsonStorage
 
 
@@ -32,7 +31,7 @@ class CallbackService:
                await self.json_storage.add(
                     new_value = (
                          f"{user.update_time.to_string};"
-                         f"{(datetime.now() + Time.from_str(user.update_time.to_string).to_timedelta()).isoformat()};"
+                         f"{(time_now() + user.update_time.to_timedelta()).isoformat()}"
                          f"{user.telegram_id}"
                     )
                )

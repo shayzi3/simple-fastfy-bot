@@ -1,8 +1,11 @@
 
+from datetime import datetime
 from bot.core.gen import generate_skin_id
+from bot.core.timezone import time_now
 from bot.schemas import UserDataclass
 from bot.db.repository import UserRepository, SkinRepository
 from bot.http.steam import SteamParseClient, SteamHttpClient
+from bot.db.json_storage import JsonStorage
 
 
 
@@ -13,11 +16,13 @@ class StateService:
           parse_client: SteamParseClient,
           http_client: SteamHttpClient,
           skin_repository: SkinRepository,
+          json_storage: JsonStorage
      ):
           self.user_repository = user_repository
           self.parse_client = parse_client
           self.http_client = http_client
           self.skin_repository = skin_repository
+          self.json_storage = json_storage
           
      
      async def update_time(
@@ -25,6 +30,14 @@ class StateService:
           user: UserDataclass,
           new_time: str
      ) -> bool:
+          await self.json_storage.update(
+               search_string=f"{user.telegram_id}",
+               new_value=(
+                    f"{user.update_time.to_string};"
+                    f"{(time_now() + user.update_time.to_timedelta()).isoformat()};"
+                    f"{user.telegram_id}"
+               )
+          )
           return await self.user_repository.update(
                where=user.where,
                values={"update_time": new_time}
@@ -76,5 +89,6 @@ async def get_state_service() -> StateService:
           parse_client=SteamParseClient(),
           http_client=SteamHttpClient(),
           skin_repository=SkinRepository,
+          json_storage=JsonStorage()
      )
                

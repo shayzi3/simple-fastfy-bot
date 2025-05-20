@@ -1,15 +1,14 @@
 import logging
 import pytz
 
+from bot.core.timezone import timezone, time_now
 from datetime import datetime
 
 
 
 class MoscowTimezone(logging.Formatter):
-     moscow_tz = pytz.timezone('Europe/Moscow')
-     
      def converter(self, timestamp):
-          return datetime.fromtimestamp(timestamp, self.moscow_tz)
+          return datetime.fromtimestamp(timestamp, timezone)
 
      def formatTime(self, record, datefmt=None):
           dt = self.converter(record.created)
@@ -26,7 +25,7 @@ class BaseLogger(logging.Logger):
           self.setLevel(logging.DEBUG)
           
           logger_handler = logging.FileHandler(
-               filename=path + datetime.now().strftime("%Y-%m-%d") + ".txt",
+               filename=path + time_now().strftime("%Y-%m-%d") + ".txt",
           )
           format = MoscowTimezone("%(name)s %(asctime)s %(levelname)s %(message)s")
           
