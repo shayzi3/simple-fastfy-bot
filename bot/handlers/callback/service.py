@@ -31,11 +31,10 @@ class CallbackService:
                await self.json_storage.add(
                     new_value = (
                          f"{user.update_time.to_string};"
-                         f"{(time_now() + user.update_time.to_timedelta()).isoformat()}"
+                         f"{(time_now() + user.update_time.to_timedelta()).isoformat()};"
                          f"{user.telegram_id}"
                     )
                )
-               
           else:
                await self.json_storage.delete(search_string=f"{user.telegram_id}")
           
