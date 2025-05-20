@@ -33,7 +33,6 @@ async def lifespan(_: FastAPI):
      )
      asyncio.create_task(monitoring.run())
      
-     
      await bot.set_webhook(
           url=base_config.bot_webhook_url,
           secret_token=base_config.webhook_token,
@@ -52,5 +51,5 @@ app.include_router(webhook_router)
 
 
 if __name__ == "__main__":
-     uvicorn.run("main:app", host="0.0.0.0", port=8083, reload=True)
+     uvicorn.run("main:app", host="0.0.0.0", port=8083)
 
