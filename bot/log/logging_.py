@@ -23,37 +23,37 @@ class Logger:
      @property
      def bot(self) -> BaseLogger:
           return BaseLogger(
-               path="bot/log/logs/bot/"
+               path="/bot/db/storage/logs/bot/"
           )
           
      @property
      def db(self) -> BaseLogger:
           return BaseLogger(
-               path="bot/log/logs/db/"
+               path="/bot/db/storage/logs/db/"
           )
      
      @property
      def worker(self) -> BaseLogger:
           return BaseLogger(
-               path="bot/log/logs/worker/"
+               path="/bot/db/storage/logs/worker/"
           )
           
      @property
      def http_webhook(self) -> BaseLogger:
           return BaseLogger(
-               path="bot/log/logs/http/worker/"
+               path="/bot/db/storage/logs/http/worker/"
           )
           
      @property
      def http_steam(self) -> BaseLogger:
           return BaseLogger(
-               path="bot/log/logs/http/steam/"
+               path="/bot/db/storage/logs/http/steam/"
           )
           
      @property
      def json(self) -> BaseLogger:
           return BaseLogger(
-               path="bot/log/logs/json/"
+               path="/bot/db/storage/logs/json/"
           )
           
           

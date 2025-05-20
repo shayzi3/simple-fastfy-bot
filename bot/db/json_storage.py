@@ -6,7 +6,7 @@ from bot.log.logging_ import logging_
 
 class JsonStorage:
      def __init__(self):
-          self.path = "bot/db/storage/worker.json"
+          self.path = "/bot/db/storage/worker.json"
           
           
      async def _get_data(self) -> list[str]:
