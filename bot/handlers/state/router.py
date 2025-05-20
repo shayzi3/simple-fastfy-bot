@@ -50,7 +50,7 @@ async def search_item(
    
      
 @state_router.message(PercentState.percent)
-async def update_percent(
+async def update_create_percent(
      message: Message,
      state: FSMContext,
      user: UserDataclass,
