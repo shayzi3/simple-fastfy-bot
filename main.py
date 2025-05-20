@@ -19,7 +19,7 @@ from bot.handlers import __routers__
 
 
 @asynccontextmanager
-async def lifespan():
+async def lifespan(_: FastAPI):
      dp.include_routers(*__routers__)
      for middleware in __middlewares__:
           dp.message.middleware(middleware())
