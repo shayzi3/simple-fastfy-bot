@@ -62,8 +62,7 @@ class Repository(AbstractRepository, Generic[DATACLASS]):
                     filter_by(**where).
                     values(**values)
                )
-               result = await session.execute(sttm)
-               result = result.fetchone()
+               await session.execute(sttm)
                await session.commit()
      
      
@@ -79,6 +78,5 @@ class Repository(AbstractRepository, Generic[DATACLASS]):
                     delete(cls.model).
                     filter_by(**where)
                )
-               result = await session.execute(sttm)
-               result = result.fetchone()
+               await session.execute(sttm)
                await session.commit()
