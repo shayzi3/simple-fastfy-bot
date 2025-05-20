@@ -1,5 +1,7 @@
+import json
 import uvicorn
 import asyncio
+import aiofiles
 
 from aiogram.types.bot_command import BotCommand
 from fastapi import FastAPI
@@ -24,6 +26,9 @@ async def lifespan(_: FastAPI):
      for middleware in __middlewares__:
           dp.message.middleware(middleware())
           dp.callback_query.middleware(middleware())
+          
+     async with aiofiles.open("/data/worker.json") as file:
+          await file.read(json.dumps([]))
           
      monitoring = MonitoringWorker(
           user_repository=UserRepository,
