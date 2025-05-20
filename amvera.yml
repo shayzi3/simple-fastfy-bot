@@ -12,3 +12,4 @@ run:
   persistenceMount: /bot/db/storage/
   containerPort: 80
   servicePort: 80
+  containerPort: 8083
