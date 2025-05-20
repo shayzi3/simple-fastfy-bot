@@ -1,3 +1,4 @@
+
 from bot.core.gen import generate_skin_id
 from bot.schemas import UserDataclass
 from bot.db.repository import UserRepository, SkinRepository
@@ -11,7 +12,7 @@ class StateService:
           user_repository: UserRepository,
           parse_client: SteamParseClient,
           http_client: SteamHttpClient,
-          skin_repository: SkinRepository
+          skin_repository: SkinRepository,
      ):
           self.user_repository = user_repository
           self.parse_client = parse_client
@@ -74,6 +75,6 @@ async def get_state_service() -> StateService:
           user_repository=UserRepository,
           parse_client=SteamParseClient(),
           http_client=SteamHttpClient(),
-          skin_repository=SkinRepository
+          skin_repository=SkinRepository,
      )
                

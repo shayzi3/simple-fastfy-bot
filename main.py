@@ -1,13 +1,19 @@
 import uvicorn
+import asyncio
 
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
+from bot.db.repository import UserRepository, SkinRepository
+from bot.http.steam import SteamHttpClient
+from bot.db.json_storage import JsonStorage
+from bot.worker.monitoring import MonitoringWorker
 from bot.core.bot import bot, dp
 from bot.core.config import base_config
 from bot.http.webhook import webhook_router
 from bot.middleware import __middlewares__
 from bot.handlers import __routers__
+
 
 
 
@@ -19,7 +25,13 @@ async def lifespan(_: FastAPI):
           dp.message.middleware(middleware())
           dp.callback_query.middleware(middleware())
           
-     # start monitoring
+     monitoring = MonitoringWorker(
+          user_repository=UserRepository,
+          skin_repository=SkinRepository,
+          json_storage=JsonStorage(),
+          http_client=SteamHttpClient()
+     )
+     asyncio.create_task(monitoring.run())
      
      
      await bot.set_webhook(

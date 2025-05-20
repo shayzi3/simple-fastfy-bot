@@ -12,11 +12,13 @@ class TimeoutMiddleware(BaseMiddleware):
           "settings": timedelta(seconds=2),
           "inventory": timedelta(seconds=2),
           "settings_notify": timedelta(seconds=2),
-          "settings_update_time": timedelta(seconds=2),
+          "settings_update_time": timedelta(seconds=4),
           "steam_item": timedelta(seconds=3),
           "inventory_item": timedelta(seconds=2),
           "inventory_left": timedelta(seconds=1),
-          "inventory_right": timedelta(seconds=1)
+          "inventory_right": timedelta(seconds=1),
+          "delete_item": timedelta(seconds=1),
+          "update_percent": timedelta(seconds=4)
      }
      command_users = {}
      

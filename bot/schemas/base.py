@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from dataclasses import dataclass
 from typing import Any, Generic
 
@@ -56,6 +56,10 @@ class Time:
      @property
      def to_string(self) -> str:
           return f"{self.days}-{self.hours}-{self.minutes}"
+     
+     
+     def to_timedelta(self) -> timedelta:
+          return timedelta(**self.__dict__)
           
           
           

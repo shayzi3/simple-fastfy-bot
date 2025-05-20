@@ -50,5 +50,11 @@ class Logger:
                path="bot/log/logs/http/steam/"
           )
           
+     @property
+     def json(self) -> BaseLogger:
+          return BaseLogger(
+               path="bot/log/logs/json/"
+          )
+          
           
 logging_ = Logger()

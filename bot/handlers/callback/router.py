@@ -45,6 +45,7 @@ async def settings_update_time(
                "\nПример: 0-0-25 Обновление будет происходить каждые 25 минут"
           )
      )
+     await query.answer()
      
     
 @callback_router.callback_query(SkinNameCallbackData.filter(F.mode == "skin_steam"))
@@ -147,6 +148,7 @@ async def delete_item(
           item=callback_data.name
      )
      await query.answer(result)
+     await query.message.delete()
      
      
      

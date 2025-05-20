@@ -126,3 +126,77 @@ LOG 2025-05-20 08:07:48,477 INFO ROUTER: callback_router; COMMAND: inventory_ite
 LOG 2025-05-20 08:07:50,723 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
 LOG 2025-05-20 08:07:53,047 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
 LOG 2025-05-20 08:07:59,149 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:04:10,759 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-20 09:04:12,654 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:04:14,742 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:04:15,917 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:04:19,378 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:04:21,129 INFO ROUTER: callback_router; COMMAND: settings_update_time; USER: 2054556183
+LOG 2025-05-20 09:04:52,808 INFO ROUTER: state_router; COMMAND: update_time; USER: 2054556183
+LOG 2025-05-20 09:04:56,912 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-20 09:05:07,515 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 09:05:12,205 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:05:13,960 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:05:16,222 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:05:17,960 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:05:57,555 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 09:05:58,432 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 09:06:02,544 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:04,390 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:06:10,754 INFO ROUTER: callback_router; COMMAND: inventory_right; USER: 2054556183
+LOG 2025-05-20 09:06:15,155 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:18,193 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:06:21,000 INFO ROUTER: callback_router; COMMAND: inventory_left; USER: 2054556183
+LOG 2025-05-20 09:06:22,650 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:25,659 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:06:28,251 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:30,251 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:34,351 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:35,770 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:06:38,425 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:39,985 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:06:43,293 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:06:44,911 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 09:06:47,554 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 09:06:51,303 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-20 09:07:03,026 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-20 09:07:06,815 INFO ROUTER: callback_router; COMMAND: steam_item; USER: 2054556183
+LOG 2025-05-20 09:07:13,884 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 09:07:18,087 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 09:07:21,465 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:07:24,500 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 09:07:26,513 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 09:07:29,034 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 09:07:38,529 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 09:07:45,137 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-20 09:56:57,376 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
+LOG 2025-05-20 09:56:59,879 INFO ROUTER: callback_router; COMMAND: settings_update_time; USER: 2054556183
+LOG 2025-05-20 09:57:05,599 INFO ROUTER: state_router; COMMAND: update_time; USER: 2054556183
+LOG 2025-05-20 09:57:11,661 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:57:22,225 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:57:22,364 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 48, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 31, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\handlers\callback\router.py", line 26, in settings_notify
+    result = await service.settings_notify(user=user)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\handlers\callback\service.py", line 35, in settings_notify
+    f"{(datetime.now() + Time.from_str(user.update_time.to_string).to_timedelta()).isoformat()};"
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\schemas\base.py", line 62, in to_timedelta
+    return timedelta(self.__dict__)
+TypeError: unsupported type for timedelta days component: dict
+LOG 2025-05-20 09:58:31,690 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:58:34,487 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:58:36,163 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:58:41,291 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:59:06,993 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:59:20,713 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 09:59:25,851 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 10:02:52,020 INFO ROUTER: callback_router; COMMAND: settings_notify; USER: 2054556183
+LOG 2025-05-20 10:03:02,321 INFO ROUTER: command_router; COMMAND: settings; USER: 2054556183
