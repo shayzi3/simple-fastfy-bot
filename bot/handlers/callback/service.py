@@ -29,7 +29,7 @@ class CallbackService:
                "notify": True if user.notify is False else False
           }
           if update_data.get("notify") is True:
-               await self.worker_json.add(
+               await self.json_storage.add(
                     new_value = (
                          f"{user.update_time.to_string};"
                          f"{(datetime.now() + Time.from_str(user.update_time.to_string).to_timedelta()).isoformat()};"
@@ -38,7 +38,7 @@ class CallbackService:
                )
                
           else:
-               await self.worker_json.delete(search_string=f"{user.telegram_id}")
+               await self.json_storage.delete(search_string=f"{user.telegram_id}")
           
           await self.user_repository.update(
                where=user.where,
