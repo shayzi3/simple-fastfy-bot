@@ -10,4 +10,4 @@ build:
 run:
   scriptName: main.py
   persistenceMount: /bot/db/storage/
-  containerPort: 80
+  containerPort: 8083
