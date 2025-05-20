@@ -32,34 +32,7 @@ class CallbackService:
           return update_data.get("notify")
      
      
-     async def steam_item(
-          self,
-          user: UserDataclass,
-          item: str
-     ) -> bool:
-          if len(user.skins) >= 20:
-               return "Максимальное кол-во предметов в инвентаре 20!"
-          
-          for skin in user.skins:
-               if skin.name == item:
-                    return "Такой предмет уже есть в вашем инвентаре."
-               
-          item_price = await self.http_client.item_price(item=item)
-          if item_price is None:
-               return "Повторите попытку позже."
-          
-          await self.skin_repository.create(
-               values={
-                    "skin_id": await generate_skin_id(),
-                    "name": item,
-                    "current_price": item_price,
-                    "owner": user.telegram_id
-               }
-          )
-          return "Предмет успешно добавлен в инвентарь."
-     
-     
-     async def inventory_item(
+     async def delete_item(
           self,
           user: UserDataclass,
           item: str

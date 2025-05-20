@@ -78,6 +78,7 @@ class BaseSkinDataclass(FromOrm["BaseSkinDataclass"]):
      skin_id: int
      name: str
      current_price: float
+     percent: int
      owner: int
      
      

@@ -6,8 +6,8 @@ from bot.utils.filter.callback import (
      SkinNameCallbackData, 
      InventoryPaginateCallbackData
 )
-from bot.utils.filter.state import UpdateTimeState
-from bot.utils.inline import settings_button, inventory_button
+from bot.utils.filter.state import UpdateTimeState, PercentState
+from bot.utils.inline import settings_button, inventory_button, inventory_item_button
 from bot.schemas import UserDataclass
 from .service import CallbackService
 
@@ -51,28 +51,40 @@ async def settings_update_time(
 async def steam_item(
      query: CallbackQuery,
      callback_data: SkinNameCallbackData,
-     user: UserDataclass,
-     service: CallbackService
+     state: FSMContext,
+     user: UserDataclass
 ):
-     result = await service.steam_item(
-          user=user,
-          item=callback_data.name
-     )
-     await query.answer(text=result)
+     if len(user.skins) >= 20:
+          return await query.answer("Максимальное кол-во предметов в инвентаре 20!")
+     
+     skin = user.get_skin(callback_data.name)
+     if skin:
+          return await query.answer("Такой предмет уже есть в инвентаре.")
+          
+     await state.set_data({"skin_name": callback_data.name, "mode": "create"})
+     await state.set_state(PercentState.percent)
+     await query.message.answer("Отправь число процента.")
+     await query.answer()
+     
      
      
 @callback_router.callback_query(SkinNameCallbackData.filter(F.mode == "skin_inv"))
 async def inventory_item(
      query: CallbackQuery,
-     callback_data: SkinNameCallbackData,
      user: UserDataclass,
-     service: CallbackService
+     callback_data: SkinNameCallbackData,
 ):
-     result = await service.inventory_item(
-          user=user,
-          item=callback_data.name
+     skin = user.get_skin(callback_data.name)
+     if skin is None:
+          return await query.answer("Предмет в инвентаре не найден.")
+     
+     await query.message.answer(
+          text=f"{callback_data.name} \nПроцент: {skin.percent}",
+          reply_markup=await inventory_item_button(
+               item=callback_data.name
+          )
      )
-     await query.answer(result)
+     await query.answer()
      
      
 @callback_router.callback_query(
@@ -97,7 +109,7 @@ async def inventory_left(
           )
      )
      
-     
+ 
 @callback_router.callback_query(
      InventoryPaginateCallbackData.filter(F.mode == "inventory_right")
 )
@@ -119,3 +131,40 @@ async def inventory_right(
                index=callback_data.index + 1
           )
      )
+     
+     
+@callback_router.callback_query(
+     SkinNameCallbackData.filter(F.mode == "del_item")
+)
+async def delete_item(
+     query: CallbackQuery,
+     callback_data: SkinNameCallbackData,
+     user: UserDataclass,
+     service: CallbackService
+):
+     result = await service.delete_item(
+          user=user,
+          item=callback_data.name
+     )
+     await query.answer(result)
+     
+     
+     
+@callback_router.callback_query(
+     SkinNameCallbackData.filter(F.mode == "up_percent")
+)
+async def update_percent(
+     query: CallbackQuery,
+     callback_data: SkinNameCallbackData,
+     user: UserDataclass,
+     state: FSMContext
+):
+     skin = user.get_skin(callback_data.name)
+     if skin is None:
+          return await query.answer("Предмет в инвентаре не найден.")
+     
+     await state.set_state(PercentState.percent)
+     await state.set_data({"skin_name": callback_data.name, "mode": "update"})
+     await query.message.answer("Отправь число процента.")
+     await query.answer()
+     

@@ -36,6 +36,7 @@ class Skin(Base):
      skin_id: Mapped[int] = mapped_column(BigInteger, primary_key=True, unique=True)
      name: Mapped[str] = mapped_column(nullable=False)
      current_price: Mapped[float] = mapped_column(nullable=False)
+     percent: Mapped[int] = mapped_column(nullable=False)
      owner: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.telegram_id"))
      
      user: Mapped["User"] = relationship(

@@ -43,3 +43,86 @@ LOG 2025-05-20 00:06:46,637 INFO ROUTER: callback_router; COMMAND: inventory_ite
 LOG 2025-05-20 00:06:49,094 INFO ROUTER: callback_router; COMMAND: inventory_left; USER: 2054556183
 LOG 2025-05-20 00:06:50,925 INFO ROUTER: callback_router; COMMAND: inventory_right; USER: 2054556183
 LOG 2025-05-20 00:06:52,781 INFO ROUTER: callback_router; COMMAND: inventory_left; USER: 2054556183
+LOG 2025-05-20 07:31:35,198 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-20 07:31:39,260 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-20 07:31:42,636 INFO ROUTER: callback_router; COMMAND: steam_item; USER: 2054556183
+LOG 2025-05-20 07:31:46,252 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 07:32:08,967 INFO ROUTER: callback_router; COMMAND: steam_item; USER: 2054556183
+LOG 2025-05-20 07:32:13,138 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 07:32:19,610 INFO ROUTER: callback_router; COMMAND: steam_item; USER: 2054556183
+LOG 2025-05-20 07:32:22,060 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:01:00,030 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 08:01:02,166 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 08:01:07,382 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:01:09,530 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:01:09,593 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 30, in __call__
+    data[key] = await __depends__[value.annotation]()
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\handlers\state\service.py", line 73, in get_state_service
+    return StateService(
+TypeError: StateService.__init__() missing 2 required positional arguments: 'http_client' and 'skin_repository'
+LOG 2025-05-20 08:01:42,592 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 08:01:46,889 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 08:01:49,231 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:01:51,453 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:01:55,754 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:01:59,699 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:02:01,957 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:02:02,105 ERROR error
+Traceback (most recent call last):
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\log.py", line 26, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\timeout.py", line 33, in __call__
+    return await handler(event, data)
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\middleware\depends.py", line 31, in __call__
+    return await handler(event, data)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\dispatcher\event\handler.py", line 43, in call
+    return await wrapped()
+  File "c:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\bot\handlers\state\router.py", line 80, in update_percent
+    await message.answer(result)
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\aiogram\types\message.py", line 2074, in answer
+    return SendMessage(
+  File "C:\Users\dyadh\OneDrive\Рабочий стол\simple-fastfy-bot\.venv\lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for SendMessage
+text
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+LOG 2025-05-20 08:03:37,798 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 08:03:40,346 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 08:03:42,941 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 08:03:45,261 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 08:03:48,771 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:03:55,609 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:04:09,641 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 08:04:11,183 INFO ROUTER: callback_router; COMMAND: inventory_right; USER: 2054556183
+LOG 2025-05-20 08:04:12,661 INFO ROUTER: callback_router; COMMAND: inventory_left; USER: 2054556183
+LOG 2025-05-20 08:04:18,415 INFO ROUTER: callback_router; COMMAND: inventory_right; USER: 2054556183
+LOG 2025-05-20 08:04:19,752 INFO ROUTER: callback_router; COMMAND: inventory_left; USER: 2054556183
+LOG 2025-05-20 08:04:26,760 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-20 08:04:33,332 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-20 08:04:36,398 INFO ROUTER: callback_router; COMMAND: steam_item; USER: 2054556183
+LOG 2025-05-20 08:04:40,763 INFO ROUTER: callback_router; COMMAND: steam_item; USER: 2054556183
+LOG 2025-05-20 08:04:45,319 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 08:04:47,190 INFO ROUTER: callback_router; COMMAND: inventory_right; USER: 2054556183
+LOG 2025-05-20 08:05:58,897 INFO ROUTER: command_router; COMMAND: search; USER: 2054556183
+LOG 2025-05-20 08:06:03,715 INFO ROUTER: state_router; COMMAND: search_item; USER: 2054556183
+LOG 2025-05-20 08:06:05,973 INFO ROUTER: callback_router; COMMAND: steam_item; USER: 2054556183
+LOG 2025-05-20 08:06:10,196 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:06:15,964 INFO ROUTER: command_router; COMMAND: inventory; USER: 2054556183
+LOG 2025-05-20 08:06:17,768 INFO ROUTER: callback_router; COMMAND: inventory_right; USER: 2054556183
+LOG 2025-05-20 08:06:22,341 INFO ROUTER: callback_router; COMMAND: inventory_left; USER: 2054556183
+LOG 2025-05-20 08:06:26,842 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 08:07:37,452 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 08:07:40,147 INFO ROUTER: callback_router; COMMAND: delete_item; USER: 2054556183
+LOG 2025-05-20 08:07:42,027 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:07:44,699 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:07:48,477 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183
+LOG 2025-05-20 08:07:50,723 INFO ROUTER: callback_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:07:53,047 INFO ROUTER: state_router; COMMAND: update_percent; USER: 2054556183
+LOG 2025-05-20 08:07:59,149 INFO ROUTER: callback_router; COMMAND: inventory_item; USER: 2054556183

@@ -7,3 +7,7 @@ class UpdateTimeState(StatesGroup):
      
 class SearchState(StatesGroup):
      item = State()
+     
+     
+class PercentState(StatesGroup):
+     percent = State()

@@ -89,6 +89,32 @@ async def inventory_button(
      )
      builder.adjust(2)
      return builder.as_markup()
+
+
+
+async def inventory_item_button(
+     item: str
+) -> InlineKeyboardMarkup:
+     builder = InlineKeyboardBuilder()
+     
+     builder.add(
+          InlineKeyboardButton(
+               text="Удалить предмет",
+               callback_data=SkinNameCallbackData(
+                    mode="del_item",
+                    name=item
+               ).pack()
+          ),
+          InlineKeyboardButton(
+               text="Изменить процент",
+               callback_data=SkinNameCallbackData(
+                    mode="up_percent",
+                    name=item
+               ).pack()
+          )
+     )
+     builder.adjust(1)
+     return builder.as_markup()
      
      
      

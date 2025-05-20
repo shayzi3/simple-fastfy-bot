@@ -36,6 +36,12 @@ class UserDataclass(FromOrm["UserDataclass"]):
                right += 6
           return skins_by_6
      
+     
+     def get_skin(self, name: str) -> BaseSkinDataclass | None:
+          for skin in self.skins:
+               if skin.name == name:
+                    return skin
+     
 
      
 
@@ -44,6 +50,7 @@ class SkinDataclass(FromOrm["SkinDataclass"]):
      skin_id: int
      name: str
      current_price: float
+     percent: int
      user: BaseUserDataclass
      
      
