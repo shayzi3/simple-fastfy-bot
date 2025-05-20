@@ -27,7 +27,7 @@ async def lifespan(_: FastAPI):
           dp.message.middleware(middleware())
           dp.callback_query.middleware(middleware())
           
-     async with aiofiles.open("/data/worker.json") as file:
+     async with aiofiles.open("/data/worker.json", "w") as file:
           await file.read(json.dumps([]))
           
      monitoring = MonitoringWorker(
