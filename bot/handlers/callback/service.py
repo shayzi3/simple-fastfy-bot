@@ -52,13 +52,9 @@ class CallbackService:
           user: UserDataclass,
           item: str
      ) -> None:
-          result = await self.skin_repository.delete(
+          await self.skin_repository.delete(
                where={"owner": user.telegram_id, "name": item}
-          )
-          if result is False:
-               return "Предмет в инвентаре не найден."
-          return "Предмет успешно удалён."
-          
+          )          
      
      
      

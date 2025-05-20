@@ -60,17 +60,11 @@ class Repository(AbstractRepository, Generic[DATACLASS]):
                sttm = (
                     update(cls.model).
                     filter_by(**where).
-                    values(**values).
-                    returning(cls.model.returning_value())
+                    values(**values)
                )
                result = await session.execute(sttm)
                result = result.fetchone()
-               
-               if not result:
-                    return False
-               
                await session.commit()
-               return True
      
      
      @classmethod
@@ -83,14 +77,8 @@ class Repository(AbstractRepository, Generic[DATACLASS]):
                
                sttm = (
                     delete(cls.model).
-                    filter_by(**where).
-                    returning(cls.model.returning_value())
+                    filter_by(**where)
                )
                result = await session.execute(sttm)
                result = result.fetchone()
-               
-               if not result:
-                    return False
-               
                await session.commit()
-               return True

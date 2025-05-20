@@ -143,11 +143,14 @@ async def delete_item(
      user: UserDataclass,
      service: CallbackService
 ):
-     result = await service.delete_item(
+     if user.get_skin(callback_data.name) is None:
+          return await query.answer("Предмет в инвентаре не найден.")
+     
+     await service.delete_item(
           user=user,
           item=callback_data.name
      )
-     await query.answer(result)
+     await query.answer("Предмет успешно удалён.")
      await query.message.delete()
      
      
