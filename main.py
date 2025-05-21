@@ -44,7 +44,8 @@ async def lifespan(_: FastAPI):
                BotCommand(command="/settings", description="Пользовательские настройки"),
                BotCommand(command="/search", description="Поиск предметов"),
                BotCommand(command="/inventory", description="Инвентарь"),
-               BotCommand(command="/clear", description="Пропуск события")
+               BotCommand(command="/skip", description="Пропуск события"),
+               BotCommand(command="/help", description="Помощь")
           ]
      )
      

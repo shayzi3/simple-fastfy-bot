@@ -86,6 +86,7 @@ class MonitoringWorker:
                min_ = min([skin.current_price, new_price])
                percent_difference = ((max_ - min_) * 100) // max_
                
+               
                if percent_difference >= skin.percent:
                     logging_.worker.info(
                          f"Detect difference percent for {skin.name} at user {telegram_id}"
@@ -97,12 +98,20 @@ class MonitoringWorker:
                               "_current_price": new_price
                          }
                     )
+                    color = "🟩"
+                    if percent_difference >= skin.percent*1.5:
+                         color = "🟨"
+                    
+                    if percent_difference >= skin.percent*2:
+                         color = "🟥"
+                    
                     notify.append(
                          {
                               "name": skin.name,
                               "last_price": skin.current_price,
                               "update_price": new_price,
-                              "difference": percent_difference
+                              "difference": percent_difference,
+                              "color": color
                          }
                     )
                await asyncio.sleep(1)
@@ -126,5 +135,8 @@ class MonitoringWorker:
           for skin in notify_data:
                await bot.send_message(
                     chat_id=telegram_id,
-                    text=f"{time} \n{skin.get('name')} \n{skin.get('last_price')} -> {skin.get('update_price')} {skin.get('difference')}%"
+                    text=(
+                         f"{time} \n{skin.get('name')}" 
+                         f"\n{skin.get('last_price')} -> {skin.get('update_price')}"
+                         f"{skin.get('difference')}% {skin.get("color")}")
                )
