@@ -18,7 +18,7 @@ class JsonStorage:
      
      async def run(self) -> None:
           try:
-               self._get_data()
+               await self._get_data()
                return None
           except:
                async with aiofiles.open("/data/worker.json", "w") as file:
