@@ -32,7 +32,7 @@ class StateService:
           await self.json_storage.update(
                search_string=f"{user.telegram_id}",
                new_value=(
-                    f"{user.update_time.to_string};"
+                    f"{new_time};"
                     f"{(time_now() + Time.from_str(new_time).to_timedelta()).isoformat()};"
                     f"{user.telegram_id}"
                )
