@@ -14,6 +14,15 @@ class JsonStorage:
                read = await file.read()
                data: list[str] = json.loads(read)
           return data
+     
+     
+     async def run(self) -> None:
+          try:
+               self._get_data()
+               return None
+          except:
+               async with aiofiles.open("/data/worker.json", "w") as file:
+                    await file.write(json.dumps([]))
           
      
      async def get(self, search_string: str) -> str | None:

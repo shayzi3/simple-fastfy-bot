@@ -137,8 +137,8 @@ class MonitoringWorker:
                await bot.send_message(
                     chat_id=telegram_id,
                     text=(
-                         f"{skin.get('color')} {time} \n*{skin.get('name')}*" 
+                         f"{skin.get('color')} {time}\n<b>{skin.get('name')}</b>" 
                          f"\n{skin.get('last_price')} -> {skin.get('update_price')}"
-                         f"*{skin.get('difference')}%*"),
-                    parse_mode=ParseMode.MARKDOWN_V2
+                         f" <b>{skin.get('difference')}%</b>"),
+                    parse_mode=ParseMode.HTML
                )

@@ -27,13 +27,13 @@ async def lifespan(_: FastAPI):
           dp.message.middleware(middleware())
           dp.callback_query.middleware(middleware())
           
-     async with aiofiles.open("/data/worker.json", "w") as file:
-          await file.write(json.dumps([]))
+     json_storage = JsonStorage()
+     await json_storage.run()
           
      monitoring = MonitoringWorker(
           user_repository=UserRepository,
           skin_repository=SkinRepository,
-          json_storage=JsonStorage(),
+          json_storage=json_storage,
           http_client=SteamHttpClient()
      )
      asyncio.create_task(monitoring.run())
