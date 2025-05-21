@@ -16,7 +16,7 @@ class SteamHttpClient:
      @staticmethod
      async def __fake_user_agent() -> str:
           async with aiofiles.open("bot/http/steam/user_agents.txt", "r") as file:
-               agents: list[str] = json.loads(file.read())
+               agents: list[str] = json.loads(await file.read())
                return random.choice(agents)
           
           
