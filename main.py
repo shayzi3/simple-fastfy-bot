@@ -1,7 +1,5 @@
-import json
 import uvicorn
 import asyncio
-import aiofiles
 
 from aiogram.types.bot_command import BotCommand
 from fastapi import FastAPI

@@ -3,8 +3,8 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.schemas.base import BaseSkinDataclass
 from bot.utils.filter.callback import (
-     SkinNameCallbackData,
-     InventoryPaginateCallbackData
+     InventoryPaginateCallbackData,
+     SkinCallbackData
 )
 
 
@@ -39,11 +39,24 @@ async def search_item_button(
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
-     for name in items:
+     row = 0
+     index = 0
+     for num, name in enumerate(items):
+          if (num % 2 == 0) and (num != 0):
+               index = 0
+               row += 1
+               
+          if (num % 2 != 0) and (num != 0):
+               index += 1
+          
           builder.add(
                InlineKeyboardButton(
                     text=name,
-                    callback_data=SkinNameCallbackData(name=name, mode="skin_steam").pack()
+                    callback_data=SkinCallbackData(
+                         mode="steam_skin",
+                         row=row,
+                         index=index
+                    ).pack()
                )
           )
      builder.adjust(2)
@@ -61,11 +74,24 @@ async def inventory_button(
      except IndexError:
           skins_by_index = skins[0]
           
-     for skin in skins_by_index:
+     row = 0
+     index_ = 0
+     for num, skin in enumerate(skins_by_index):
+          if (num % 2 == 0) and (num != 0):
+               index_ = 0
+               row += 1
+               
+          if (num % 2 != 0) and (num != 0):
+               index_ += 1
+               
           builder.add(
                InlineKeyboardButton(
                     text=skin.name,
-                    callback_data=SkinNameCallbackData(name=skin.name, mode="skin_inv").pack()
+                    callback_data=SkinCallbackData(
+                         mode="inventory_item",
+                         row=row,
+                         index=index_
+                    ).pack()
                )
           )
           
@@ -92,25 +118,17 @@ async def inventory_button(
 
 
 
-async def inventory_item_button(
-     item: str
-) -> InlineKeyboardMarkup:
+async def inventory_item_button() -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
      builder.add(
           InlineKeyboardButton(
                text="Удалить предмет",
-               callback_data=SkinNameCallbackData(
-                    mode="del_item",
-                    name=item
-               ).pack()
+               callback_data="delete_item"
           ),
           InlineKeyboardButton(
                text="Изменить процент",
-               callback_data=SkinNameCallbackData(
-                    mode="up_percent",
-                    name=item
-               ).pack()
+               callback_data="create_skin_or_update_percent",
           ),
           InlineKeyboardButton(
                text="Убрать сообщение",

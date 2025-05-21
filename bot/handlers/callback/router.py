@@ -3,8 +3,8 @@ from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from bot.utils.filter.callback import (
-     SkinNameCallbackData, 
-     InventoryPaginateCallbackData
+     InventoryPaginateCallbackData,
+     SkinCallbackData
 )
 from bot.utils.filter.state import UpdateTimeState, PercentState
 from bot.utils.inline import settings_button, inventory_button, inventory_item_button
@@ -54,41 +54,43 @@ async def settings_update_time(
      await query.answer()
      
     
-@callback_router.callback_query(SkinNameCallbackData.filter(F.mode == "skin_steam"))
+@callback_router.callback_query(SkinCallbackData.filter(F.mode == "steam_skin"))
 async def steam_item(
      query: CallbackQuery,
-     callback_data: SkinNameCallbackData,
      state: FSMContext,
+     callback_data: SkinCallbackData,
      user: UserDataclass
 ):
+     keyboard = query.message.reply_markup.inline_keyboard
+     name = keyboard[callback_data.row][callback_data.index].text
      if len(user.skins) >= 20:
           return await query.answer("Максимальное кол-во предметов в инвентаре 20!")
      
-     if user.get_skin(callback_data.name) is not None:
+     if user.get_skin(name) is not None:
           return await query.answer("Такой предмет уже есть в инвентаре.")
           
-     await state.set_data({"skin_name": callback_data.name, "mode": "create"})
+     await state.set_data({"skin_name": name, "mode": "create"})
      await state.set_state(PercentState.percent)
      await query.message.answer("Отправь процент")
      await query.answer()
      
      
      
-@callback_router.callback_query(SkinNameCallbackData.filter(F.mode == "skin_inv"))
+@callback_router.callback_query(SkinCallbackData.filter(F.mode == "inventory_item"))
 async def inventory_item(
      query: CallbackQuery,
      user: UserDataclass,
-     callback_data: SkinNameCallbackData,
+     callback_data: SkinCallbackData
 ):
-     skin = user.get_skin(callback_data.name)
+     keyboard = query.message.reply_markup.inline_keyboard
+     name = keyboard[callback_data.row][callback_data.index].text
+     skin = user.get_skin(name)
      if skin is None:
           return await query.answer("Предмет в инвентаре не найден.")
      
      await query.message.answer(
-          text=f"{callback_data.name} \nПроцент: {skin.percent}",
-          reply_markup=await inventory_item_button(
-               item=callback_data.name
-          )
+          text=f"{name} \nПроцент: {skin.percent}",
+          reply_markup=await inventory_item_button()
      )
      await query.answer()
      
@@ -139,41 +141,37 @@ async def inventory_right(
      )
      
      
-@callback_router.callback_query(
-     SkinNameCallbackData.filter(F.mode == "del_item")
-)
+@callback_router.callback_query(F.data == "delete_item")
 async def delete_item(
      query: CallbackQuery,
-     callback_data: SkinNameCallbackData,
      user: UserDataclass,
      service: CallbackService
 ):
-     if user.get_skin(callback_data.name) is None:
+     name = query.message.text.split("\n")[0].strip()
+     if user.get_skin(name) is None:
           return await query.answer("Предмет в инвентаре не найден")
      
      await service.delete_item(
           user=user,
-          item=callback_data.name
+          item=name
      )
      await query.answer("Предмет успешно удалён")
      await query.message.delete()
      
      
      
-@callback_router.callback_query(
-     SkinNameCallbackData.filter(F.mode == "up_percent")
-)
+@callback_router.callback_query(F.data == "create_skin_or_update_percent")
 async def update_percent(
      query: CallbackQuery,
-     callback_data: SkinNameCallbackData,
      user: UserDataclass,
      state: FSMContext
 ):
-     if user.get_skin(callback_data.name) is None:
+     name = query.message.text.split("\n")[0].strip()
+     if user.get_skin(name) is None:
           return await query.answer("Предмет в инвентаре не найден")
      
      await state.set_state(PercentState.percent)
-     await state.set_data({"skin_name": callback_data.name, "mode": "update"})
+     await state.set_data({"skin_name": name, "mode": "update"})
      await query.message.answer("Отправь процент")
      await query.answer()
      

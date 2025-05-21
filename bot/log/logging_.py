@@ -57,7 +57,7 @@ class Logger:
      @property
      def http_webhook(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/http/worker/"
+               path="/data/logs/http/webhook/"
           )
           
      @property

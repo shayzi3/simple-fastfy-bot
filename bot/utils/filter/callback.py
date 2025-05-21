@@ -1,11 +1,11 @@
 from aiogram.filters.callback_data import CallbackData
 
 
-
-class SkinNameCallbackData(CallbackData, prefix="?"):
+class SkinCallbackData(CallbackData, prefix="+"):
      mode: str
-     name: str
-     
+     row: int
+     index: int
+
      
 class InventoryPaginateCallbackData(CallbackData, prefix="?"):
      mode: str
