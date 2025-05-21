@@ -2,6 +2,7 @@ import asyncio
 
 from typing import Any
 from datetime import datetime
+from aiogram.enums.parse_mode import ParseMode
 
 from bot.db.repository import UserRepository, SkinRepository
 from bot.http.steam import SteamHttpClient
@@ -136,7 +137,8 @@ class MonitoringWorker:
                await bot.send_message(
                     chat_id=telegram_id,
                     text=(
-                         f"{time} \n{skin.get('name')}" 
+                         f"{skin.get('color')} {time} \n*{skin.get('name')}*" 
                          f"\n{skin.get('last_price')} -> {skin.get('update_price')}"
-                         f"{skin.get('difference')}% {skin.get("color")}")
+                         f"*{skin.get('difference')}%*"),
+                    parse_mode=ParseMode.MARKDOWN_V2
                )
