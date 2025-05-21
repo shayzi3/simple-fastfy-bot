@@ -1,6 +1,8 @@
 import httpx
+import aiofiles
+import json
+import random
 
-from fake_useragent import UserAgent
 
 from bot.log.logging_ import logging_
 from bot.exception import BotException
@@ -10,10 +12,17 @@ from bot.exception import BotException
 class SteamHttpClient:
      def __init__(self):
           self.base_url = "https://steamcommunity.com"
-          self.headers = {
-               "user-agent": UserAgent().chrome
-          }
           
+     @staticmethod
+     async def __fake_user_agent() -> str:
+          async with aiofiles.open("bot/http/steam/user_agents.txt", "r") as file:
+               agents: list[str] = json.loads(file.read())
+               return random.choice(agents)
+          
+          
+     async def _get_headers(self) -> dict[str, str]:
+          return {"User-Agent": await self.__fake_user_agent()}
+     
           
      async def search_item(
           self,
@@ -22,7 +31,8 @@ class SteamHttpClient:
           url = (
                self.base_url + f"/market/search?l=russian&appid=730&q={item}"
           )
-          async with httpx.AsyncClient(headers=self.headers) as session:
+          headers = await self._get_headers()
+          async with httpx.AsyncClient(headers=headers) as session:
                response = await session.get(url=url)
                
                logging_.http_steam.info(f"GET REQUEST STEAM FOR SEARCH ITEM: {item}")
@@ -45,18 +55,22 @@ class SteamHttpClient:
           url = (
                self.base_url + f"/market/priceoverview/?currency=5&appid=730&market_hash_name={item}"
           )
-          async with httpx.AsyncClient(headers=self.headers) as session:
-               response = await session.get(url=url)
-               
+          headers = await self._get_headers()
+          async with httpx.AsyncClient(headers=headers) as session:
                logging_.http_steam.info(f"GET REQUEST STEAM FOR SEARCH PRICE ITEM: {item}")
-               
+               response = await session.get(url=url)
+                    
                if response.status_code != 200:
-                    await BotException.send_notify(msg=response.text)
+                    await BotException.send_notify(msg=f"{response.text} STATUS: {response.status_code}")
                     logging_.http_steam.error(f"ERROR REQUEST TO STEAM FOR SEARCH PRICE ITEM: {item}")
                     return None
-               
+                    
                # 569,14 руб -> 569.14
                price = response.json().get("lowest_price")
+               if price is None:
+                    return None
+                    
                price = price.replace(",", ".").split()[0]
                return round(float(price), 2)
+          
                

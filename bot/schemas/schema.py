@@ -31,7 +31,11 @@ class UserDataclass(FromOrm["UserDataclass"]):
           skins_by_6 = []
           left, right = 0, 6
           for _ in range((len(self.skins) // 6) + 1):
-               skins_by_6.append(self.skins[left:right])
+               skins = self.skins[left:right]
+               
+               if skins:
+                    skins_by_6.append(skins)
+                    
                left += 6
                right += 6
           return skins_by_6
