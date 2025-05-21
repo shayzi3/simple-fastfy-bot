@@ -68,6 +68,7 @@ class SteamHttpClient:
                # 569,14 руб -> 569.14
                price = response.json().get("lowest_price")
                if price is None:
+                    logging_.http_steam.info(f"NOT FOUND PRICE: {url}")
                     return None
                     
                price = price.replace(",", ".").split()[0]
