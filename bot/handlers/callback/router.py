@@ -17,6 +17,11 @@ callback_router = Router(name="callback_router")
 
 
 
+@callback_router.callback_query(F.data == "delete_message")
+async def delete_message(query: CallbackQuery):
+     await query.message.delete()
+     
+
 @callback_router.callback_query(F.data == "settings_notify")
 async def settings_notify(
      query: CallbackQuery,
@@ -41,8 +46,9 @@ async def settings_update_time(
      await state.set_state(UpdateTimeState.time)
      await query.message.answer(
           (
-               "Отправь дату в виде: day-hour-minute" +
-               "\nПример: 0-0-25 Обновление будет происходить каждые 25 минут"
+               "Отправь дату в виде: day-hour-minute"
+               "\nПример: 0-0-25." 
+               "\nОбновление будет происходить каждые 25 минут"
           )
      )
      await query.answer()
@@ -58,13 +64,12 @@ async def steam_item(
      if len(user.skins) >= 20:
           return await query.answer("Максимальное кол-во предметов в инвентаре 20!")
      
-     skin = user.get_skin(callback_data.name)
-     if skin:
+     if user.get_skin(callback_data.name) is not None:
           return await query.answer("Такой предмет уже есть в инвентаре.")
           
      await state.set_data({"skin_name": callback_data.name, "mode": "create"})
      await state.set_state(PercentState.percent)
-     await query.message.answer("Отправь число процента.")
+     await query.message.answer("Отправь процент")
      await query.answer()
      
      
@@ -97,10 +102,10 @@ async def inventory_left(
      user: UserDataclass
 ):
      if not user.skins:
-          return await query.answer("Ваш инвентарь пуст.")
+          return await query.answer("Ваш инвентарь пуст")
      
      if callback_data.index <= 0:
-          return await query.answer("Дальше листать не получится.")
+          return await query.answer("Дальше листать не получится")
      
      await query.message.edit_reply_markup(
           inline_message_id=query.inline_message_id,
@@ -120,10 +125,10 @@ async def inventory_right(
      user: UserDataclass
 ):
      if not user.skins:
-          return await query.answer("Ваш инвентарь пуст.")
+          return await query.answer("Ваш инвентарь пуст")
      
      if callback_data.index >= callback_data.max_len:
-          return await query.answer("Дальше листать не получится.")
+          return await query.answer("Дальше листать не получится")
      
      await query.message.edit_reply_markup(
           inline_message_id=query.inline_message_id,
@@ -144,13 +149,13 @@ async def delete_item(
      service: CallbackService
 ):
      if user.get_skin(callback_data.name) is None:
-          return await query.answer("Предмет в инвентаре не найден.")
+          return await query.answer("Предмет в инвентаре не найден")
      
      await service.delete_item(
           user=user,
           item=callback_data.name
      )
-     await query.answer("Предмет успешно удалён.")
+     await query.answer("Предмет успешно удалён")
      await query.message.delete()
      
      
@@ -164,12 +169,11 @@ async def update_percent(
      user: UserDataclass,
      state: FSMContext
 ):
-     skin = user.get_skin(callback_data.name)
-     if skin is None:
-          return await query.answer("Предмет в инвентаре не найден.")
+     if user.get_skin(callback_data.name) is None:
+          return await query.answer("Предмет в инвентаре не найден")
      
      await state.set_state(PercentState.percent)
      await state.set_data({"skin_name": callback_data.name, "mode": "update"})
-     await query.message.answer("Отправь число процента.")
+     await query.message.answer("Отправь процент")
      await query.answer()
      

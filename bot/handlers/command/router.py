@@ -20,7 +20,7 @@ async def start(
 ):
      if user is None:
           await service.start(telegram_id=message.from_user.id)
-     await message.answer("Я - бот, который поможет тебе отслеживать цены предметов CS2.")
+     await message.answer("Я - бот, который поможет тебе отслеживать цены предметов CS2. Пропиши команду /help")
      
      
 
@@ -47,8 +47,8 @@ async def clear(
      get_state = await state.get_state()
      if get_state is not None:
           await state.clear()
-          return await message.answer("Событие пропущено.")
-     return await message.answer("Событий не найдено.")
+          return await message.answer("Событие пропущено")
+     return await message.answer("Событий не найдено")
 
 
 
@@ -68,7 +68,7 @@ async def inventory(
      user: UserDataclass,
 ):
      if not user.skins:
-          return await message.answer("Ваш инвентарь пуст.")
+          return await message.answer("Ваш инвентарь пуст")
      
      await message.answer(
           text="Инвентарь",

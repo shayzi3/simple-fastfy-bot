@@ -38,7 +38,6 @@ async def search_item(
      service: StateService
 ):
      result = await service.search_item(item=message.text)
-     await state.clear()
      if isinstance(result, str):
           return await message.answer(result)
      
@@ -46,6 +45,7 @@ async def search_item(
           text=f"Предметы по запросу: {message.text}",
           reply_markup=await search_item_button(items=result)
      )
+     await state.clear()
      
    
      
@@ -77,6 +77,6 @@ async def update_create_percent(
                item=data.get("skin_name"),
                percent=int(message.text)
           )
-          await message.answer("Процент обновлён.")
+          await message.answer("Процент обновлён")
      await state.clear()
           

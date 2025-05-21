@@ -1,8 +1,7 @@
 
-from datetime import datetime
 from bot.core.gen import generate_skin_id
 from bot.core.timezone import time_now
-from bot.schemas import UserDataclass
+from bot.schemas import UserDataclass, Time
 from bot.db.repository import UserRepository, SkinRepository
 from bot.http.steam import SteamParseClient, SteamHttpClient
 from bot.db.json_storage import JsonStorage
@@ -34,7 +33,7 @@ class StateService:
                search_string=f"{user.telegram_id}",
                new_value=(
                     f"{user.update_time.to_string};"
-                    f"{(time_now() + user.update_time.to_timedelta()).isoformat()};"
+                    f"{(time_now() + Time.from_str(new_time).to_timedelta()).isoformat()};"
                     f"{user.telegram_id}"
                )
           )

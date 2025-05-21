@@ -111,6 +111,10 @@ async def inventory_item_button(
                     mode="up_percent",
                     name=item
                ).pack()
+          ),
+          InlineKeyboardButton(
+               text="Убрать сообщение",
+               callback_data="delete_message"
           )
      )
      builder.adjust(1)

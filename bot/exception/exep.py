@@ -1,7 +1,6 @@
 from .abstract_eception import AbstractBotExeption
 from bot.core.bot import bot
 from bot.core.config import base_config
-from bot.log.logging_ import logging_
 
 
 
