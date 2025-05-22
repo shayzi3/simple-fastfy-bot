@@ -33,15 +33,18 @@ class SteamHttpClient:
           )
           headers = await self._get_headers()
           async with httpx.AsyncClient(headers=headers) as session:
-               response = await session.get(url=url)
-               
                logging_.http_steam.info(f"GET REQUEST STEAM FOR SEARCH ITEM: {item}")
+               for _ in range(3):
+                    try:
+                         response = await session.get(url=url)
+                         break
+                    except httpx.ConnectTimeout:
+                         continue
                
                if response.status_code != 200:
                     await BotException.send_notify(msg=response.text)
                     logging_.http_steam.error(f"ERROR REQUEST TO STEAM FOR SEARCH ITEM: {item}")
                     return None
-               
                return response.text
           
           
@@ -58,7 +61,12 @@ class SteamHttpClient:
           headers = await self._get_headers()
           async with httpx.AsyncClient(headers=headers) as session:
                logging_.http_steam.info(f"GET REQUEST STEAM FOR SEARCH PRICE ITEM: {item}")
-               response = await session.get(url=url)
+               for _ in range(3):
+                    try:
+                         response = await session.get(url=url)
+                         break
+                    except httpx.ConnectTimeout:
+                         continue
                     
                if response.status_code != 200:
                     await BotException.send_notify(msg=f"{response.text} STATUS: {response.status_code}")
