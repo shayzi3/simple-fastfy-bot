@@ -15,7 +15,6 @@ from bot.core.bot import bot
 
 
 
-
 class MonitoringWorker:
      def __init__(
           self, 
@@ -96,7 +95,7 @@ class MonitoringWorker:
                          {
                               "_owner": telegram_id,
                               "_name": skin.name,
-                              "_price_chart": skin.price_chart + f"{new_price},",
+                              "_price_chart": skin.price_chart_str + f",{new_price}",
                               "_current_price": new_price
                          }
                     )

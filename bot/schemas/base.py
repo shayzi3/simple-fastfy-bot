@@ -98,5 +98,10 @@ class BaseSkinDataclass(FromOrm["BaseSkinDataclass"]):
      def __post_init__(self) -> None:
           if isinstance(self.price_chart, str):
                self.price_chart = [float(num) for num in self.price_chart.split(",") if num]
+               
+     
+     @property
+     def price_chart_str(self) -> str:
+          return ",".join(str(num) for num in self.price_chart)
      
      

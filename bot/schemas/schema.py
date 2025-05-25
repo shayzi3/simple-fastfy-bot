@@ -76,3 +76,8 @@ class SkinDataclass(FromOrm["SkinDataclass"]):
      def where_name(self) -> dict[str, int | str]:
           return {"owner": self.user.telegram_id, "name": self.name}
      
+     
+     @property
+     def price_chart_str(self) -> str:
+          return ",".join(str(num) for num in self.price_chart)
+     
