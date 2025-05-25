@@ -73,5 +73,11 @@ class Logger:
                path="/data/logs/json/"
           )
           
+     @property
+     def chart(self) -> BaseLogger:
+          return BaseLogger(
+               path="/data/logs/chart/"
+          )
+          
           
 logging_ = Logger()

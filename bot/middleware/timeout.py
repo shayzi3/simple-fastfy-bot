@@ -58,8 +58,8 @@ class TimeoutMiddleware(BaseMiddleware):
                msg="4с"
           ),
           "chart_item": TimeOut(
-               time=timedelta(minutes=1),
-               msg="1м"
+               time=timedelta(seconds=15),
+               msg="15с"
           )
      }
      command_users = {}

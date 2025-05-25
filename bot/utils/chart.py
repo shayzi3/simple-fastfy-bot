@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+from bot.log.logging_ import logging_
+
 
 
 class Chart:
@@ -13,6 +15,8 @@ class Chart:
      ) -> str:
           path = f"/data/charts/{filename}"
           # x = [i for i in range(1, len(prices) + 1)]
+          
+          logging_.chart.info(f"GENERATE CHART {filename} FOR ITEM {name}")
           
           if len(prices) == 1:
                prices.append(prices[0])
