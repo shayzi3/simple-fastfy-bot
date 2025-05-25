@@ -22,4 +22,5 @@ class Chart:
                plt.ylabel("Цена")
                plt.title(name)
                plt.savefig(path)
+               plt.close()
           return path
