@@ -1,4 +1,4 @@
 test.py
 venv
 /data
-.env
+fastfy-data/

@@ -11,7 +11,7 @@ class Chart:
           filename: str,
           name: str
      ) -> str:
-          path = f"data/charts/{filename}"
+          path = f"/data/charts/{filename}"
           # x = [i for i in range(1, len(prices) + 1)]
           
           if len(prices) == 1:
