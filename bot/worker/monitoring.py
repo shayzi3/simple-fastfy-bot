@@ -61,7 +61,7 @@ class MonitoringWorker:
                     if parallel:
                          logging_.worker.info("Start gather for users")
                          await asyncio.gather(*parallel)
-               await asyncio.sleep(20)
+               await asyncio.sleep(180)
           
           
      async def __price_updater(
