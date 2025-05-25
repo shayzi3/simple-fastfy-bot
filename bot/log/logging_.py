@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 class MoscowTimezone(logging.Formatter):
+     
      def converter(self, timestamp):
           return datetime.fromtimestamp(timestamp, timezone)
 
@@ -39,37 +40,37 @@ class Logger:
      @property
      def bot(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/bot/"
+               path="data/logs/bot/"
           )
           
      @property
      def db(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/db/"
+               path="data/logs/db/"
           )
      
      @property
      def worker(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/worker/"
+               path="data/logs/worker/"
           )
           
      @property
      def http_webhook(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/http/webhook/"
+               path="data/logs/http/webhook/"
           )
           
      @property
      def http_steam(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/http/steam/"
+               path="data/logs/http/steam/"
           )
           
      @property
      def json(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/json/"
+               path="data/logs/json/"
           )
           
           

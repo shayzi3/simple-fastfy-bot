@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, BigInteger, func
+from sqlalchemy import ForeignKey, BigInteger, func, JSON
 
 from bot.schemas import UserDataclass, SkinDataclass
 from .base import Base
@@ -37,6 +37,7 @@ class Skin(Base):
      name: Mapped[str] = mapped_column(nullable=False)
      current_price: Mapped[float] = mapped_column(nullable=False)
      percent: Mapped[int] = mapped_column(nullable=False)
+     price_chart: Mapped[str] = mapped_column(nullable=True)
      owner: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.telegram_id"))
      
      user: Mapped["User"] = relationship(

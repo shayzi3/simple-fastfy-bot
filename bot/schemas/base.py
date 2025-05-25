@@ -13,6 +13,14 @@ class FromOrm(Generic[DATACLASS]):
           return cls(
                **{key: value for key, value in obj.items() if key in cls.__dataclass_fields__}
           )
+     
+          
+@dataclass 
+class TimeOut:
+     time: timedelta
+     msg: str
+     
+
 
 @dataclass
 class Time:
@@ -84,5 +92,11 @@ class BaseSkinDataclass(FromOrm["BaseSkinDataclass"]):
      current_price: float
      percent: int
      owner: int
+     price_chart: list[int]
+     
+     
+     def __post_init__(self) -> None:
+          if isinstance(self.price_chart, str):
+               self.price_chart = [float(num) for num in self.price_chart.split(",") if num]
      
      

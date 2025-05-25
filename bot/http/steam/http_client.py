@@ -52,9 +52,7 @@ class SteamHttpClient:
           self,
           item: str
      ) -> float:
-          if "&" in item:
-               item = item.replace("&", "%26")
-               
+          item = item.replace("&", "%26")
           url = (
                self.base_url + f"/market/priceoverview/?currency=5&appid=730&market_hash_name={item}"
           )

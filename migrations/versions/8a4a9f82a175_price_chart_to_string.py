@@ -1,8 +1,8 @@
-"""fix skins.owner
+"""price_chart to string
 
-Revision ID: 1e6939a657b0
+Revision ID: 8a4a9f82a175
 Revises: 
-Create Date: 2025-05-18 19:24:21.137931
+Create Date: 2025-05-24 21:22:09.833629
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '1e6939a657b0'
+revision: str = '8a4a9f82a175'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -32,8 +32,9 @@ def upgrade() -> None:
     op.create_table('skins',
     sa.Column('skin_id', sa.BigInteger(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
-    sa.Column('image', sa.String(), nullable=False),
     sa.Column('current_price', sa.Float(), nullable=False),
+    sa.Column('percent', sa.Integer(), nullable=False),
+    sa.Column('price_chart', sa.String(), nullable=True),
     sa.Column('owner', sa.BigInteger(), nullable=False),
     sa.ForeignKeyConstraint(['owner'], ['users.telegram_id'], ),
     sa.PrimaryKeyConstraint('skin_id'),

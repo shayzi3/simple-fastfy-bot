@@ -25,7 +25,10 @@ class SkinRepository(Repository[SkinDataclass]):
                               Skin.name == bindparam("_name")
                          )
                     ).
-                    values(current_price=bindparam("_current_price"))
+                    values(
+                         current_price=bindparam("_current_price"),
+                         price_chart=bindparam("_price_chart")
+                    )
                )
                await connection.execute(sttm, data)
                logging_.db.info(f"UPDATE PRICE AT SKINS: TELEGRAM_ID: {data[0].get('_owner')}")

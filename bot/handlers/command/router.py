@@ -2,9 +2,10 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
+from aiogram.enums.parse_mode import ParseMode
 
 from bot.utils.filter.state import SearchState
-from bot.utils.inline import settings_button, inventory_button
+from bot.utils.inline import settings_button, inventory_button_or_chart
 from bot.schemas import UserDataclass
 from .service import CommandService
 
@@ -13,13 +14,7 @@ command_router = Router(name="command_router")
 
 
 @command_router.message(CommandStart())
-async def start(
-     message: Message,
-     user: UserDataclass,
-     service: CommandService
-):
-     if user is None:
-          await service.start(telegram_id=message.from_user.id)
+async def start(message: Message,):
      await message.answer("Я - бот, который поможет тебе отслеживать цены предметов CS2. Пропиши команду /help")
      
      
@@ -72,28 +67,43 @@ async def inventory(
      
      await message.answer(
           text="Инвентарь",
-          reply_markup=await inventory_button(
+          reply_markup=await inventory_button_or_chart(
                skins=user.sorted_skin_by_6(),
-               index=0
+               index=0,
+               mode="inventory_item"
           )
      )
      
      
 @command_router.message(Command("help"))
 async def help(message: Message):
+     bot_description = "🤖 Бот для отслеживания цен на скины"
+
+     functions = [
+          "🔍 <b>Добавление предмета в инвентарь</b>\nИспользуйте команду /search, чтобы добавить предмет для отслеживания.",
+          "📊 <b>Установка процента отклонения цены</b>\nУкажите процент для каждого предмета. Если цена изменится на указанный процент в большую или меньшую сторону, вы получите уведомление.",
+          "🔔 <b>Включение уведомлений</b>\nПереключите статус уведомлений на `Enabled`, чтобы получать оповещения об изменении стоимости.",
+          "⏰ <b>Изменение времени обновления</b>\nУстановите интервал обновления в формате days-hours-minutes. Например, 0-0-35 означает, что бот будет проверять стоимость предметов каждые 35 минут."
+     ]
+
+     msg = f"{bot_description}\n\n" + "\n\n".join(functions)
+     await message.answer(text=msg, parse_mode=ParseMode.HTML)
+     
+     
+     
+@command_router.message(Command("chart"))
+async def chart(
+     message: Message,
+     user: UserDataclass
+):
+     if not user.skins:
+          return await message.answer("Ваш инвентарь пуст")
+     
      await message.answer(
-          text=(
-               "🤖 Бот умеет отслеживать цены на скины"
-               "и сообщать об изменении стоимости предмета."
-               "\nЧтобы начать отслеживать нужно добавить предмет"
-               "в инвентарь с помощью команды /search."
-               "Также необходимо указать процент для каждого предмета,"
-               "если цена будет отклонена на указанный процент, в большую"
-               "или меньную сторону, то поступит уведомление об"
-               "изменении стоимости. Чтобы получать оповещения, нужно"
-               "переключисть статус уведомления на `Enabled`. Ещё одной из"
-               "функций является измение времени обновления предметов. days-hours-minutes"
-               "Пример: 0-0-35, тоесть каждые 35 минут бот будет проверять"
-               "стоимость предметов."
+          text="Инвентарь",
+          reply_markup=await inventory_button_or_chart(
+               skins=user.sorted_skin_by_6(),
+               index=0,
+               mode="chart_item"
           )
      )

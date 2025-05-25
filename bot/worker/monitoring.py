@@ -61,7 +61,7 @@ class MonitoringWorker:
                     if parallel:
                          logging_.worker.info("Start gather for users")
                          await asyncio.gather(*parallel)
-               await asyncio.sleep(180)
+               await asyncio.sleep(20)
           
           
      async def __price_updater(
@@ -96,6 +96,7 @@ class MonitoringWorker:
                          {
                               "_owner": telegram_id,
                               "_name": skin.name,
+                              "_price_chart": skin.price_chart + f"{new_price},",
                               "_current_price": new_price
                          }
                     )

@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot.schemas.base import BaseSkinDataclass
 from bot.utils.filter.callback import (
      InventoryPaginateCallbackData,
-     SkinCallbackData
+     SkinCallbackData,
 )
 
 
@@ -63,9 +63,10 @@ async def search_item_button(
      return builder.as_markup()
 
 
-async def inventory_button(
+async def inventory_button_or_chart(
      skins: list[list[BaseSkinDataclass]],
-     index: int
+     index: int,
+     mode: str
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
@@ -88,7 +89,7 @@ async def inventory_button(
                InlineKeyboardButton(
                     text=skin.name,
                     callback_data=SkinCallbackData(
-                         mode="inventory_item",
+                         mode=mode,
                          row=row,
                          index=index_
                     ).pack()
@@ -101,7 +102,8 @@ async def inventory_button(
                callback_data=InventoryPaginateCallbackData(
                     mode="inventory_left",
                     index=index,
-                    max_len=len(skins) - 1
+                    max_len=len(skins) - 1,
+                    button_mode=mode
                ).pack()
           ),
           InlineKeyboardButton(
@@ -109,7 +111,8 @@ async def inventory_button(
                callback_data=InventoryPaginateCallbackData(
                     mode="inventory_right",
                     index=index,
-                    max_len=len(skins) - 1
+                    max_len=len(skins) - 1,
+                    button_mode=mode
                ).pack()
           )
      )
@@ -137,7 +140,18 @@ async def inventory_item_button() -> InlineKeyboardMarkup:
      )
      builder.adjust(1)
      return builder.as_markup()
+
+
+async def delete_button() -> InlineKeyboardMarkup:
+     builder = InlineKeyboardBuilder()
      
+     builder.add(
+          InlineKeyboardButton(
+               text="Убрать сообщение",
+               callback_data="delete_message"
+          )
+     )
+     return builder.as_markup()
      
      
      

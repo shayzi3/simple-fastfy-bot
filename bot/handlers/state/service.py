@@ -63,6 +63,7 @@ class StateService:
                     "name": item,
                     "current_price": item_price,
                     "percent": percent,
+                    "price_chart": f"{item_price},",
                     "owner": user.telegram_id
                }
           )

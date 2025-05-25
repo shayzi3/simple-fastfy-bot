@@ -3,22 +3,64 @@ from datetime import timedelta, datetime
 from aiogram.types import Message
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
 
+from bot.schemas.base import TimeOut
+
 
 
 class TimeoutMiddleware(BaseMiddleware):
      timeoutes = {
-          "start": timedelta(seconds=1),
-          "search": timedelta(seconds=1),
-          "settings": timedelta(seconds=2),
-          "inventory": timedelta(seconds=2),
-          "settings_notify": timedelta(seconds=2),
-          "settings_update_time": timedelta(seconds=4),
-          "steam_item": timedelta(seconds=3),
-          "inventory_item": timedelta(seconds=2),
-          "inventory_left": timedelta(seconds=1),
-          "inventory_right": timedelta(seconds=1),
-          "delete_item": timedelta(seconds=1),
-          "update_percent": timedelta(seconds=4)
+          "start": TimeOut(
+               time=timedelta(seconds=1),
+               msg="1с"
+          ),
+          "search": TimeOut(
+               time=timedelta(seconds=1),
+               msg="1с"
+          ),
+          "settings": TimeOut(
+               time=timedelta(seconds=2),
+               msg="2с"
+          ),
+          "inventory": TimeOut(
+               time=timedelta(seconds=2),
+               msg="2с"
+          ),
+          "settings_notify": TimeOut(
+               time=timedelta(seconds=2),
+               msg="2с"
+          ),
+          "settings_update_time": TimeOut(
+               time=timedelta(seconds=4),
+               msg="4с"
+          ),
+          "steam_item": TimeOut(
+               time=timedelta(seconds=3),
+               msg="3с"
+          ),
+          "inventory_item": TimeOut(
+               time=timedelta(seconds=2),
+               msg="2с"
+          ),
+          "inventory_left": TimeOut(
+               time=timedelta(seconds=1),
+               msg="1с"
+          ),
+          "inventory_right": TimeOut(
+               time=timedelta(seconds=1),
+               msg="1с"
+          ),
+          "delete_item": TimeOut(
+               time=timedelta(seconds=1),
+               msg="1с"
+          ),
+          "create_skin_or_update_percent": TimeOut(
+               time=timedelta(seconds=4),
+               msg="4с"
+          ),
+          "chart_item": TimeOut(
+               time=timedelta(minutes=1),
+               msg="1м"
+          )
      }
      command_users = {}
      
@@ -37,15 +79,16 @@ class TimeoutMiddleware(BaseMiddleware):
           if command not in self.command_users.keys():
                self.command_users.update({command: {}})
                
+          command_timeout = self.timeoutes[command]
           if str(event.from_user.id) not in self.command_users[command]:
                self.command_users[command].update(
-                    {str(event.from_user.id): datetime.utcnow() + self.timeoutes[command]}
+                    {str(event.from_user.id): datetime.utcnow() + command_timeout.time}
                )
                return await handler(event, data)
           
           if self.command_users[command][str(event.from_user.id)] <= datetime.utcnow():
                self.command_users[command].update(
-                    {str(event.from_user.id): datetime.utcnow() + self.timeoutes[command]}
+                    {str(event.from_user.id): datetime.utcnow() + command_timeout.time}
                )
                return await handler(event, data)
-          return await event.answer("Превышен лимит запросов!")
+          return await event.answer(f"Лимит использования команды {command_timeout.msg}")

@@ -56,11 +56,15 @@ class SkinDataclass(FromOrm["SkinDataclass"]):
      current_price: float
      percent: int
      user: BaseUserDataclass
+     price_chart: list[int]
      
      
      def __post_init__(self) -> None:
           if isinstance(self.user, BaseUserDataclass) is False:
                self.user = BaseUserDataclass.from_dict(self.user.__dict__)
+               
+          if isinstance(self.price_chart, str):
+               self.price_chart = [float(num) for num in self.price_chart.split(",") if num]
           
           
      @property
