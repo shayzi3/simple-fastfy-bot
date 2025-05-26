@@ -160,12 +160,12 @@ async def chart_buttons() -> InlineKeyboardMarkup:
      
      builder.add(
           InlineKeyboardButton(
-               text="Убрать сообщение",
-               callback_data="delete_message"
-          ),
-          InlineKeyboardButton(
                text="Сбросить график",
                callback_data="reset_chart"
+          ),
+          InlineKeyboardButton(
+               text="Убрать сообщение",
+               callback_data="delete_message"
           )
      )
      builder.adjust(1, 1)
