@@ -1,6 +1,5 @@
 aiofiles==24.1.0
 aiogram==3.20.0.post0
-aiosqlite==0.21.0
 alembic==1.15.2
 bs4 ==0.0.2
 fastapi==0.115.12
@@ -11,3 +10,4 @@ sqlalchemy==2.0.41
 uvicorn==0.34.2
 pytz==2025.2
 matplotlib==3.10.3
+asyncpg==0.30.0
