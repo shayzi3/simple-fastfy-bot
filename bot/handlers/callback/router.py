@@ -226,7 +226,7 @@ async def reset_chart(
      user: UserDataclass,
      service: CallbackService
 ):
-     name = query.message.text.strip()
+     name = query.message.caption.strip()
      skin = user.get_skin(name)
      if skin is None:
           return await query.answer(f"Предмет {name} не найден в инвентаре")
