@@ -1,5 +1,3 @@
-from sqlalchemy import select
-
 from .repository import Repository
 from bot.schemas import UserDataclass
 from bot.db.models import User

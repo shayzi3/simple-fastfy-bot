@@ -1,5 +1,4 @@
 import logging
-import pytz
 
 from bot.core.timezone import timezone, time_now
 from datetime import datetime

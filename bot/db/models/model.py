@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, BigInteger, func, JSON
+from sqlalchemy import ForeignKey, BigInteger, func
 
 from bot.schemas import UserDataclass, SkinDataclass
 from .base import Base

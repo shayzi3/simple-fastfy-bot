@@ -15,7 +15,9 @@ command_router = Router(name="command_router")
 
 @command_router.message(CommandStart())
 async def start(message: Message,):
-     await message.answer("Я - бот, который поможет тебе отслеживать цены предметов CS2. Пропиши команду /help")
+     await message.answer(
+          "Я - бот, который поможет тебе отслеживать цены предметов CS2. Пропиши команду /help"
+     )
      
      
 

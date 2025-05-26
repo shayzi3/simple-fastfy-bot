@@ -1,8 +1,8 @@
 import uvicorn
 import asyncio
 
-from aiogram.types.bot_command import BotCommand
 from fastapi import FastAPI
+from aiogram.types.bot_command import BotCommand
 from contextlib import asynccontextmanager
 
 from bot.db.repository import UserRepository, SkinRepository

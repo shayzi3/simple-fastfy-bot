@@ -1,0 +1,15 @@
+
+
+# Улучшить фразы
+# Сброс цен графика
+
+
+1. Multilanguage, Currency
+2. PostgreSQL
+3. Redis, Microservice(Workers)
+4. Log system
+
+
+5. MiniApp
+# Inventory, Search, Chart
+6. Chart with time

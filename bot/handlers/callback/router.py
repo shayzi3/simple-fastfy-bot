@@ -11,7 +11,7 @@ from bot.utils.inline import (
      settings_button, 
      inventory_button_or_chart, 
      inventory_item_button,
-     delete_button
+     chart_buttons
 )
 from bot.schemas import UserDataclass
 from .service import CallbackService
@@ -69,11 +69,12 @@ async def steam_item(
 ):
      keyboard = query.message.reply_markup.inline_keyboard
      name = keyboard[callback_data.row][callback_data.index].text
+     
      if len(user.skins) >= 30:
-          return await query.answer("Максимальное кол-во предметов в инвентаре 20!")
+          return await query.answer("Максимальное кол-во предметов в инвентаре 30!")
      
      if user.get_skin(name) is not None:
-          return await query.answer("Такой предмет уже есть в инвентаре.")
+          return await query.answer(f"Предмет {name} уже есть в инвентаре.")
           
      await state.set_data({"skin_name": name, "mode": "create"})
      await state.set_state(PercentState.percent)
@@ -90,9 +91,10 @@ async def inventory_item(
 ):
      keyboard = query.message.reply_markup.inline_keyboard
      name = keyboard[callback_data.row][callback_data.index].text
+     
      skin = user.get_skin(name)
      if skin is None:
-          return await query.answer("Предмет в инвентаре не найден")
+          return await query.answer(f"Предмет {name} не найден в инвенторе")
      
      await query.message.answer(
           text=f"{name} \nПроцент: {skin.percent}",
@@ -116,7 +118,7 @@ async def chart_item(
      
      skin = user.get_skin(name)
      if skin is None:
-          return await query.answer("Предмет в инвентаре не найден")
+          return await query.answer(f"Предмет {name} не найден в инвенторе")
      
      chart = await service.chart_item(
           name=name,
@@ -127,11 +129,10 @@ async def chart_item(
      await query.message.answer_photo(
           caption=name,
           photo=FSInputFile(path=chart),
-          reply_markup=await delete_button()
+          reply_markup=await chart_buttons()
      )
      await service.delete_chart_file(chart)
      await query.answer()
-     
      
      
      
@@ -191,17 +192,17 @@ async def delete_item(
 ):
      name = query.message.text.split("\n")[0].strip()
      if user.get_skin(name) is None:
-          return await query.answer("Предмет в инвентаре не найден")
+          return await query.answer(f"Предмет {name} не найден в инвенторе")
      
      await service.delete_item(
           user=user,
           item=name
      )
-     await query.answer("Предмет успешно удалён")
+     await query.answer(f"Предмет {name} успешно удалён")
      await query.message.delete()
      
      
-     
+  
 @callback_router.callback_query(F.data == "create_skin_or_update_percent")
 async def create_skin_or_update_percent(
      query: CallbackQuery,
@@ -210,10 +211,30 @@ async def create_skin_or_update_percent(
 ):
      name = query.message.text.split("\n")[0].strip()
      if user.get_skin(name) is None:
-          return await query.answer("Предмет в инвентаре не найден")
+          return await query.answer(f"Предмет {name} не найден в инвенторе")
      
      await state.set_state(PercentState.percent)
      await state.set_data({"skin_name": name, "mode": "update"})
      await query.message.answer("Отправь процент")
      await query.answer()
+     
+
+
+@callback_router.callback_query(F.data == "reset_chart")
+async def reset_chart(
+     query: CallbackQuery,
+     user: UserDataclass,
+     service: CallbackService
+):
+     name = query.message.text
+     skin = user.get_skin(name)
+     if skin is None:
+          return await query.answer(f"Предмет {name} не найден в инвентаре")
+     
+     result = await service.reset_chart(user=user, skin_name=skin.name)
+     if isinstance(result, str):
+          return await query.message.answer(result)
+     
+     await query.message.delete()
+     await query.message.answer(f"График для скина {skin.name} сброшен")
      

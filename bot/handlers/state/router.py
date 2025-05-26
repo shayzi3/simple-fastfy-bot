@@ -77,6 +77,6 @@ async def update_create_percent(
                item=data.get("skin_name"),
                percent=int(message.text)
           )
-          await message.answer("Процент обновлён")
+          await message.answer(f"Процент для скина {data.get("skin_name")} обновлён")
      await state.clear()
           

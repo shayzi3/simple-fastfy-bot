@@ -78,7 +78,23 @@ class CallbackService:
           path: str
      ) -> None:
           if os.path.exists(path) is True:
-               os.remove(path)    
+               os.remove(path)   
+               
+               
+     async def reset_chart(
+          self,
+          user: UserDataclass,
+          skin_name: str
+     ) -> str | None:
+          item_price = await self.http_client.item_price(item=skin_name)
+          if isinstance(item_price, float) is False:
+               return "Повторите попытку позже"
+          
+          await self.skin_repository.update(
+               where={"owner": user.telegram_id, "name": skin_name},
+               values={"price_chart": f"{item_price},"}
+          )
+          
      
      
 async def get_callback_service() -> CallbackService:

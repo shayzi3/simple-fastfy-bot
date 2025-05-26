@@ -51,7 +51,7 @@ class SteamHttpClient:
      async def item_price(
           self,
           item: str
-     ) -> float:
+     ) -> float | None:
           item = item.replace("&", "%26")
           url = (
                self.base_url + f"/market/priceoverview/?currency=5&appid=730&market_hash_name={item}"

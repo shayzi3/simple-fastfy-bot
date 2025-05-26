@@ -7,6 +7,8 @@ from bot.db.session import Session
 from bot.log.logging_ import logging_
 from .repository import Repository
 
+
+
 class SkinRepository(Repository[SkinDataclass]):
      model = Skin
      

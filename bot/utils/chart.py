@@ -18,7 +18,6 @@ class Chart:
           name: str
      ) -> str:
           path = f"/data/charts/{filename}"
-          # x = [i for i in range(1, len(prices) + 1)]
           
           logging_.chart.info(f"GENERATE CHART {filename} FOR ITEM {name}")
           
