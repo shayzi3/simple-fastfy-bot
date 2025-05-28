@@ -1,11 +1,10 @@
 
 from bot.core.gen import generate_skin_id
 from bot.core.timezone import time_now
-from bot.schemas import UserDataclass, Time
-from bot.db.repository import UserRepository, SkinRepository
-from bot.http.steam import SteamParseClient, SteamHttpClient
 from bot.db.json_storage import JsonStorage
-
+from bot.db.repository import SkinRepository, UserRepository
+from bot.http.steam import SteamHttpClient, SteamParseClient
+from bot.schemas import Time, UserDataclass
 
 
 class StateService:
@@ -67,7 +66,7 @@ class StateService:
                     "owner": user.telegram_id
                }
           )
-          return "Предмет успешно добавлен в инвентарь."
+          return f"Предмет {item} успешно добавлен в инвентарь."
           
           
      async def update_item_percent(

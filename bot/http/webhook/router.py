@@ -1,14 +1,9 @@
-from fastapi import (
-     APIRouter, 
-     Depends,
-     Request,
-     Response
-)
 from aiogram.types import Update
+from fastapi import APIRouter, Depends, Request, Response
 
 from bot.core.bot import bot, dp
-from .depend import validate_token
 
+from .depend import validate_token
 
 webhook_router = APIRouter(
      prefix="/webhook",

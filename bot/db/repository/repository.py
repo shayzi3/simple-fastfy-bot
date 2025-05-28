@@ -1,12 +1,12 @@
 from typing import Any, Generic
-from sqlalchemy import select, insert, update, delete
 
+from sqlalchemy import delete, insert, select, update
+
+from bot.db.session import Session
 from bot.log.logging_ import logging_
 from bot.types import DATACLASS
-from bot.db.session import Session
+
 from .abstract_repository import AbstractRepository
-
-
 
 
 class Repository(AbstractRepository, Generic[DATACLASS]):

@@ -1,0 +1,15 @@
+repos:
+    - repo: local
+      hooks:
+          - id: check_test_mode
+            name: Test Mode
+            description: Проверяет установлен ли флаг false у переменной TEST_MODE
+            entry: hook/check_test_mode.bat
+            language: script
+            types: [text]
+
+    - repo: https://github.com/pycqa/isort
+      rev: 5.12.0
+      hooks:
+        - id: isort
+          args: ["--profile", "black"]

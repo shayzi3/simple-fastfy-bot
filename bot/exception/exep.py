@@ -1,7 +1,7 @@
-from .abstract_eception import AbstractBotExeption
 from bot.core.bot import bot
 from bot.core.config import base_config
 
+from .abstract_eception import AbstractBotExeption
 
 
 class BotException(AbstractBotExeption):

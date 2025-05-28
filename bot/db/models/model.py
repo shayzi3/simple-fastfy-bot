@@ -1,11 +1,11 @@
 from datetime import datetime
+
+from sqlalchemy import BigInteger, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, BigInteger, func
 
-from bot.schemas import UserDataclass, SkinDataclass
+from bot.schemas import SkinDataclass, UserDataclass
+
 from .base import Base
-
-
 
 
 class User(Base):

@@ -1,7 +1,7 @@
-from datetime import datetime
 from dataclasses import dataclass
-from .base import BaseSkinDataclass, BaseUserDataclass, FromOrm, Time
+from datetime import datetime
 
+from .base import BaseSkinDataclass, BaseUserDataclass, FromOrm, Time
 
 
 @dataclass

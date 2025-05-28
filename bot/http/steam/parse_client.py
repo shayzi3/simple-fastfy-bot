@@ -1,9 +1,8 @@
 from bs4 import BeautifulSoup
 
 from bot.log.logging_ import logging_
+
 from .http_client import SteamHttpClient
-
-
 
 
 class SteamParseClient:

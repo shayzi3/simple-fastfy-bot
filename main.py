@@ -1,21 +1,20 @@
-import uvicorn
 import asyncio
-
-from fastapi import FastAPI
-from aiogram.types.bot_command import BotCommand
 from contextlib import asynccontextmanager
 
-from bot.db.repository import UserRepository, SkinRepository
-from bot.http.steam import SteamHttpClient
-from bot.db.json_storage import JsonStorage
-from bot.worker.monitoring import MonitoringWorker
+import uvicorn
+from aiogram.types.bot_command import BotCommand
+from fastapi import FastAPI
+
+from bot.constant import TEST_MODE
 from bot.core.bot import bot, dp
 from bot.core.config import base_config
+from bot.db.json_storage import JsonStorage
+from bot.db.repository import SkinRepository, UserRepository
+from bot.handlers import __routers__
+from bot.http.steam import SteamHttpClient
 from bot.http.webhook import webhook_router
 from bot.middleware import __middlewares__
-from bot.handlers import __routers__
-
-
+from bot.worker.monitoring import MonitoringWorker
 
 
 @asynccontextmanager
@@ -66,5 +65,7 @@ app.include_router(webhook_router)
 
 
 if __name__ == "__main__":
+     if TEST_MODE is False:
+          print("Проверьте флаг TEST_MODE")
      uvicorn.run("main:app", host="0.0.0.0", port=8083)
 

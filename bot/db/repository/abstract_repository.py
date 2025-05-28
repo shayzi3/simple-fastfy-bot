@@ -1,6 +1,6 @@
 from typing import Any, Protocol
-from bot.types import DATACLASS
 
+from bot.types import DATACLASS
 
 
 class AbstractRepository(Protocol):

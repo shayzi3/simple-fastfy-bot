@@ -2,11 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.schemas.base import BaseSkinDataclass
-from bot.utils.filter.callback import (
-     InventoryPaginateCallbackData,
-     SkinCallbackData,
-)
-
+from bot.utils.filter.callback import InventoryPaginateCallbackData, SkinCallbackData
 
 
 async def settings_button(

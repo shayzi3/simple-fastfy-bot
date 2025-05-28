@@ -1,13 +1,12 @@
 import inspect
-
 from typing import Any, Awaitable, Callable
+
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import CallbackQuery, Message
 
-from bot.handlers import __depends__
 from bot.db.repository import UserRepository
+from bot.handlers import __depends__
 from bot.schemas import UserDataclass
-
 
 
 class DependMiddleware(BaseMiddleware):

@@ -1,11 +1,9 @@
 
-
-# Улучшить фразы
-# Сброс цен графика
+# Настроить тестовый режим и хостинга
+# Оптимизировать добавление скинов
 
 
 1. Multilanguage, Currency
-2. PostgreSQL
 3. Redis, Microservice(Workers)
 4. Log system
 

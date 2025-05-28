@@ -1,11 +1,12 @@
 import matplotlib.pyplot as plt
-
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
+from constant import TEST_MODE
+from PIL import Image, ImageDraw, ImageFont
 
 from bot.log.logging_ import logging_
 
+path = "/data/charts/"
+if TEST_MODE is True:
+     path = "data/charts/"
 
 
 class Chart:
@@ -17,8 +18,7 @@ class Chart:
           filename: str,
           name: str
      ) -> str:
-          path = f"/data/charts/{filename}"
-          
+          filepath = path + filename
           logging_.chart.info(f"GENERATE CHART {filename} FOR ITEM {name}")
           
           if len(prices) == 1:
@@ -28,9 +28,9 @@ class Chart:
                plt.plot(prices)
                plt.ylabel("Цена")
                plt.title(name)
-               plt.savefig(path)
+               plt.savefig(filepath)
                plt.close()
-          return await self._chart_watermark(input_image=path)
+          return await self._chart_watermark(input_image=filepath)
 
      
      async def _chart_watermark(

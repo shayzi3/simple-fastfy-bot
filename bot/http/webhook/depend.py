@@ -1,6 +1,6 @@
-from fastapi import HTTPException, status, Request
-from bot.core.config import base_config
+from fastapi import HTTPException, Request, status
 
+from bot.core.config import base_config
 
 
 async def validate_token(request: Request) -> None:

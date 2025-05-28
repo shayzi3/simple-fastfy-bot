@@ -1,10 +1,10 @@
-from typing import Awaitable, Callable, Any
-from datetime import timedelta, datetime
-from aiogram.types import Message
+from datetime import datetime, timedelta
+from typing import Any, Awaitable, Callable
+
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
+from aiogram.types import Message
 
 from bot.schemas.base import TimeOut
-
 
 
 class TimeoutMiddleware(BaseMiddleware):

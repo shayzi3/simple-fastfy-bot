@@ -1,11 +1,10 @@
-from typing import Any, Callable, Awaitable
-from aiogram.types import Message
+from typing import Any, Awaitable, Callable
+
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
+from aiogram.types import Message
 
 from bot.exception import BotException
 from bot.log.logging_ import logging_
-
-
 
 
 class LogMiddleware(BaseMiddleware):

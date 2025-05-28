@@ -1,22 +1,18 @@
-from aiogram import Router, F
-from aiogram.types import CallbackQuery, FSInputFile
+from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery, FSInputFile
 
-from bot.utils.filter.callback import (
-     InventoryPaginateCallbackData,
-     SkinCallbackData
-)
-from bot.utils.filter.state import UpdateTimeState, PercentState
-from bot.utils.inline import (
-     settings_button, 
-     inventory_button_or_chart, 
-     inventory_item_button,
-     chart_buttons
-)
 from bot.schemas import UserDataclass
+from bot.utils.filter.callback import InventoryPaginateCallbackData, SkinCallbackData
+from bot.utils.filter.state import PercentState, UpdateTimeState
+from bot.utils.inline import (
+    chart_buttons,
+    inventory_button_or_chart,
+    inventory_item_button,
+    settings_button,
+)
+
 from .service import CallbackService
-
-
 
 callback_router = Router(name="callback_router")
 

@@ -1,6 +1,7 @@
-from .repository import Repository
-from bot.schemas import UserDataclass
 from bot.db.models import User
+from bot.schemas import UserDataclass
+
+from .repository import Repository
 
 
 class UserRepository(Repository[UserDataclass]):

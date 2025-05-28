@@ -1,14 +1,14 @@
 from aiogram import Router
-from aiogram.types import Message
-from aiogram.filters import CommandStart, Command
-from aiogram.fsm.context import FSMContext
 from aiogram.enums.parse_mode import ParseMode
+from aiogram.filters import Command, CommandStart
+from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
 
-from bot.utils.filter.state import SearchState
-from bot.utils.inline import settings_button, inventory_button_or_chart
 from bot.schemas import UserDataclass
-from .service import CommandService
+from bot.utils.filter.state import SearchState
+from bot.utils.inline import inventory_button_or_chart, settings_button
 
+from .service import CommandService
 
 command_router = Router(name="command_router")
 

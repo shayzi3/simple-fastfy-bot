@@ -1,12 +1,19 @@
-import aiofiles
 import json
 
+import aiofiles
+from constant import TEST_MODE
+
 from bot.log.logging_ import logging_
+
+path = "/data/worker.json"
+if TEST_MODE is True:
+     path = "data/worker.json"
+     
 
 
 class JsonStorage:
      def __init__(self):
-          self.path = "/data/worker.json"
+          self.path = path
           
           
      async def _get_data(self) -> list[str]:

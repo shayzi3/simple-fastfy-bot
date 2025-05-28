@@ -1,7 +1,13 @@
 import logging
-
-from bot.core.timezone import timezone, time_now
 from datetime import datetime
+
+from constant import TEST_MODE
+
+from bot.core.timezone import time_now, timezone
+
+path = "/data/logs"
+if TEST_MODE is True:
+     path = "data/logs"
 
 
 
@@ -39,43 +45,43 @@ class Logger:
      @property
      def bot(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/bot/"
+               path=path + "/bot/"
           )
           
      @property
      def db(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/db/"
+               path=path + "/db/"
           )
      
      @property
      def worker(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/worker/"
+               path=path + "/worker/"
           )
           
      @property
      def http_webhook(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/http/webhook/"
+               path=path + "/http/webhook/"
           )
           
      @property
      def http_steam(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/http/steam/"
+               path=path + "/http/steam/"
           )
           
      @property
      def json(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/json/"
+               path=path + "/json/"
           )
           
      @property
      def chart(self) -> BaseLogger:
           return BaseLogger(
-               path="/data/logs/chart/"
+               path=path + "/chart/"
           )
           
           

@@ -1,9 +1,8 @@
-from datetime import datetime, timedelta
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from typing import Any, Generic
 
 from bot.types import DATACLASS
-
 
 
 class FromOrm(Generic[DATACLASS]):

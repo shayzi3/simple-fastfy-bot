@@ -1,13 +1,12 @@
+from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from aiogram import Router
 
-
+from bot.schemas import Time, UserDataclass
+from bot.utils.filter.state import PercentState, SearchState, UpdateTimeState
 from bot.utils.inline import search_item_button
-from bot.utils.filter.state import UpdateTimeState, SearchState, PercentState
-from bot.schemas import UserDataclass, Time
-from .service import StateService
 
+from .service import StateService
 
 state_router = Router(name="state_router")
 
