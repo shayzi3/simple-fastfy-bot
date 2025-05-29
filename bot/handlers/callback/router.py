@@ -272,7 +272,7 @@ async def steam_profile(
           return await query.message.answer(result)
      
      text = "*Добавленные предметы*\n"
-     text += "\n".join(result)
+     text += "\n\n".join(result)
 
      await msg.delete()
      await query.message.answer(

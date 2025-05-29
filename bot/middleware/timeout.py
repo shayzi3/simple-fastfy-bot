@@ -60,6 +60,10 @@ class TimeoutMiddleware(BaseMiddleware):
           "chart_item": TimeOut(
                time=timedelta(seconds=15),
                msg="15с"
+          ),
+          "steam_profile": TimeOut(
+               time=timedelta(minutes=2),
+               msg="2m"
           )
      }
      command_users = {}
