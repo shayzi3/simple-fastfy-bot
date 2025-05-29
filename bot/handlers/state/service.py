@@ -4,7 +4,7 @@ from bot.core.timezone import time_now
 from bot.db.json_storage import JsonStorage
 from bot.db.repository import SkinRepository, UserRepository
 from bot.http.steam import SteamHttpClient, SteamParseClient
-from bot.schemas import Time, UserDataclass
+from bot.schemas import SteamUser, Time, UserDataclass
 
 
 class StateService:
@@ -79,6 +79,14 @@ class StateService:
                where={"owner": user.telegram_id, "name": item},
                values={"percent": percent}
           )
+          
+          
+     async def steam_user(self, steamid: int) -> str | SteamUser:
+          steam_user = await self.http_client.steam_user(steamid=steamid)
+          if steam_user is None:
+               return "Такого ID не существует"
+          return steam_user
+          
           
           
           

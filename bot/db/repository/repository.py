@@ -37,12 +37,12 @@ class Repository(AbstractRepository, Generic[DATACLASS]):
      @classmethod
      async def create(
           cls, 
-          values: dict[str, Any]
+          values: dict[str, Any] | list[dict[str, Any]]
      ) -> None:
           async with Session.async_session() as session:
                logging_.db.info(f"INSERT DATA IN {cls.model.__tablename__} VALUE {values}")
                
-               sttm = insert(cls.model).values(**values)
+               sttm = insert(cls.model).values(values)
                await session.execute(sttm)
                await session.commit()
                

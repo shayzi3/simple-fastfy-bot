@@ -45,6 +45,11 @@ class UserDataclass(FromOrm["UserDataclass"]):
           for skin in self.skins:
                if skin.name == name:
                     return skin
+               
+               
+     @property
+     def skins_names(self) -> list[str]:
+          return [skin.name for skin in self.skins]
      
 
      

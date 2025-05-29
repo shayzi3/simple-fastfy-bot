@@ -1,8 +1,7 @@
 import logging
 from datetime import datetime
 
-from constant import TEST_MODE
-
+from bot.constant import TEST_MODE
 from bot.core.timezone import time_now, timezone
 
 path = "/data/logs"

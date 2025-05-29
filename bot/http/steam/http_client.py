@@ -3,14 +3,19 @@ import random
 
 import aiofiles
 import httpx
+from steam_web_api import Steam
 
+from bot.core.config import base_config
 from bot.exception import BotException
 from bot.log.logging_ import logging_
+from bot.schemas import SteamUser
 
 
 class SteamHttpClient:
      def __init__(self):
           self.base_url = "https://steamcommunity.com"
+          self.steam = Steam(base_config.steam_token)
+          
           
      @staticmethod
      async def __fake_user_agent() -> str:
@@ -81,4 +86,42 @@ class SteamHttpClient:
                price = price.replace(",", ".").split()[0]
                return round(float(price), 2)
           
+          
+     async def steam_user(self, steamid: int) -> SteamUser | None:
+          try:
+               user = self.steam.users.get_user_details(steam_id=steamid)
+          except:
+               return None
+          return SteamUser.from_dict(user.get("player"))
+          
+          
+     async def inventory_by_steamid(
+          self,
+          steamid: int
+     ) -> str | list[str]:
+          url = (
+               self.base_url + f"/inventory/{steamid}/730/2"
+          )
+          headers = await self._get_headers()
+          async with httpx.AsyncClient(headers=headers) as session:
+               logging_.http_steam.info(f"GET REQUEST TO STEAM FOR FIND INVENTORY BY {steamid}")
+               for _ in range(3):
+                    try:
+                         response = await session.get(url=url)
+                         break
+                    except httpx.ConnectTimeout:
+                         continue
                
+               if response.status_code == 403:
+                    return "Инвентарь заблокирован"
+               
+               if response.status_code == 401:
+                    return "Инвентарь пуст"
+               
+               result = response.json()
+               skins = set()
+               for skin in result.get("descriptions"):
+                    skin_name = skin.get("market_hash_name")
+                    if skin.get("tradable") == 1:
+                         skins.add(skin_name)
+               return list(skins)

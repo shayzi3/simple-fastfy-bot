@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
-from constant import TEST_MODE
 from PIL import Image, ImageDraw, ImageFont
 
+from bot.constant import TEST_MODE
 from bot.log.logging_ import logging_
 
 path = "/data/charts/"

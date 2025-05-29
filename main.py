@@ -43,7 +43,8 @@ async def lifespan(_: FastAPI):
                BotCommand(command="/inventory", description="Инвентарь"),
                BotCommand(command="/chart", description="Генерация графика"),
                BotCommand(command="/skip", description="Пропуск события"),
-               BotCommand(command="/help", description="Помощь")
+               BotCommand(command="/help", description="Помощь"),
+               BotCommand(command="/steam", description="Добавить предметы из Steam в инвентарь")
           ]
      )
      
@@ -67,5 +68,5 @@ app.include_router(webhook_router)
 if __name__ == "__main__":
      if TEST_MODE is False:
           print("Проверьте флаг TEST_MODE")
-     uvicorn.run("main:app", host="0.0.0.0", port=8083)
+     uvicorn.run("main:app", host="0.0.0.0", port=8083, reload=True)
 

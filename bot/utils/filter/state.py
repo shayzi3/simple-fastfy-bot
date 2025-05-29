@@ -11,3 +11,7 @@ class SearchState(StatesGroup):
      
 class PercentState(StatesGroup):
      percent = State()
+     
+     
+class SteamIDState(StatesGroup):
+     steamid = State()

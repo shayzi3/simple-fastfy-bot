@@ -1,10 +1,15 @@
 from aiogram import F, Router
+from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, FSInputFile
 
 from bot.schemas import UserDataclass
-from bot.utils.filter.callback import InventoryPaginateCallbackData, SkinCallbackData
-from bot.utils.filter.state import PercentState, UpdateTimeState
+from bot.utils.filter.callback import (
+    InventoryPaginateCallbackData,
+    SkinCallbackData,
+    SteamProfileCallback,
+)
+from bot.utils.filter.state import PercentState, SteamIDState, UpdateTimeState
 from bot.utils.inline import (
     chart_buttons,
     inventory_button_or_chart,
@@ -223,14 +228,58 @@ async def reset_chart(
      service: CallbackService
 ):
      name = query.message.caption.strip()
-     skin = user.get_skin(name)
-     if skin is None:
+     if name in user.skins_names:
           return await query.answer(f"Предмет {name} не найден в инвентаре")
      
-     result = await service.reset_chart(user=user, skin_name=skin.name)
+     result = await service.reset_chart(user=user, skin_name=name)
      if isinstance(result, str):
           return await query.message.answer(result)
      
      await query.message.delete()
-     await query.message.answer(f"График для скина {skin.name} сброшен")
+     await query.message.answer(f"График для скина {name} сброшен")
+     
+     
+     
+@callback_router.callback_query(F.data == "steam_account_not_valide")
+async def steam_account_not_valide(
+     query: CallbackQuery,
+     state: FSMContext
+):
+     await query.answer()
+     await query.message.answer("Отправь другой SteamID")
+     await state.set_state(SteamIDState.steamid)
+     
+     
+     
+@callback_router.callback_query(SteamProfileCallback.filter(F.mode == "steam_profile"))
+async def steam_profile(
+     query: CallbackQuery,
+     callback_data: SteamProfileCallback,
+     user: UserDataclass,
+     service: CallbackService
+):
+     msg = await query.message.answer(
+          "Начинаю выгрузку предметов. Это может занять некоторое время."
+     )
+     await query.answer()
+     
+     result = await service.steam_inventory(
+          user=user,
+          steamid=callback_data.steamid
+     )
+     if isinstance(result, str):
+          await msg.delete()
+          return await query.message.answer(result)
+     
+     text = "*Добавленные предметы*\n"
+     text += "\n".join(result)
+
+     await msg.delete()
+     await query.message.answer(
+          text=text,
+          parse_mode=ParseMode.MARKDOWN
+     )
+     
+     
+     
      

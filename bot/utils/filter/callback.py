@@ -1,17 +1,25 @@
 from aiogram.filters.callback_data import CallbackData
 
 
-class SkinCallbackData(CallbackData, prefix="?"):
+class Mode(CallbackData, prefix="?"):
      mode: str
+
+
+
+class SkinCallbackData(Mode, prefix="+"):
      row: int
      index: int
      
      
-class InventoryPaginateCallbackData(CallbackData, prefix="?"):
-     mode: str
+class InventoryPaginateCallbackData(Mode, prefix="="):
      button_mode: str
      index: int
      max_len: int
+     
+     
+     
+class SteamProfileCallback(Mode, prefix="-"):
+     steamid: int
      
      
      

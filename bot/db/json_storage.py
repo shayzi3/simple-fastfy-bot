@@ -1,8 +1,8 @@
 import json
 
 import aiofiles
-from constant import TEST_MODE
 
+from bot.constant import TEST_MODE
 from bot.log.logging_ import logging_
 
 path = "/data/worker.json"

@@ -1,6 +1,6 @@
 from typing import Any
 
-from sqlalchemy import and_, bindparam, update
+from sqlalchemy import and_, bindparam, insert, update
 
 from bot.db.models import Skin
 from bot.db.session import Session

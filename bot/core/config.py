@@ -1,5 +1,6 @@
-from constant import TEST_MODE
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from bot.constant import TEST_MODE
 
 path = "bot/core/prod.env"
 if TEST_MODE is True:
@@ -13,6 +14,7 @@ class BaseConfig(BaseSettings):
      sql_url: str
      webhook_url: str
      webhook_token: str
+     steam_token: str
      admins: list[int]
      
      @property

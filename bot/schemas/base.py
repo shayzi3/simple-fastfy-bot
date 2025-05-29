@@ -19,6 +19,13 @@ class TimeOut:
      time: timedelta
      msg: str
      
+     
+@dataclass
+class SteamUser(FromOrm["SteamUser"]):
+     personaname: str
+     avatarmedium: str
+     profileurl: str
+     
 
 
 @dataclass

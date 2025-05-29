@@ -13,3 +13,4 @@ matplotlib==3.10.3
 asyncpg==0.30.0
 pre-commit==4.2.0
 isort==6.0.1
+python-steam-api==2.0.2

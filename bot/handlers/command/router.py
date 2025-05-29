@@ -5,10 +5,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from bot.schemas import UserDataclass
-from bot.utils.filter.state import SearchState
+from bot.utils.filter.state import SearchState, SteamIDState
 from bot.utils.inline import inventory_button_or_chart, settings_button
-
-from .service import CommandService
 
 command_router = Router(name="command_router")
 
@@ -109,3 +107,13 @@ async def chart(
                mode="chart_item"
           )
      )
+     
+     
+     
+@command_router.message(Command("steam"))
+async def steam(
+     message: Message,
+     state: FSMContext
+):
+     await state.set_state(SteamIDState.steamid)
+     await message.answer("Отправь свой SteamID")

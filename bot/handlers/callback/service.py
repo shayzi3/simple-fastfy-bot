@@ -1,5 +1,7 @@
+import asyncio
 import os
 
+from bot.core.gen import generate_skin_id
 from bot.core.timezone import time_now
 from bot.db.json_storage import JsonStorage
 from bot.db.repository import SkinRepository, UserRepository
@@ -79,7 +81,7 @@ class CallbackService:
           if os.path.exists(path) is True:
                os.remove(path)   
                
-               
+           
      async def reset_chart(
           self,
           user: UserDataclass,
@@ -93,6 +95,43 @@ class CallbackService:
                where={"owner": user.telegram_id, "name": skin_name},
                values={"price_chart": f"{item_price},"}
           )
+          
+     async def steam_inventory(
+          self,
+          user: UserDataclass,
+          steamid: int
+     ) -> str | list[str]:
+          if len(user.skins) >= 30:
+               return "Скинов не может быть больше 30!"
+          
+          steam_inventory = await self.http_client.inventory_by_steamid(steamid=steamid)
+          if isinstance(steam_inventory, str):
+               return steam_inventory
+          
+          new_skins = []
+          skins = []
+          for skin in steam_inventory[:30 - len(user.skins)]:
+               if skin not in user.skins_names:
+                    price = await self.http_client.item_price(item=skin)
+                    if price is None:
+                         continue
+                    
+                    new_skins.append(
+                         {
+                              "skin_id": await generate_skin_id(),
+                              "name": skin,
+                              "current_price": price,
+                              "percent": 25,
+                              "price_chart": f"{price},",
+                              "owner": user.telegram_id
+                         }
+                    )
+                    skins.append(skin)
+                    await asyncio.sleep(3)
+          
+          if new_skins:
+               await self.skin_repository.create(values=new_skins)
+          return skins
           
      
      

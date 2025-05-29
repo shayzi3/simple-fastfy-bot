@@ -5,4 +5,5 @@ from .button import (
     inventory_item_button,
     search_item_button,
     settings_button,
+    steam_profile_button,
 )

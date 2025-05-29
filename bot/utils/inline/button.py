@@ -2,7 +2,11 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.schemas.base import BaseSkinDataclass
-from bot.utils.filter.callback import InventoryPaginateCallbackData, SkinCallbackData
+from bot.utils.filter.callback import (
+    InventoryPaginateCallbackData,
+    SkinCallbackData,
+    SteamProfileCallback,
+)
 
 
 async def settings_button(
@@ -162,6 +166,26 @@ async def chart_buttons() -> InlineKeyboardMarkup:
           InlineKeyboardButton(
                text="Убрать сообщение",
                callback_data="delete_message"
+          )
+     )
+     builder.adjust(1, 1)
+     return builder.as_markup()
+
+
+async def steam_profile_button(steamid: int) -> InlineKeyboardMarkup:
+     builder = InlineKeyboardBuilder()
+     
+     builder.add(
+          InlineKeyboardButton(
+               text="Аккаунт мой",
+               callback_data=SteamProfileCallback(
+                    mode="steam_profile",
+                    steamid=steamid
+               ).pack()
+          ),
+          InlineKeyboardButton(
+               text="Аккаунт не мой",
+               callback_data="steam_account_not_valide"
           )
      )
      builder.adjust(1, 1)
