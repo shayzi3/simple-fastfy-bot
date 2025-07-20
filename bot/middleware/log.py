@@ -4,7 +4,7 @@ from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import Message
 
 from bot.exception import BotException
-from bot.log.logging_ import logging_
+from bot.logs.logging_ import logging_
 
 
 class LogMiddleware(BaseMiddleware):
@@ -19,7 +19,7 @@ class LogMiddleware(BaseMiddleware):
           router = data.get("event_router").name
           command = data.get("handler").callback.__name__
           
-          logging_.bot.info(f"ROUTER: {router}; COMMAND: {command}; USER: {event.from_user.id}")
+          logging_.bot.info(f"ROUTER: {router}; COMMAND: {command}; USER: {event.from_user.id}-{event.from_user.username}")
           
           try:
                return await handler(event, data)

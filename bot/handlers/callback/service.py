@@ -5,9 +5,10 @@ from bot.core.gen import generate_skin_id
 from bot.core.timezone import time_now
 from bot.db.json_storage import JsonStorage
 from bot.db.repository import SkinRepository, UserRepository
-from bot.http.steam import SteamHttpClient
-from bot.schemas import UserDataclass
+from bot.infrastracture.http.steam import SteamHttpClient
+from bot.schemas import UserModel
 from bot.utils.chart import Chart
+from bot.utils.responses import AnyResponse, InventoryLimit, TryLater, isresponse
 
 
 class CallbackService:
@@ -28,32 +29,22 @@ class CallbackService:
           
      async def settings_notify(
           self,
-          user: UserDataclass
+          user: UserModel
      ) -> bool:
           update_data = {
                "notify": True if user.notify is False else False
           }
-          if update_data.get("notify") is True:
-               await self.json_storage.add(
-                    new_value = (
-                         f"{user.update_time.to_string};"
-                         f"{(time_now() + user.update_time.to_timedelta()).isoformat()};"
-                         f"{user.telegram_id}"
-                    )
-               )
-          else:
-               await self.json_storage.delete(search_string=f"{user.telegram_id}")
-          
           await self.user_repository.update(
                where=user.where,
-               values=update_data
+               values=update_data,
+               delete_redis_value=user.delete_redis_values
           )
           return update_data.get("notify")
      
      
      async def delete_item(
           self,
-          user: UserDataclass,
+          user: UserModel,
           item: str
      ) -> None:
           await self.skin_repository.delete(
@@ -84,12 +75,12 @@ class CallbackService:
            
      async def reset_chart(
           self,
-          user: UserDataclass,
+          user: UserModel,
           skin_name: str
-     ) -> str | None:
+     ) -> AnyResponse | None:
           item_price = await self.http_client.item_price(item=skin_name)
           if isinstance(item_price, float) is False:
-               return "Повторите попытку позже"
+               return TryLater
           
           await self.skin_repository.update(
                where={"owner": user.telegram_id, "name": skin_name},
@@ -98,14 +89,14 @@ class CallbackService:
           
      async def steam_inventory(
           self,
-          user: UserDataclass,
+          user: UserModel,
           steamid: int
-     ) -> str | list[str]:
+     ) -> AnyResponse | list[str]:
           if len(user.skins) >= 30:
-               return "Скинов не может быть больше 30!"
+               return InventoryLimit
           
           steam_inventory = await self.http_client.inventory_by_steamid(steamid=steamid)
-          if isinstance(steam_inventory, str):
+          if isresponse(steam_inventory):
                return steam_inventory
           
           new_skins = []

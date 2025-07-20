@@ -3,18 +3,18 @@ import random
 
 import aiofiles
 import httpx
-from steam_web_api import Steam
 
 from bot.core.config import base_config
 from bot.exception import BotException
-from bot.log.logging_ import logging_
-from bot.schemas import SteamUser
+from bot.logs.logging_ import logging_
+from bot.utils.responses import AnyResponse, InventoryEmpty, InventoryLock
+
+# from bot.schemas import SteamUser
 
 
 class SteamHttpClient:
      def __init__(self):
           self.base_url = "https://steamcommunity.com"
-          self.steam = Steam(base_config.steam_token)
           
           
      @staticmethod
@@ -87,18 +87,14 @@ class SteamHttpClient:
                return round(float(price), 2)
           
           
-     async def steam_user(self, steamid: int) -> SteamUser | None:
-          try:
-               user = self.steam.users.get_user_details(steam_id=steamid)
-          except:
-               return None
-          return SteamUser.from_dict(user.get("player"))
+     async def steam_user(self, steamid: int) -> None:
+          ...
           
           
      async def inventory_by_steamid(
           self,
           steamid: int
-     ) -> str | list[str]:
+     ) -> AnyResponse | list[str]:
           url = (
                self.base_url + f"/inventory/{steamid}/730/2"
           )
@@ -113,10 +109,10 @@ class SteamHttpClient:
                          continue
                
                if response.status_code == 403:
-                    return "Инвентарь заблокирован"
+                    return InventoryLock
                
                if response.status_code == 401:
-                    return "Инвентарь пуст"
+                    return InventoryEmpty
                
                result = response.json()
                skins = set()

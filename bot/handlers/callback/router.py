@@ -1,23 +1,28 @@
+from typing import Annotated
+
 from aiogram import F, Router
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, FSInputFile
 
-from bot.schemas import UserDataclass
+from bot.db.repository import get_user
+from bot.schemas import UserModel
+from bot.utils.depend import Depend
 from bot.utils.filter.callback import (
     InventoryPaginateCallbackData,
     SkinCallbackData,
     SteamProfileCallback,
 )
-from bot.utils.filter.state import PercentState, SteamIDState, UpdateTimeState
+from bot.utils.filter.state import PercentState, SteamIDState
 from bot.utils.inline import (
     chart_buttons,
     inventory_button_or_chart,
     inventory_item_button,
     settings_button,
 )
+from bot.utils.responses import isresponse
 
-from .service import CallbackService
+from .service import CallbackService, get_callback_service
 
 callback_router = Router(name="callback_router")
 
@@ -32,33 +37,16 @@ async def delete_message(query: CallbackQuery):
 @callback_router.callback_query(F.data == "settings_notify")
 async def settings_notify(
      query: CallbackQuery,
-     user: UserDataclass,
-     service: CallbackService
+     user: Annotated[UserModel, Depend(get_user)],
+     service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
      result = await service.settings_notify(user=user)
      await query.message.edit_reply_markup(
           inline_message_id=query.inline_message_id,
           reply_markup=await settings_button(
                notify_status=result,
-               update_time=user.update_time.pretty_string
           )
      )
-     
-     
-@callback_router.callback_query(F.data == "settings_update_time")
-async def settings_update_time(
-     query: CallbackQuery,
-     state: FSMContext
-):
-     await state.set_state(UpdateTimeState.time)
-     await query.message.answer(
-          (
-               "Отправь дату в виде: day-hour-minute"
-               "\nПример: 0-0-25." 
-               "\nОбновление будет происходить каждые 25 минут"
-          )
-     )
-     await query.answer()
      
     
 @callback_router.callback_query(SkinCallbackData.filter(F.mode == "steam_skin"))
@@ -66,7 +54,7 @@ async def steam_item(
      query: CallbackQuery,
      state: FSMContext,
      callback_data: SkinCallbackData,
-     user: UserDataclass
+     user: Annotated[UserModel, Depend(get_user)]
 ):
      keyboard = query.message.reply_markup.inline_keyboard
      name = keyboard[callback_data.row][callback_data.index].text
@@ -87,7 +75,7 @@ async def steam_item(
 @callback_router.callback_query(SkinCallbackData.filter(F.mode == "inventory_item"))
 async def inventory_item(
      query: CallbackQuery,
-     user: UserDataclass,
+     user: Annotated[UserModel, Depend(get_user)],
      callback_data: SkinCallbackData
 ):
      keyboard = query.message.reply_markup.inline_keyboard
@@ -109,7 +97,7 @@ async def inventory_item(
 async def chart_item(
      query: CallbackQuery,
      callback_data: SkinCallbackData,
-     user: UserDataclass,
+     user: Annotated[UserModel, Depend(get_user)],
      service: CallbackService
 ):
      keyboard = query.message.reply_markup.inline_keyboard
@@ -143,7 +131,7 @@ async def chart_item(
 async def inventory_left(
      query: CallbackQuery,
      callback_data: InventoryPaginateCallbackData,
-     user: UserDataclass
+     user: Annotated[UserModel, Depend(get_user)]
 ):
      if not user.skins:
           return await query.answer("Ваш инвентарь пуст")
@@ -167,7 +155,7 @@ async def inventory_left(
 async def inventory_right(
      query: CallbackQuery,
      callback_data: InventoryPaginateCallbackData,
-     user: UserDataclass
+     user: Annotated[UserModel, Depend(get_user)]
 ):
      if not user.skins:
           return await query.answer("Ваш инвентарь пуст")
@@ -188,8 +176,8 @@ async def inventory_right(
 @callback_router.callback_query(F.data == "delete_item")
 async def delete_item(
      query: CallbackQuery,
-     user: UserDataclass,
-     service: CallbackService
+     user: Annotated[UserModel, Depend(get_user)],
+     service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
      name = query.message.text.split("\n")[0].strip()
      if user.get_skin(name) is None:
@@ -207,7 +195,7 @@ async def delete_item(
 @callback_router.callback_query(F.data == "create_skin_or_update_percent")
 async def create_skin_or_update_percent(
      query: CallbackQuery,
-     user: UserDataclass,
+     user: Annotated[UserModel, Depend(get_user)],
      state: FSMContext
 ):
      name = query.message.text.split("\n")[0].strip()
@@ -224,16 +212,16 @@ async def create_skin_or_update_percent(
 @callback_router.callback_query(F.data == "reset_chart")
 async def reset_chart(
      query: CallbackQuery,
-     user: UserDataclass,
-     service: CallbackService
+     user: Annotated[UserModel, Depend(get_user)],
+     service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
      name = query.message.caption.strip()
      if name in user.skins_names:
           return await query.answer(f"Предмет {name} не найден в инвентаре")
      
      result = await service.reset_chart(user=user, skin_name=name)
-     if isinstance(result, str):
-          return await query.message.answer(result)
+     if isresponse(result):
+          return await query.message.answer(result.text)
      
      await query.message.delete()
      await query.message.answer(f"График для скина {name} сброшен")
@@ -255,8 +243,8 @@ async def steam_account_not_valide(
 async def steam_profile(
      query: CallbackQuery,
      callback_data: SteamProfileCallback,
-     user: UserDataclass,
-     service: CallbackService
+     user: Annotated[UserModel, Depend(get_user)],
+     service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
      msg = await query.message.answer(
           "Начинаю выгрузку предметов. Это может занять некоторое время."
@@ -267,9 +255,9 @@ async def steam_profile(
           user=user,
           steamid=callback_data.steamid
      )
-     if isinstance(result, str):
+     if isresponse(result):
           await msg.delete()
-          return await query.message.answer(result)
+          return await query.message.answer(result.text)
      
      text = "*Добавленные предметы*\n"
      text += "\n\n".join(result)

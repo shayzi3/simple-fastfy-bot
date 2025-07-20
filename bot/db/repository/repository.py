@@ -1,82 +1,94 @@
-from typing import Any, Generic
+from typing import Any, Generic, TypeVar
 
 from sqlalchemy import delete, insert, select, update
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.session import Session
-from bot.log.logging_ import logging_
-from bot.types import DATACLASS
+from bot.db.models import Base
+from bot.logs.logging_ import logging_
 
-from .abstract_repository import AbstractRepository
+SQLMODEL = TypeVar("SQLMODEL", bound=Base)
 
 
-class Repository(AbstractRepository, Generic[DATACLASS]):
-     model = None
+
+class Repository(Generic[SQLMODEL]):
+     model: SQLMODEL
+     
      
      @classmethod
      async def read(
           cls, 
-          where: dict[str, Any], 
-          return_values: list[str] = []
-     ) -> None | DATACLASS | list[Any]:
-          async with Session.async_session() as session:
-               logging_.db.info(f"GET DATA FROM {cls.model.__tablename__} WHERE {where}")
-               
-               sttm = select(cls.model).filter_by(**where)
-               result = await session.execute(sttm)
-               scalar = result.scalar()
-               
-               if not scalar:
-                    return None
-
-          if return_values:
-               return [getattr(scalar, name, None) for name in return_values]
-          return cls.model.dataclass_model.from_dict(scalar.__dict__)
+          session: AsyncSession,
+          with_relation: bool = False,
+          all: bool = False,
+          **read_where
+     ) -> SQLMODEL | list[SQLMODEL] | None:
+          sttm = select(cls.model).filter_by(**read_where)
+          if with_relation is True:
+               sttm = sttm.options(*cls.model.selectinload())
           
-          
+          result = await session.execute(sttm)
+          model = result.scalar() if all is False else result.scalars().all()
+          logging_.db.info(f"GET DATA FROM {cls.model.__tablename__} WHERE {read_where}")
+          return None if not model else model
+                         
      
      @classmethod
      async def create(
           cls, 
+          session: AsyncSession,
           values: dict[str, Any] | list[dict[str, Any]]
-     ) -> None:
-          async with Session.async_session() as session:
-               logging_.db.info(f"INSERT DATA IN {cls.model.__tablename__} VALUE {values}")
-               
-               sttm = insert(cls.model).values(values)
-               await session.execute(sttm)
-               await session.commit()
-               
+     ) -> bool:
+          sttm = (
+               insert(cls.model).
+               values(values).
+               returning(cls.model.returning())
+          )
+          result = await session.execute(sttm)
+          result = result.scalar()
+          await session.commit()
           
+          value = False if not result else True
+          logging_.db.info(f"INSERT INTO {cls.model.__tablename__} DATA {values}. Success: {value}")
+          return value
+               
      
      @classmethod
      async def update(
           cls, 
-          where: dict[str, Any], 
-          values: dict[str, Any]
+          session: AsyncSession,
+          values: dict[str, Any],
+          **update_where
      ) -> bool:
-          async with Session.async_session() as session:
-               logging_.db.info(f"UPDATE DATA IN {cls.model.__tablename__} WHERE {where} VALUE {values}")
-               
-               sttm = (
-                    update(cls.model).
-                    filter_by(**where).
-                    values(**values)
-               )
-               await session.execute(sttm)
-               await session.commit()
+          sttm = (
+               update(cls.model).
+               filter_by(**update_where).
+               values(values).
+               returning(cls.model.returning())
+          )
+          result = await session.execute(sttm)
+          result = result.scalar()
+          await session.commit()
+          
+          value = False if not result else True
+          logging_.db.info(f"UPDATE {cls.model.__tablename__} WHERE {update_where} DATA {values}. Success: {value}")
+          return value
      
      
      @classmethod
      async def delete(
           cls, 
-          where: dict[str, Any]
+          session: AsyncSession,
+          **delete_where
      ) -> bool:
-          async with Session.async_session() as session:
-               logging_.db.info(f"DELETE DATA FROM {cls.model.__tablename__} WHERE {where}")
-               
-               sttm = (
-                    delete(cls.model).
-                    filter_by(**where)
-               )
-               await session.execute(sttm)
-               await session.commit()
+          sttm = (
+               delete(cls.model).
+               filter_by(**delete_where).
+               returning(cls.model.returning())
+          )
+          result = await session.execute(sttm)
+          result = result.scalar()
+          await session.commit()
+          
+          value = False if not result else True
+          logging_.db.info(f"DELETE {cls.model.__tablename__} WHERE {delete_where}. Success: {value}")
+          return value

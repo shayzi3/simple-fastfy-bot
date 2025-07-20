@@ -1,27 +1,22 @@
+import os
+
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from bot.constant import TEST_MODE
 
-path = "bot/core/prod.env"
 if TEST_MODE is True:
-     path = "bot/core/test.env"
-     
-
-
-
-class BaseConfig(BaseSettings):
-     bot_token: str
-     sql_url: str
-     webhook_url: str
-     webhook_token: str
-     steam_token: str
-     admins: list[int]
-     
-     @property
-     def bot_webhook_url(self) -> str:
-          return self.webhook_url + "/webhook/telegram"
-     
-     model_config = SettingsConfigDict(env_file=path)
+     class BaseConfig(BaseSettings):
+          bot_token: str
+          sql_url: str
+          steam_token: str
+          
+          model_config = SettingsConfigDict(env_file="bot/core/test_env.env")
+else:
+     class BaseConfig(BaseModel):
+          bot_token: str = os.environ["BOT_TOKEN"]
+          SQL_URL: str = os.environ["SQL_URL"]
+          steam_token: str = os.environ("STEAM_TOKEN")
      
      
 base_config = BaseConfig()

@@ -1,7 +1,6 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.schemas.base import BaseSkinDataclass
 from bot.utils.filter.callback import (
     InventoryPaginateCallbackData,
     SkinCallbackData,
@@ -11,7 +10,6 @@ from bot.utils.filter.callback import (
 
 async def settings_button(
      notify_status: bool,
-     update_time: str
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
@@ -23,10 +21,6 @@ async def settings_button(
           InlineKeyboardButton(
                text=f"Уведомления: {notify}",
                callback_data="settings_notify"
-          ),
-          InlineKeyboardButton(
-               text=f"Время обновления: {update_time}",
-               callback_data="settings_update_time"
           )
      )
      builder.adjust(1, 1)
@@ -64,7 +58,7 @@ async def search_item_button(
 
 
 async def inventory_button_or_chart(
-     skins: list[list[BaseSkinDataclass]],
+     skins: list[list],
      index: int,
      mode: str
 ) -> InlineKeyboardMarkup:

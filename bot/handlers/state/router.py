@@ -1,51 +1,33 @@
+from typing import Annotated
+
 from aiogram import Router
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, URLInputFile
 from aiogram.utils.markdown import link
 
-from bot.schemas import Time, UserDataclass
-from bot.utils.filter.state import (
-    PercentState,
-    SearchState,
-    SteamIDState,
-    UpdateTimeState,
-)
+from bot.db.repository import get_user
+from bot.schemas import UserModel
+from bot.utils.depend import Depend
+from bot.utils.filter.state import PercentState, SearchState, SteamIDState
 from bot.utils.inline import search_item_button, steam_profile_button
+from bot.utils.responses import isresponse
 
-from .service import StateService
+from .service import StateService, get_state_service
 
 state_router = Router(name="state_router")
 
-
-@state_router.message(UpdateTimeState.time)
-async def update_time(
-     message: Message,
-     state: FSMContext,
-     user: UserDataclass,
-     service: StateService
-):
-     valide_time = Time.from_str(message.text)
-     if isinstance(valide_time, Time):
-          await service.update_time(
-               user=user,
-               new_time=valide_time.to_string
-          )
-          await state.clear()
-          return await message.answer(f"Время обновлено: {valide_time.pretty_string}")
-     await message.answer(valide_time)
-     
      
      
 @state_router.message(SearchState.item)
 async def search_item(
      message: Message,
      state: FSMContext,
-     service: StateService
+     service: Annotated[StateService, Depend(get_state_service)]
 ):
      result = await service.search_item(item=message.text)
-     if isinstance(result, str):
-          return await message.answer(result)
+     if isresponse(result):
+          return await message.answer(result.text)
      
      await message.answer(
           text=f"Предметы по запросу: {message.text}",
@@ -59,8 +41,8 @@ async def search_item(
 async def update_create_percent(
      message: Message,
      state: FSMContext,
-     user: UserDataclass,
-     service: StateService
+     user: Annotated[UserModel, Depend(get_user)],
+     service: Annotated[StateService, Depend(get_state_service)]
 ):
      if message.text.isdigit() is False:
           return await message.answer("Процент должен быть число от 3 до 90")
@@ -87,20 +69,20 @@ async def update_create_percent(
      await state.clear()
      
      
-     
+
 @state_router.message(SteamIDState.steamid)
 async def steam_user(
      message: Message,
      state: FSMContext,
-     service: StateService
+     service: Annotated[StateService, Depend(get_state_service)]
 ):
      steamid_ = message.text
      if steamid_.isdigit() is False:
           return await message.answer("ID должен быть числом!")
      
      result = await service.steam_user(steamid=int(message.text))
-     if isinstance(result, str):
-          return await message.answer(result)
+     if isresponse(result):
+          return await message.answer(result.text)
      
      await message.answer_photo(
           photo=URLInputFile(url=result.avatarmedium),

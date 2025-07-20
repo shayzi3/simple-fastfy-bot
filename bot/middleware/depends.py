@@ -4,9 +4,7 @@ from typing import Any, Awaitable, Callable
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import CallbackQuery, Message
 
-from bot.db.repository import UserRepository
-from bot.handlers import __depends__
-from bot.schemas import UserDataclass
+from bot.utils.depend import Depend
 
 
 class DependMiddleware(BaseMiddleware):
@@ -19,22 +17,15 @@ class DependMiddleware(BaseMiddleware):
           data: dict[str, Any]
      ) -> None:
           callback_object = data.get("handler").callback
-          arguments = inspect.signature(callback_object).parameters
+          signature = inspect.signature(callback_object)
           
-          for key, value in arguments.items():
-               if value.annotation is UserDataclass:
-                    user = await UserRepository.read(where={"telegram_id": event.from_user.id})
-                    if user is None:
-                         await UserRepository.create(
-                              values={
-                                   "telegram_id": event.from_user.id,
-                                   "notify": False,
-                                   "update_time": "0-0-25"
-                              }
-                         )
-                    data[key] = await UserRepository.read(where={"telegram_id": event.from_user.id})
-                    continue
-                    
-               if value.annotation in __depends__.keys():
-                    data[key] = await __depends__[value.annotation]()
+          for arg, value in signature.parameters.items():
+               meta = getattr(value.annotation, "__metadata__", None) # Annotated
+               if meta is not None:
+                    for depend in meta:
+                         if isinstance(depend, Depend):
+                              data[arg] = await depend.call(data)
+               else: # dafault value
+                    if isinstance(value.default, Depend):
+                         data[arg] = await value.default.call(data)
           return await handler(event, data)

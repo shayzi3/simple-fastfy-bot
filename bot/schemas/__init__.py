@@ -1,2 +1,1 @@
-from .base import SteamUser, Time
-from .schema import SkinDataclass, UserDataclass
+from .schema import SkinModel, SkinPriceHistoryModel, UserModel, UserSkinModel

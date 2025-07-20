@@ -54,12 +54,6 @@ class Logger:
           )
      
      @property
-     def worker(self) -> BaseLogger:
-          return BaseLogger(
-               path=path + "/worker/"
-          )
-          
-     @property
      def http_webhook(self) -> BaseLogger:
           return BaseLogger(
                path=path + "/http/webhook/"
@@ -69,18 +63,6 @@ class Logger:
      def http_steam(self) -> BaseLogger:
           return BaseLogger(
                path=path + "/http/steam/"
-          )
-          
-     @property
-     def json(self) -> BaseLogger:
-          return BaseLogger(
-               path=path + "/json/"
-          )
-          
-     @property
-     def chart(self) -> BaseLogger:
-          return BaseLogger(
-               path=path + "/chart/"
           )
           
           

@@ -1,34 +1,39 @@
+from typing import Annotated
+
 from aiogram import Router
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from bot.schemas import UserDataclass
+from bot.db.repository import get_user
+from bot.schemas import UserModel
+from bot.utils.depend import Depend
 from bot.utils.filter.state import SearchState, SteamIDState
+from bot.utils.filter.timeout import RateLimit
 from bot.utils.inline import inventory_button_or_chart, settings_button
 
 command_router = Router(name="command_router")
 
 
+
 @command_router.message(CommandStart())
-async def start(message: Message,):
+async def start(message: Message):
      await message.answer(
           "Я - бот, который поможет тебе отслеживать цены предметов CS2. Пропиши команду /help"
      )
      
      
 
-@command_router.message(Command("settings"))
+@command_router.message(Command("settings"), RateLimit(seconds=1))
 async def settings(
      message: Message,
-     user: UserDataclass
+     user: Annotated[UserModel, Depend(get_user)]
 ):
      await message.answer(
           text="Настройки",
           reply_markup=await settings_button(
-               notify_status=user.notify,
-               update_time=user.update_time.pretty_string
+               notify_status=user.notify
           )
      )
      
@@ -47,7 +52,7 @@ async def clear(
 
 
 
-@command_router.message(Command("search"))
+@command_router.message(Command("search"), RateLimit(seconds=5))
 async def search(
      message: Message,
      state: FSMContext
@@ -57,10 +62,10 @@ async def search(
      
     
      
-@command_router.message(Command("inventory"))
+@command_router.message(Command("inventory"), RateLimit(seconds=2))
 async def inventory(
      message: Message,
-     user: UserDataclass,
+     user: Annotated[UserModel, Depend(get_user)],
 ):
      if not user.skins:
           return await message.answer("Ваш инвентарь пуст")
@@ -91,10 +96,10 @@ async def help(message: Message):
      
      
      
-@command_router.message(Command("chart"))
+@command_router.message(Command("chart"), RateLimit(seconds=10))
 async def chart(
      message: Message,
-     user: UserDataclass
+     user: Annotated[UserModel, Depend(get_user)]
 ):
      if not user.skins:
           return await message.answer("Ваш инвентарь пуст")
@@ -110,7 +115,7 @@ async def chart(
      
      
      
-@command_router.message(Command("steam"))
+@command_router.message(Command("steam"), RateLimit(seconds=2))
 async def steam(
      message: Message,
      state: FSMContext

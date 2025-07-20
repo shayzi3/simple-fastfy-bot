@@ -5,14 +5,13 @@ import uvicorn
 from aiogram.types.bot_command import BotCommand
 from fastapi import FastAPI
 
-from bot.constant import TEST_MODE
 from bot.core.bot import bot, dp
 from bot.core.config import base_config
 from bot.db.json_storage import JsonStorage
 from bot.db.repository import SkinRepository, UserRepository
 from bot.handlers import __routers__
-from bot.http.steam import SteamHttpClient
-from bot.http.webhook import webhook_router
+from bot.infrastracture.http.steam import SteamHttpClient
+from bot.infrastracture.http.webhook import webhook_router
 from bot.middleware import __middlewares__
 from bot.worker.monitoring import MonitoringWorker
 
@@ -24,16 +23,16 @@ async def lifespan(_: FastAPI):
           dp.message.middleware(middleware())
           dp.callback_query.middleware(middleware())
           
-     json_storage = JsonStorage()
-     await json_storage.run()
+     # json_storage = JsonStorage()
+     # await json_storage.run()
           
-     monitoring = MonitoringWorker(
-          user_repository=UserRepository,
-          skin_repository=SkinRepository,
-          json_storage=json_storage,
-          http_client=SteamHttpClient()
-     )
-     asyncio.create_task(monitoring.run())
+     # monitoring = MonitoringWorker(
+     #      user_repository=UserRepository,
+     #      skin_repository=SkinRepository,
+     #      json_storage=json_storage,
+     #      http_client=SteamHttpClient()
+     # )
+     # asyncio.create_task(monitoring.run())
      
      await bot.set_my_commands(
           [
@@ -56,6 +55,7 @@ async def lifespan(_: FastAPI):
      )
      yield
      await bot.delete_webhook(drop_pending_updates=True)
+     await bot.session.close()
      
      
 app = FastAPI(
@@ -66,7 +66,5 @@ app.include_router(webhook_router)
 
 
 if __name__ == "__main__":
-     if TEST_MODE is False:
-          print("Проверьте флаг TEST_MODE")
      uvicorn.run("main:app", host="0.0.0.0", port=8083, reload=True)
 

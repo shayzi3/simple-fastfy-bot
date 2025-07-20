@@ -1,9 +1,5 @@
-from .depends import DependMiddleware
-from .log import LogMiddleware
-from .timeout import TimeoutMiddleware
+from .logging import LogMiddleware
 
 __middlewares__ = [
-     LogMiddleware,
-     TimeoutMiddleware,
-     DependMiddleware,
+     LogMiddleware
 ]
