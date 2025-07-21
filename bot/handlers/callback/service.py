@@ -1,50 +1,97 @@
 import asyncio
 import os
+import uuid
+
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot.core.gen import generate_skin_id
-from bot.core.timezone import time_now
-from bot.db.json_storage import JsonStorage
-from bot.db.repository import SkinRepository, UserRepository
+from bot.db.models import User
+from bot.db.repository import SkinRepository, UserRepository, UserSkinRepository
 from bot.infrastracture.http.steam import SteamHttpClient
-from bot.schemas import UserModel
-from bot.utils.chart import Chart
-from bot.utils.responses import AnyResponse, InventoryLimit, TryLater, isresponse
+from bot.responses import AnyResponse, DataUpdate, SkinCreate, TryLater, isresponse
+from bot.schemas import SteamSkins
+from bot.utils.filter.callback import Paginate
 
 
 class CallbackService:
-     def __init__(
-          self, 
-          user_repository: UserRepository,
-          skin_repository: SkinRepository,
-          http_client: SteamHttpClient,
-          json_storage: JsonStorage,
-          chart: Chart
-     ):
-          self.user_repository = user_repository
-          self.skin_repository = skin_repository
-          self.http_client = http_client
-          self.json_storage = json_storage
-          self.chart = chart
+     def __init__(self) -> None:
+          self.user_repository = UserRepository
+          self.skin_repository = SkinRepository
+          self.user_skin_repository = UserSkinRepository
+          self.http_client = SteamHttpClient()
           
           
-     async def settings_notify(
+     
+     async def register_new_steam_account(
           self,
-          user: UserModel
-     ) -> bool:
-          update_data = {
-               "notify": True if user.notify is False else False
-          }
+          session: AsyncSession,
+          user: User,
+          steam_id: int
+     ) -> AnyResponse:
+          steam_data = await self.http_client.steam_user(steam_id=steam_id)
+          if isresponse(steam_data):
+               return steam_data
+          
           await self.user_repository.update(
-               where=user.where,
-               values=update_data,
-               delete_redis_value=user.delete_redis_values
+               session=session,
+               values={
+                    "steam_id": steam_data.steam_id,
+                    "steam_name": steam_data.steam_name,
+                    "steam_avatar": steam_data.steam_avatar,
+                    "steam_profile_link": steam_data.steam_profile_link
+               },
+               id=user.id
           )
-          return update_data.get("notify")
+          return DataUpdate
+     
+     
+     async def steam_skin(
+          self,
+          session: AsyncSession,
+          user: User,
+          skin_hash_name: str
+     ) -> AnyResponse:
+          skin_exists = await self.skin_repository.read(
+               session=session,
+               name=skin_hash_name
+          )
+          if skin_exists is None:
+               await self.skin_repository.create(
+                    session=session,
+                    values={"name": skin_hash_name}
+               )
+          await self.user_skin_repository.create(
+               session=session,
+               values={
+                    "uuid": uuid.uuid4(),
+                    "skin_name": skin_hash_name,
+                    "user_id": user.id
+               }
+          )
+          return SkinCreate
+     
+     
+     async def steam_skin_paginate(
+          self,
+          callback_data: Paginate
+     ) -> tuple[SteamSkins, Paginate] | AnyResponse:
+          if "left" in callback_data.mode:
+               callback_data.offset = callback_data.offset - 5
+               callback_data.current_page = callback_data.current_page - 1
+               
+          elif "right" in callback_data.mode:
+               callback_data.offset = callback_data.offset + 5
+               callback_data.current_page = callback_data.current_page + 1
+          
+          skins = await self.http_client.skin_search(query=callback_data.query)
+          if isresponse(skins):
+               return skins
+          return (skins, callback_data)
      
      
      async def delete_item(
           self,
-          user: UserModel,
+          user: User,
           item: str
      ) -> None:
           await self.skin_repository.delete(
@@ -127,10 +174,4 @@ class CallbackService:
      
      
 async def get_callback_service() -> CallbackService:
-     return CallbackService(
-          user_repository=UserRepository,
-          skin_repository=SkinRepository,
-          http_client=SteamHttpClient(),
-          json_storage=JsonStorage(),
-          chart=Chart()
-     )
+     return CallbackService()

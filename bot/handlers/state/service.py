@@ -1,69 +1,45 @@
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.json_storage import JsonStorage
+from bot.db.models import User
 from bot.db.repository import SkinRepository, UserRepository
-from bot.infrastracture.http.steam import SteamHttpClient, SteamParseClient
-from bot.schemas import UserModel
-from bot.utils.responses import AnyResponse, InvalidSteamID
+from bot.infrastracture.http.steam import SteamHttpClient
+from bot.responses import AnyResponse, DataUpdate, InvalidSteamID
+from bot.schemas import SteamSkins, SteamUser
 
 
 class StateService:
-     def __init__(
-          self, 
-          user_repository: UserRepository,
-          parse_client: SteamParseClient,
-          http_client: SteamHttpClient,
-          skin_repository: SkinRepository,
-          json_storage: JsonStorage
-     ):
-          self.user_repository = user_repository
-          self.parse_client = parse_client
-          self.http_client = http_client
-          self.skin_repository = skin_repository
-          self.json_storage = json_storage
+     def __init__(self) -> None:
+          self.user_repository = UserRepository
+          self.http_client = SteamHttpClient()
+          self.skin_repository = SkinRepository
           
           
-          
-     async def search_item(self, item: str) -> AnyResponse | list[str]:
-          return await self.parse_client.search_item(item=item)
+     async def skin_search(self, query: str) -> AnyResponse | SteamSkins:
+          return await self.http_client.skin_search(query=query)
      
      
+     async def steam_user(self, steamid: int) -> AnyResponse | SteamUser:
+          return await self.http_client.steam_user(steamid=steamid)
      
-     async def create_item_with_percent(
+     
+     async def update_skin_percent(
           self,
-          item: str,
-          user: UserModel,
+          session: AsyncSession,
+          user: User,
           percent: int
-     ):
-          ...
-          
-          
-     async def update_item_percent(
-          self,
-          user: UserModel,
-          item: str,
-          percent: int
-     ):
-          await self.skin_repository.update(
-               where={"owner": user.telegram_id, "name": item},
-               values={"percent": percent}
+     ) -> AnyResponse:
+          await self.user_repository.update(
+               session=session,
+               values={"skin_percent": percent},
+               id=user.id
           )
+          return DataUpdate
           
           
-     async def steam_user(self, steamid: int) -> AnyResponse:
-          steam_user = await self.http_client.steam_user(steamid=steamid)
-          if steam_user is None:
-               return InvalidSteamID
-          return steam_user
-          
+               
           
           
           
 async def get_state_service() -> StateService:
-     return StateService(
-          user_repository=UserRepository,
-          parse_client=SteamParseClient(),
-          http_client=SteamHttpClient(),
-          skin_repository=SkinRepository,
-          json_storage=JsonStorage()
-     )
+     return StateService()
                

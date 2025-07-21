@@ -4,3 +4,4 @@ venv
 fastfy-data/
 test_env.env
 prod_env.env
+__pycache__/

@@ -16,7 +16,7 @@ else:
      class BaseConfig(BaseModel):
           bot_token: str = os.environ["BOT_TOKEN"]
           SQL_URL: str = os.environ["SQL_URL"]
-          steam_token: str = os.environ("STEAM_TOKEN")
+          steam_token: str = os.environ["STEAM_TOKEN"]
      
      
 base_config = BaseConfig()

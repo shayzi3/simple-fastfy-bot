@@ -1,10 +1,14 @@
 from .abstract import AnyResponse
-from .response import (
+from .error import (
     InvalidSteamID,
     InventoryEmpty,
-    InventoryLimit,
     InventoryLock,
-    NoFoundMessage,
+    SkinNotFound,
+    SteamUserNotFound,
     TryLater,
-    isresponse,
 )
+from .success import DataUpdate, SkinCreate
+
+
+def isresponse(obj: type) -> bool:
+    return isinstance(obj, type) and AnyResponse in obj.mro()

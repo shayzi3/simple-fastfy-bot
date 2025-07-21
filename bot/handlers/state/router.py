@@ -5,79 +5,75 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, URLInputFile
 from aiogram.utils.markdown import link
+from aiogram_tool.depend import Depend
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.repository import get_user
-from bot.schemas import UserModel
-from bot.utils.depend import Depend
-from bot.utils.filter.state import PercentState, SearchState, SteamIDState
-from bot.utils.inline import search_item_button, steam_profile_button
-from bot.utils.responses import isresponse
+from bot.db.models import User
+from bot.db.session import async_db_session
+from bot.handlers.dependency import get_user
+from bot.responses import isresponse
+from bot.utils.buttons.inline import steam_profile_button, steam_skins_button
+from bot.utils.filter.state import SkinPercentState, SkinSearchState, SteamIDState
 
 from .service import StateService, get_state_service
 
 state_router = Router(name="state_router")
 
+
      
-     
-@state_router.message(SearchState.item)
-async def search_item(
+@state_router.message(SkinSearchState.skin)
+async def skin_search(
      message: Message,
      state: FSMContext,
      service: Annotated[StateService, Depend(get_state_service)]
 ):
-     result = await service.search_item(item=message.text)
+     result = await service.skin_search(query=message.text)
      if isresponse(result):
-          return await message.answer(result.text)
+          text = result.text
+          if getattr(result, "__name__", "") == "SkinNotFound":
+               text = result.text.format(message.text)
+          return await message.answer(text=text)
      
      await message.answer(
           text=f"Предметы по запросу: {message.text}",
-          reply_markup=await search_item_button(items=result)
+          reply_markup=await steam_skins_button(skins=result, query=message.text)
      )
      await state.clear()
      
 
      
-@state_router.message(PercentState.percent)
-async def update_create_percent(
+@state_router.message(SkinPercentState.percent)
+async def update_skin_percent(
      message: Message,
      state: FSMContext,
-     user: Annotated[UserModel, Depend(get_user)],
+     session: Annotated[AsyncSession, Depend(async_db_session)],
+     user: Annotated[User, Depend(get_user)],
      service: Annotated[StateService, Depend(get_state_service)]
 ):
      if message.text.isdigit() is False:
-          return await message.answer("Процент должен быть число от 3 до 90")
+          return await message.answer("Процент должен быть число от 5 до 100.")
      
-     if int(message.text) < 3 or int(message.text) > 90:
-          return await message.answer("Процент должен быть число от 3 до 90")
+     percent = int(message.text)
+     if percent < 5 or percent > 100:
+          return await message.answer("Процент должен быть число от 5 до 100.")
      
-     data = await state.get_data()
-     if data.get("mode") == "create":
-          result = await service.create_item_with_percent(
-               item=data.get("skin_name"),
-               user=user,
-               percent=int(message.text)
-          )
-          await message.answer(result)
-          
-     if data.get("mode") == "update":
-          result = await service.update_item_percent(
-               user=user,
-               item=data.get("skin_name"),
-               percent=int(message.text)
-          )
-          await message.answer(f"Процент для скина {data.get('skin_name')} обновлён")
+     result = await service.update_skin_percent(
+          session=session,
+          user=user,
+          percent=percent
+     )
      await state.clear()
+     return await message.answer(text=result.text)
      
      
 
-@state_router.message(SteamIDState.steamid)
+@state_router.message(SteamIDState.steam_id)
 async def steam_user(
      message: Message,
      state: FSMContext,
      service: Annotated[StateService, Depend(get_state_service)]
 ):
-     steamid_ = message.text
-     if steamid_.isdigit() is False:
+     if message.text.isdigit() is False:
           return await message.answer("ID должен быть числом!")
      
      result = await service.steam_user(steamid=int(message.text))
@@ -85,14 +81,15 @@ async def steam_user(
           return await message.answer(result.text)
      
      await message.answer_photo(
-          photo=URLInputFile(url=result.avatarmedium),
-          caption=f"{result.personaname} \n{link('Steam профиль', result.profileurl)}",
+          photo=URLInputFile(url=result.steam_avatar),
+          caption=f"{result.steam_name} \n{link('Steam профиль', result.steam_profile_link)}",
           parse_mode=ParseMode.MARKDOWN,
           reply_markup=await steam_profile_button(
-               steamid=int(message.text)
+               steamid=result.steam_id
           )
      )
      await state.clear()
+     
      
      
      

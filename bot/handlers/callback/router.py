@@ -1,26 +1,24 @@
 from typing import Annotated
 
 from aiogram import F, Router
-from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, FSInputFile
+from aiogram_tool.depend import Depend
+from aiogram_tool.limit import Limit
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.repository import get_user
-from bot.schemas import UserModel
-from bot.utils.depend import Depend
-from bot.utils.filter.callback import (
-    InventoryPaginateCallbackData,
-    SkinCallbackData,
-    SteamProfileCallback,
-)
-from bot.utils.filter.state import PercentState, SteamIDState
-from bot.utils.inline import (
+from bot.db.models import User
+from bot.db.session import async_db_session
+from bot.handlers.dependency import get_user, get_user_rel
+from bot.responses import isresponse
+from bot.utils.buttons.inline import (
     chart_buttons,
     inventory_button_or_chart,
     inventory_item_button,
-    settings_button,
+    steam_skins_button,
 )
-from bot.utils.responses import isresponse
+from bot.utils.filter.callback import Paginate, PaginateItem, SteamProfileCallback
+from bot.utils.filter.state import SkinPercentState, SteamIDState
 
 from .service import CallbackService, get_callback_service
 
@@ -34,41 +32,128 @@ async def delete_message(query: CallbackQuery):
      
 
 
-@callback_router.callback_query(F.data == "settings_notify")
-async def settings_notify(
+@callback_router.callback_query(
+     F.data == "settings_update_skin_pecent", 
+     Limit(seconds=5)
+)
+async def setting_update_skin_percent(
      query: CallbackQuery,
-     user: Annotated[UserModel, Depend(get_user)],
+     state: FSMContext
+):
+     await state.set_state(SkinPercentState.percent)
+     await query.message.answer("Отправь число от 5 до 100")
+     await query.answer()
+
+     
+     
+     
+@callback_router.callback_query(
+     F.data.in_(["settings_new_steam_account", "steam_account_not_valide"]), 
+     Limit(minutes=2)
+)
+async def settings_new_steam_account(
+     query: CallbackQuery,
+     state: FSMContext
+):
+     await state.set_state(SteamIDState.steam_id)
+     await query.message.answer("Отправь мне SteamID")
+     await query.answer()
+     
+     
+     
+@callback_router.callback_query(
+     SteamProfileCallback.filter(),
+     Limit(minutes=2)
+)
+async def register_new_steam_account(
+     query: CallbackQuery,
+     callback_data: SteamProfileCallback,
+     session: Annotated[AsyncSession, Depend(async_db_session)],
+     user: Annotated[User, Depend(get_user)],
      service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
-     result = await service.settings_notify(user=user)
+     if user.steam_id == callback_data.steam_id:
+          return await query.answer("Этот аккаунт уже привязан.")
+     
+     result = await service.register_new_steam_account(
+          session=session,
+          user=user,
+          steam_id=callback_data.steam_id
+     )
+     await query.answer(text=result.text)
+     
+    
+    
+@callback_router.callback_query(
+     PaginateItem.filter(F.mode == "steam_skin"),
+     Limit(seconds=5)
+)
+async def steam_skin(
+     query: CallbackQuery,
+     callback_data: PaginateItem,
+     user: Annotated[User, Depend(get_user_rel)],
+     session: Annotated[AsyncSession, Depend(async_db_session)],
+     service: Annotated[CallbackService, Depend(get_callback_service)]
+):
+     for user_skin in user.skins:
+          if user_skin.skin_name == callback_data.skin_from_compress:
+               return await query.answer("Такой скин уже есть в инвентаре!")
+     
+     result = await service.steam_skin(
+          session=session,
+          user=user,
+          skin_hash_name=callback_data.skin_from_compress
+     )
+     await query.answer(text=result.text.format(callback_data.skin_from_compress))
+     
+     
+     
+@callback_router.callback_query(
+     Paginate.filter(F.data.contains("steam_skin_paginate")),
+     Limit(seconds=5)
+)
+async def steam_skin_paginate(
+     query: CallbackQuery,
+     callback_data: Paginate,
+     service: Annotated[CallbackService, Depend(get_callback_service)]
+):
+     if (
+          (callback_data.current_page == 1)
+          or (callback_data.current_page == callback_data.all_pages)
+     ):
+          return await query.answer("Дальше листать не получится")
+     
+     result = await service.steam_skin_paginate(
+          callback_data=callback_data.model_copy()
+     )
+     if isresponse(result):
+          return await query.answer(text=result.text)
+     
+     skins, data = result
      await query.message.edit_reply_markup(
           inline_message_id=query.inline_message_id,
-          reply_markup=await settings_button(
-               notify_status=result,
+          reply_markup=await steam_skins_button(
+               skins=skins,
+               offset=data.offset,
+               current_page=data.current_page,
+               query=data.query
           )
      )
      
-    
-@callback_router.callback_query(SkinCallbackData.filter(F.mode == "steam_skin"))
-async def steam_item(
+     
+@callback_router.callback_query(
+     Paginate.filter(F.data == "steam_skin_paginate_right"),
+     Limit(seconds=5)
+)
+async def steam_skin_paginate(
      query: CallbackQuery,
-     state: FSMContext,
-     callback_data: SkinCallbackData,
-     user: Annotated[UserModel, Depend(get_user)]
+     callback_data: Paginate,
+     service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
-     keyboard = query.message.reply_markup.inline_keyboard
-     name = keyboard[callback_data.row][callback_data.index].text
+     if callback_data.current_page == callback_data.all_pages:
+          return await query.answer("Дальше листать не получится")
      
-     if len(user.skins) >= 30:
-          return await query.answer("Максимальное кол-во предметов в инвентаре 30!")
      
-     if user.get_skin(name) is not None:
-          return await query.answer(f"Предмет {name} уже есть в инвентаре.")
-          
-     await state.set_data({"skin_name": name, "mode": "create"})
-     await state.set_state(PercentState.percent)
-     await query.message.answer("Отправь процент")
-     await query.answer()
      
      
      
@@ -236,38 +321,5 @@ async def steam_account_not_valide(
      await query.answer()
      await query.message.answer("Отправь другой SteamID")
      await state.set_state(SteamIDState.steamid)
-     
-     
-     
-@callback_router.callback_query(SteamProfileCallback.filter(F.mode == "steam_profile"))
-async def steam_profile(
-     query: CallbackQuery,
-     callback_data: SteamProfileCallback,
-     user: Annotated[UserModel, Depend(get_user)],
-     service: Annotated[CallbackService, Depend(get_callback_service)]
-):
-     msg = await query.message.answer(
-          "Начинаю выгрузку предметов. Это может занять некоторое время."
-     )
-     await query.answer()
-     
-     result = await service.steam_inventory(
-          user=user,
-          steamid=callback_data.steamid
-     )
-     if isresponse(result):
-          await msg.delete()
-          return await query.message.answer(result.text)
-     
-     text = "*Добавленные предметы*\n"
-     text += "\n\n".join(result)
-
-     await msg.delete()
-     await query.message.answer(
-          text=text,
-          parse_mode=ParseMode.MARKDOWN
-     )
-     
-     
      
      

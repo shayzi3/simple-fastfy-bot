@@ -2,14 +2,20 @@ import json
 import random
 
 import aiofiles
+import aiohttp
 import httpx
 
 from bot.core.config import base_config
 from bot.exception import BotException
 from bot.logs.logging_ import logging_
-from bot.utils.responses import AnyResponse, InventoryEmpty, InventoryLock
-
-# from bot.schemas import SteamUser
+from bot.responses import (
+    AnyResponse,
+    InventoryEmpty,
+    InventoryLock,
+    SkinNotFound,
+    TryLater,
+)
+from bot.schemas import SteamSkins, SteamUser
 
 
 class SteamHttpClient:
@@ -24,32 +30,58 @@ class SteamHttpClient:
                return random.choice(agents)
           
           
+          
      async def _get_headers(self) -> dict[str, str]:
           return {"User-Agent": await self.__fake_user_agent()}
      
-          
-     async def search_item(
-          self,
-          item: str
-     ) -> str | None:
+     
+     
+     async def steam_user(self, steam_id: int) -> SteamUser | AnyResponse:
           url = (
-               self.base_url + f"/market/search?l=russian&appid=730&q={item}"
+               "http://api.steampowered.com/"
+               "ISteamUser/GetPlayerSummaries/v0002/"
+               f"?key={base_config.steam_token}&steamids={steam_id}"
           )
           headers = await self._get_headers()
-          async with httpx.AsyncClient(headers=headers) as session:
-               logging_.http_steam.info(f"GET REQUEST STEAM FOR SEARCH ITEM: {item}")
-               for _ in range(3):
-                    try:
-                         response = await session.get(url=url)
-                         break
-                    except httpx.ConnectTimeout:
-                         continue
-               
-               if response.status_code != 200:
-                    await BotException.send_notify(msg=response.text)
-                    logging_.http_steam.error(f"ERROR REQUEST TO STEAM FOR SEARCH ITEM: {item}")
-                    return None
-               return response.text
+          async with aiohttp.ClientSession(headers=headers) as session:
+               try:
+                    async with session.get(url=url) as response:
+                         if response.status != 200:
+                              logging_.http_steam.error(f"SEARCH user. Status code: {response.status}. Text: {await response.text()}")
+                              return TryLater
+                              
+                         data = await response.json()
+                         return SteamUser.validate(data)
+               except Exception as ex:
+                    logging_.http_steam.error(f"SEARCH user {steam_id}", exc_info=ex)
+                    return TryLater
+          
+          
+     async def skin_search(
+          self,
+          query: str
+     ) -> AnyResponse | SteamSkins:
+          url = f"https://steamfolio.com/api/Popular/sort?type=2&searchTerm={query}&page=1"
+          headers = await self._get_headers()
+          async with aiohttp.ClientSession(headers=headers) as session:
+               try:
+                    async with session.get(url=url) as response:
+                         if response.status != 200:
+                              logging_.http_steam.error(f"SEARCH skin {query}. Code: {response.status}. Text: {await response.text()}")
+                              return TryLater
+
+                         data = await response.json()
+                         pages = data["data"]["pages"]
+                         skins = data["data"]["items"]
+                         if not skins:
+                              return SkinNotFound
+                    return SteamSkins.validate(
+                         pages=pages,
+                         obj=skins
+                    )
+               except Exception as ex:
+                    logging_.http_steam.error("", exc_info=ex)
+                    return TryLater
           
           
      async def item_price(
@@ -85,10 +117,6 @@ class SteamHttpClient:
                     
                price = price.replace(",", ".").split()[0]
                return round(float(price), 2)
-          
-          
-     async def steam_user(self, steamid: int) -> None:
-          ...
           
           
      async def inventory_by_steamid(

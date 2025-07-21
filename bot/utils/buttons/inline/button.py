@@ -1,26 +1,26 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.utils.filter.callback import (
-    InventoryPaginateCallbackData,
-    SkinCallbackData,
-    SteamProfileCallback,
-)
+from bot.schemas import SteamSkins
+from bot.utils.filter.callback import Paginate, PaginateItem, SteamProfileCallback
 
 
 async def settings_button(
-     notify_status: bool,
+     steam_tied: bool
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
-     notify = "Enable"
-     if notify_status is False:
-          notify = "Disable"
-     
+     text = "Сменить аккаунт" if steam_tied else "Привязать Steam"
      builder.add(
           InlineKeyboardButton(
-               text=f"Уведомления: {notify}",
-               callback_data="settings_notify"
+               text=text,
+               callback_data="settings_new_steam_account"
+          )
+     )
+     builder.add(
+          InlineKeyboardButton(
+               text="Изменить процент",
+               callback_data="settings_update_skin_percent"
           )
      )
      builder.adjust(1, 1)
@@ -28,33 +28,55 @@ async def settings_button(
 
 
 
-async def search_item_button(
-     items: list[str]
+async def steam_skins_button(
+     skins: SteamSkins,
+     offset: int = 0,
+     current_page: int = 1,
+     query: str = ""
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
-     
-     row = 0
-     index = 0
-     for num, name in enumerate(items):
-          if (num % 2 == 0) and (num != 0):
-               index = 0
-               row += 1
-               
-          if (num % 2 != 0) and (num != 0):
-               index += 1
-          
+     for skin_name in skins.skins[offset:5 + offset]:
           builder.add(
                InlineKeyboardButton(
-                    text=name,
-                    callback_data=SkinCallbackData(
+                    text=skin_name,
+                    callback_data=PaginateItem(
                          mode="steam_skin",
-                         row=row,
-                         index=index
+                         skin=skin_name # compress name
                     ).pack()
                )
           )
-     builder.adjust(2)
+     builder.add(
+          InlineKeyboardButton(
+               text="<",
+               callback_data=Paginate(
+                    mode="steam_skin_paginate_left",
+                    offset=offset,
+                    all_pages=skins.pages,
+                    current_page=current_page,
+                    query=query
+               ).pack()
+          )
+     )
+     builder.add(
+          InlineKeyboardButton(
+               text=f"{current_page}/{skins.pages}"
+          )
+     )
+     builder.add(
+          InlineKeyboardButton(
+               text=">",
+               callback_data=Paginate(
+                    mode="steam_skin_paginate_right",
+                    offset=offset,
+                    all_pages=skins.pages,
+                    current_page=current_page,
+                    query=query
+               ).pack()
+          )
+     )
+     builder.adjust(1, 1, 1, 1, 1, 3)
      return builder.as_markup()
+     
 
 
 async def inventory_button_or_chart(
@@ -172,10 +194,7 @@ async def steam_profile_button(steamid: int) -> InlineKeyboardMarkup:
      builder.add(
           InlineKeyboardButton(
                text="Аккаунт мой",
-               callback_data=SteamProfileCallback(
-                    mode="steam_profile",
-                    steamid=steamid
-               ).pack()
+               callback_data=SteamProfileCallback(steamid=steamid).pack()
           ),
           InlineKeyboardButton(
                text="Аккаунт не мой",

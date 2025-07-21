@@ -1,13 +1,13 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class SearchState(StatesGroup):
-     item = State()
+class SkinSearchState(StatesGroup):
+     skin = State()
      
      
-class PercentState(StatesGroup):
+class SkinPercentState(StatesGroup):
      percent = State()
      
      
 class SteamIDState(StatesGroup):
-     steamid = State()
+     steam_id = State()

@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import UUID, BigInteger, ForeignKey, Index, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 
+from bot.schemas import SkinUpdateMode
+
 from .base import Base
 
 
@@ -41,14 +43,15 @@ class Skin(Base):
      __tablename__ = "skins"
      
      name: Mapped[str] = mapped_column(primary_key=True)
-     price: Mapped[float] = mapped_column()
+     price: Mapped[float] = mapped_column(nullable=True)
      price_at_1_day: Mapped[float] = mapped_column(nullable=True)
      price_at_7_day: Mapped[float] = mapped_column(nullable=True)
      price_at_30_day: Mapped[float] = mapped_column(nullable=True)  
+     update_mode: Mapped[SkinUpdateMode] = mapped_column(default=SkinUpdateMode.HIGH)
      
      @classmethod
      def returning(cls):
-          return cls.name          
+          return cls.name
     
      
      
