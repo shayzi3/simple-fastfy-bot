@@ -36,7 +36,10 @@ class User(Base):
      @classmethod
      def returning(cls):
           return cls.id
-  
+     
+     @classmethod
+     def order_by(cls):
+          return cls.id
   
      
 class Skin(Base):
@@ -51,6 +54,10 @@ class Skin(Base):
      
      @classmethod
      def returning(cls):
+          return cls.name
+     
+     @classmethod
+     def order_by(cls):
           return cls.name
     
      
@@ -71,6 +78,10 @@ class SkinPriceHistory(Base):
      @classmethod
      def returning(cls):
           return cls.uuid
+     
+     @classmethod
+     def order_by(cls):
+          return cls.timestamp
      
      
      
@@ -95,3 +106,7 @@ class UserSkin(Base):
      @classmethod
      def returning(cls):
           return cls.uuid
+     
+     @classmethod
+     def order_by(cls):
+          return cls.skin_name

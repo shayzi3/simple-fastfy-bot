@@ -10,3 +10,7 @@ class Base(DeclarativeBase):
      @classmethod
      def returning(cls):
           pass
+     
+     @classmethod
+     def order_by(cls):
+          pass

@@ -86,7 +86,7 @@ async def register_new_steam_account(
     
 @callback_router.callback_query(
      PaginateItem.filter(F.mode == "steam_skin"),
-     Limit(seconds=5)
+     Limit(seconds=3)
 )
 async def steam_skin(
      query: CallbackQuery,
@@ -139,20 +139,6 @@ async def steam_skin_paginate(
                query=data.query
           )
      )
-     
-     
-@callback_router.callback_query(
-     Paginate.filter(F.data == "steam_skin_paginate_right"),
-     Limit(seconds=5)
-)
-async def steam_skin_paginate(
-     query: CallbackQuery,
-     callback_data: Paginate,
-     service: Annotated[CallbackService, Depend(get_callback_service)]
-):
-     if callback_data.current_page == callback_data.all_pages:
-          return await query.answer("Дальше листать не получится")
-     
      
      
      

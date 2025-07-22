@@ -20,9 +20,21 @@ class Repository(Generic[SQLMODEL]):
           session: AsyncSession,
           with_relation: bool = False,
           all: bool = False,
+          values: list[Any] = [],
           **read_where
-     ) -> SQLMODEL | list[SQLMODEL] | None:
-          sttm = select(cls.model).filter_by(**read_where)
+     ) -> SQLMODEL | list[SQLMODEL] | None | list[Any]:
+          sttm = (
+               select(cls.model).
+               filter_by(**read_where).
+               order_by(cls.model.order_by())
+          )
+          if values:
+               sttm = (
+                    select(*values).
+                    filter_by(**read_where).
+                    order_by(cls.model.order_by())
+               )
+               
           if with_relation is True:
                sttm = sttm.options(*cls.model.selectinload())
           
@@ -36,13 +48,16 @@ class Repository(Generic[SQLMODEL]):
      async def create(
           cls, 
           session: AsyncSession,
-          values: dict[str, Any] | list[dict[str, Any]]
+          values: dict[str, Any] | list[dict[str, Any]],
+          returning: bool = True
      ) -> bool:
           sttm = (
                insert(cls.model).
-               values(values).
-               returning(cls.model.returning())
+               values(values)
           )
+          if returning is True:
+               sttm = sttm.returning(cls.model.returning())
+               
           result = await session.execute(sttm)
           result = result.scalar()
           await session.commit()
@@ -57,14 +72,17 @@ class Repository(Generic[SQLMODEL]):
           cls, 
           session: AsyncSession,
           values: dict[str, Any],
+          returning: bool = True,
           **update_where
      ) -> bool:
           sttm = (
                update(cls.model).
                filter_by(**update_where).
-               values(values).
-               returning(cls.model.returning())
+               values(values)
           )
+          if returning is True:
+               sttm = sttm.returning(cls.model.returning())
+               
           result = await session.execute(sttm)
           result = result.scalar()
           await session.commit()
@@ -78,13 +96,16 @@ class Repository(Generic[SQLMODEL]):
      async def delete(
           cls, 
           session: AsyncSession,
+          returning: bool = True,
           **delete_where
      ) -> bool:
           sttm = (
                delete(cls.model).
-               filter_by(**delete_where).
-               returning(cls.model.returning())
+               filter_by(**delete_where)
           )
+          if returning is True:
+               sttm = sttm.returning(cls.model.returning())
+               
           result = await session.execute(sttm)
           result = result.scalar()
           await session.commit()

@@ -119,33 +119,32 @@ class SteamHttpClient:
                return round(float(price), 2)
           
           
-     async def inventory_by_steamid(
+     async def user_inventory(
           self,
-          steamid: int
+          steam_id: int
      ) -> AnyResponse | list[str]:
           url = (
-               self.base_url + f"/inventory/{steamid}/730/2"
+               self.base_url + f"/inventory/{steam_id}/730/2"
           )
           headers = await self._get_headers()
-          async with httpx.AsyncClient(headers=headers) as session:
-               logging_.http_steam.info(f"GET REQUEST TO STEAM FOR FIND INVENTORY BY {steamid}")
-               for _ in range(3):
-                    try:
-                         response = await session.get(url=url)
-                         break
-                    except httpx.ConnectTimeout:
-                         continue
+          async with aiohttp.ClientSession(headers=headers) as session:
+               try:
+                    async with session.get(url=url) as response:
+                         logging_.http_steam.info(f"GET REQUEST TO STEAM FOR FIND INVENTORY BY {steam_id}")
+                         if response.status == 429:
+                              return TryLater
+                         
+                         if response.status != 200:
+                              return InventoryLock
+                                        
+                    data = await response.json()
+                    skins = set()
+                    for skin in data.get("descriptions"):
+                         skin_name = skin.get("market_hash_name")
+                         if skin.get("tradable") == 1:
+                              skins.add(skin_name)
+                    return list(skins)
                
-               if response.status_code == 403:
-                    return InventoryLock
-               
-               if response.status_code == 401:
-                    return InventoryEmpty
-               
-               result = response.json()
-               skins = set()
-               for skin in result.get("descriptions"):
-                    skin_name = skin.get("market_hash_name")
-                    if skin.get("tradable") == 1:
-                         skins.add(skin_name)
-               return list(skins)
+               except Exception as ex:
+                    logging_.http_steam.error(exc_info=ex)
+                    return TryLater
