@@ -1,14 +1,19 @@
-import asyncio
-import os
 import uuid
+from math import ceil
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.core.gen import generate_skin_id
-from bot.db.models import User
+from bot.db.models import Skin, User
 from bot.db.repository import SkinRepository, UserRepository, UserSkinRepository
 from bot.infrastracture.http.steam import SteamHttpClient
-from bot.responses import AnyResponse, DataUpdate, SkinCreate, TryLater, isresponse
+from bot.responses import (
+    AnyResponse,
+    DataUpdate,
+    SkinCreate,
+    SkinDelete,
+    SkinNotExists,
+    isresponse,
+)
 from bot.schemas import SteamSkins
 from bot.utils.filter.callback import Paginate
 
@@ -71,7 +76,7 @@ class CallbackService:
           return SkinCreate
      
      
-     async def steam_skin_paginate(
+     async def steam_paginate(
           self,
           callback_data: Paginate
      ) -> tuple[SteamSkins, Paginate] | AnyResponse:
@@ -89,87 +94,43 @@ class CallbackService:
           return (skins, callback_data)
      
      
-     async def delete_item(
+     async def inventory_paginate(
           self,
-          user: User,
-          item: str
-     ) -> None:
-          await self.skin_repository.delete(
-               where={"owner": user.telegram_id, "name": item}
-          )          
-          
-          
-     async def chart_item(
-          self,
-          name: str,
-          prices: list[int],
-          telegram_id: int
-     ) -> str:
-          return await self.chart.chart_generate(
-               prices=prices,
-               filename=f"{telegram_id}.png",
-               name=name
-          )
-          
-          
-     async def delete_chart_file(
-          self,
-          path: str
-     ) -> None:
-          if os.path.exists(path) is True:
-               os.remove(path)   
+          callback_data: Paginate,
+          user_skins: list[Skin]
+     ) -> Paginate:
+          pages = ceil(len(user_skins) / 5)
+          if callback_data.all_pages != pages:
+               callback_data.all_pages = pages
+               callback_data.offset = 0
+               callback_data.current_page = 1
+               return callback_data
                
-           
-     async def reset_chart(
+          if "left" in callback_data.mode:
+               callback_data.offset = callback_data.offset - 5
+               callback_data.current_page = callback_data.current_page - 1
+               
+          elif "right" in callback_data.mode:
+               callback_data.offset = callback_data.offset + 5
+               callback_data.current_page = callback_data.current_page + 1
+          return callback_data          
+     
+     
+     async def inventory_skin_delete(
           self,
-          user: UserModel,
+          session: AsyncSession,
+          user: User,
           skin_name: str
-     ) -> AnyResponse | None:
-          item_price = await self.http_client.item_price(item=skin_name)
-          if isinstance(item_price, float) is False:
-               return TryLater
-          
-          await self.skin_repository.update(
-               where={"owner": user.telegram_id, "name": skin_name},
-               values={"price_chart": f"{item_price},"}
+     ) -> AnyResponse:
+          result = await self.user_skin_repository.delete(
+               session=session,
+               returning=True,
+               user_id=user.id,
+               skin_name=skin_name
           )
-          
-     async def steam_inventory(
-          self,
-          user: UserModel,
-          steamid: int
-     ) -> AnyResponse | list[str]:
-          if len(user.skins) >= 30:
-               return InventoryLimit
-          
-          steam_inventory = await self.http_client.inventory_by_steamid(steamid=steamid)
-          if isresponse(steam_inventory):
-               return steam_inventory
-          
-          new_skins = []
-          skins = []
-          for skin in steam_inventory[:30 - len(user.skins)]:
-               if skin not in user.skins_names:
-                    price = await self.http_client.item_price(item=skin)
-                    if price is None:
-                         continue
-                    
-                    new_skins.append(
-                         {
-                              "skin_id": await generate_skin_id(),
-                              "name": skin,
-                              "current_price": price,
-                              "percent": 25,
-                              "price_chart": f"{price},",
-                              "owner": user.telegram_id
-                         }
-                    )
-                    skins.append(skin)
-                    await asyncio.sleep(3)
-          
-          if new_skins:
-               await self.skin_repository.create(values=new_skins)
-          return skins
+          if result is False:
+               return SkinNotExists
+          return SkinDelete
           
      
      

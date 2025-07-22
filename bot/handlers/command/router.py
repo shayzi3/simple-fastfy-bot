@@ -13,7 +13,8 @@ from bot.db.models import User
 from bot.db.session import async_db_session
 from bot.handlers.dependency import get_user, get_user_rel
 from bot.responses import isresponse
-from bot.utils.buttons.inline import settings_button
+from bot.utils.buttons.inline import inventory_button, settings_button
+from bot.utils.compress import CompressSkinName
 from bot.utils.filter.state import SkinSearchState
 
 from .service import CommandService, get_command_service
@@ -70,13 +71,27 @@ async def skin_search(
      await message.answer("Отправь название скина")
      
     
-     
+
 @command_router.message(Command("inventory"), Limit(seconds=5))
 async def inventory(
      message: Message,
      user: Annotated[User, Depend(get_user_rel)],
 ):
-     ...
+     if not user.skins:
+          return await message.answer("Ваш инвентарь пуст")
+     
+     await message.answer(
+          text="Инвентарь",
+          reply_markup=await inventory_button(
+               skins=[
+                    CompressSkinName.compress(
+                         name=skin.skin_name,
+                         from_compress=False
+                    ) for skin in user.skins
+               ]
+          )
+     )
+     
      
      
      
@@ -95,7 +110,7 @@ async def skin_price_history(
      ...
      
      
-     
+
 @command_router.message(Command("skins_from_steam"), Limit(minutes=10))
 async def skins_from_steam(
      message: Message,

@@ -1,3 +1,5 @@
+from math import ceil
+
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
@@ -15,9 +17,7 @@ async def settings_button(
           InlineKeyboardButton(
                text=text,
                callback_data="settings_new_steam_account"
-          )
-     )
-     builder.add(
+          ),
           InlineKeyboardButton(
                text="Изменить процент",
                callback_data="settings_update_skin_percent"
@@ -55,14 +55,10 @@ async def steam_skins_button(
                     current_page=current_page,
                     query=query
                ).pack()
-          )
-     )
-     builder.add(
+          ),
           InlineKeyboardButton(
                text=f"{current_page}/{skins.pages}"
-          )
-     )
-     builder.add(
+          ),
           InlineKeyboardButton(
                text=">",
                callback_data=Paginate(
@@ -79,83 +75,77 @@ async def steam_skins_button(
      
 
 
-async def inventory_button_or_chart(
-     skins: list[list],
-     index: int,
-     mode: str
+async def inventory_button(
+     skins: list[str],
+     offset: int = 0,
+     current_page: int = 1
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
-     try:
-          skins_by_index = skins[index]
-     except IndexError:
-          skins_by_index = skins[0]
-          
-     row = 0
-     index_ = 0
-     for num, skin in enumerate(skins_by_index):
-          if (num % 2 == 0) and (num != 0):
-               index_ = 0
-               row += 1
-               
-          if (num % 2 != 0) and (num != 0):
-               index_ += 1
-               
+     for skin_name in skins[offset:5 + offset]:
           builder.add(
                InlineKeyboardButton(
-                    text=skin.name,
-                    callback_data=SkinCallbackData(
-                         mode=mode,
-                         row=row,
-                         index=index_
+                    text=skin_name,
+                    callback_data=PaginateItem(
+                         mode="inv_skin",
+                         skin=skin_name
                     ).pack()
                )
           )
           
+     pages = ceil(len(skins) / 5)
      builder.add(
           InlineKeyboardButton(
                text="<",
-               callback_data=InventoryPaginateCallbackData(
-                    mode="inventory_left",
-                    index=index,
-                    max_len=len(skins) - 1,
-                    button_mode=mode
+               callback_data=Paginate(
+                    mode="inv_paginate_left",
+                    offset=offset,
+                    all_pages=pages,
+                    current_page=current_page
                ).pack()
           ),
           InlineKeyboardButton(
+               text=f"{current_page}/{pages}"
+          ),
+          InlineKeyboardButton(
                text=">",
-               callback_data=InventoryPaginateCallbackData(
-                    mode="inventory_right",
-                    index=index,
-                    max_len=len(skins) - 1,
-                    button_mode=mode
+               callback_data=Paginate(
+                    mode="inv_paginate_right",
+                    offset=offset,
+                    all_pages=pages,
+                    current_page=current_page
                ).pack()
           )
      )
-     builder.adjust(2)
+     builder.adjust(1, 1, 1, 1, 1, 3)
      return builder.as_markup()
 
 
 
-async def inventory_item_button() -> InlineKeyboardMarkup:
+async def inventory_item_button(
+     compress_skin_name: str
+) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
      builder.add(
           InlineKeyboardButton(
                text="Удалить предмет",
-               callback_data="delete_item"
+               callback_data=PaginateItem(
+                    mode="inv_skin_del",
+                    skin=compress_skin_name
+               ).pack()
           ),
           InlineKeyboardButton(
-               text="Изменить процент",
-               callback_data="create_skin_or_update_percent",
-          ),
-          InlineKeyboardButton(
-               text="Убрать сообщение",
-               callback_data="delete_message"
+               text="График цены",
+               callback_data=PaginateItem(
+                    mode="inv_skin_graph",
+                    skin=compress_skin_name
+               ).pack()
           )
      )
-     builder.adjust(1)
+     builder.adjust(1, 1)
      return builder.as_markup()
+     
 
 
 async def delete_button() -> InlineKeyboardMarkup:
@@ -167,24 +157,6 @@ async def delete_button() -> InlineKeyboardMarkup:
                callback_data="delete_message"
           )
      )
-     return builder.as_markup()
-
-
-
-async def chart_buttons() -> InlineKeyboardMarkup:
-     builder = InlineKeyboardBuilder()
-     
-     builder.add(
-          InlineKeyboardButton(
-               text="Сбросить график",
-               callback_data="reset_chart"
-          ),
-          InlineKeyboardButton(
-               text="Убрать сообщение",
-               callback_data="delete_message"
-          )
-     )
-     builder.adjust(1, 1)
      return builder.as_markup()
 
 

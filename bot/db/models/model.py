@@ -1,14 +1,15 @@
 from datetime import datetime
 
 from sqlalchemy import UUID, BigInteger, ForeignKey, Index, func
-from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from bot.schemas import SkinUpdateMode
 
 from .base import Base
+from .mixins import SkinMixin, SkinPriceHistoryMixin, UserMixin, UserSkinMixin
 
 
-class User(Base):
+class User(UserMixin, Base):
      __tablename__ = "users"
      __table_args__ = (
           Index("idx_user_steam_id", "steam_id"),
@@ -28,21 +29,10 @@ class User(Base):
           cascade="all, delete-orphan",
           back_populates="user"
      )
-     
-     @classmethod
-     def selectinload(cls):
-          return (cls.skins,)
-     
-     @classmethod
-     def returning(cls):
-          return cls.id
-     
-     @classmethod
-     def order_by(cls):
-          return cls.id
   
      
-class Skin(Base):
+     
+class Skin(SkinMixin, Base):
      __tablename__ = "skins"
      
      name: Mapped[str] = mapped_column(primary_key=True)
@@ -51,18 +41,10 @@ class Skin(Base):
      price_at_7_day: Mapped[float] = mapped_column(nullable=True)
      price_at_30_day: Mapped[float] = mapped_column(nullable=True)  
      update_mode: Mapped[SkinUpdateMode] = mapped_column(default=SkinUpdateMode.HIGH)
-     
-     @classmethod
-     def returning(cls):
-          return cls.name
-     
-     @classmethod
-     def order_by(cls):
-          return cls.name
     
      
      
-class SkinPriceHistory(Base):
+class SkinPriceHistory(SkinPriceHistoryMixin, Base):
      __tablename__ = "skins_price_history"
      __table_args__ = (
           Index("idx_skin_price_history_name", "skin_name"),
@@ -75,17 +57,10 @@ class SkinPriceHistory(Base):
      volume: Mapped[int] = mapped_column()
      timestamp: Mapped[datetime] = mapped_column(server_default=func.now())
      
-     @classmethod
-     def returning(cls):
-          return cls.uuid
-     
-     @classmethod
-     def order_by(cls):
-          return cls.timestamp
      
      
      
-class UserSkin(Base):
+class UserSkin(UserSkinMixin, Base):
      __tablename__ = "users_skins"
      __table_args__ = (
           Index("idx_skin_at_user_id", "user_id"),
@@ -98,15 +73,3 @@ class UserSkin(Base):
      
      skin: Mapped["Skin"] = relationship()
      user: Mapped["User"] = relationship(back_populates="skins")
-     
-     @classmethod
-     def selectinload(cls):
-          return (selectinload(cls.skin), selectinload(cls.user),)
-     
-     @classmethod
-     def returning(cls):
-          return cls.uuid
-     
-     @classmethod
-     def order_by(cls):
-          return cls.skin_name
