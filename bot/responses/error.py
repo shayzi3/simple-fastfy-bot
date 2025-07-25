@@ -27,3 +27,7 @@ class InvalidSteamID(AnyResponse):
      
 class SkinNotExists(AnyResponse):
      text = "Такого предмета нет в инвентаре"
+     
+     
+class InvenotoryEmpty(AnyResponse):
+     text = "Инвентарь пуст"

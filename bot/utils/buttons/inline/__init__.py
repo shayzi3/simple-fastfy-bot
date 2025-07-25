@@ -1,5 +1,4 @@
 from .button import (
-    chart_buttons,
     delete_button,
     inventory_button,
     inventory_item_button,

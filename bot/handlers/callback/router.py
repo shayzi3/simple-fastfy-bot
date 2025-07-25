@@ -36,7 +36,7 @@ async def delete_message(query: CallbackQuery):
 
 @callback_router.callback_query(
      F.data == "settings_update_skin_pecent", 
-     Limit(seconds=5)
+     Limit(seconds=3)
 )
 async def setting_update_skin_percent(
      query: CallbackQuery,
@@ -46,8 +46,6 @@ async def setting_update_skin_percent(
      await query.message.answer("Отправь число от 5 до 100")
      await query.answer()
 
-     
-     
      
 @callback_router.callback_query(
      F.data.in_(["settings_new_steam_account", "steam_account_not_valide"]), 
@@ -110,7 +108,7 @@ async def steam_skin(
      
      
 @callback_router.callback_query(
-     Paginate.filter(F.data.contains("steam_skin_paginate")),
+     Paginate.filter(F.mode.contains("steam_skin_paginate")),
      Limit(seconds=3)
 )
 async def steam_paginate(
@@ -145,13 +143,13 @@ async def steam_paginate(
     
     
 @callback_router.callback_query(
-     PaginateItem.filter(F.data == "inv_skin"),
+     PaginateItem.filter(F.mode == "inv_skin"),
      Limit(seconds=3)
 ) 
 async def inventory_skin(
      query: CallbackQuery,
      callback_data: PaginateItem,
-     user: Annotated[User, Depend(get_user_rel)],
+     user: Annotated[User, Depend(get_user_rel)]
 ):
      if any(
           [skin.skin_name == callback_data.skin_from_compress for skin in user.skins]
@@ -177,12 +175,10 @@ async def inventory_skin(
 async def inventory_paginate(
      query: CallbackQuery,
      callback_data: Paginate,
-     user: Annotated[User, Depend(get_user_rel)],
+     user: Annotated[User, Depend(get_user)],
+     session: Annotated[AsyncSession, Depend(async_db_session)],
      service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
-     if not user.skins:
-          return await query.answer("Ваш инвентарь пуст")
-     
      if callback_data.all_pages == ceil(len(user.skins) / 5):
           if (
                ((callback_data.current_page == 1) and ("left" in callback_data.mode))
@@ -193,8 +189,13 @@ async def inventory_paginate(
      
      result = await service.inventory_paginate(
           callback_data=callback_data.model_copy(),
-          user_skins=user.skins
+          session=session,
+          user=user
      )
+     if isresponse(result):
+          return await query.answer(text=result.text)
+     
+     paginate, user_skins = result
      await query.message.edit_reply_markup(
           inline_message_id=query.inline_message_id,
           reply_markup=await inventory_button(
@@ -202,17 +203,16 @@ async def inventory_paginate(
                     CompressSkinName.compress(
                          name=skin.skin_name,
                          from_compress=False
-                    ) for skin in user.skins
+                    ) for skin in user_skins
                ],
-               offset=result.offset,
-               current_page=result.current_page
+               offset=paginate.offset,
+               current_page=paginate.current_page
           )
      )
      
      
-     
 @callback_router.callback_query(
-     PaginateItem.filter(F.data == "inv_skin_del"),
+     PaginateItem.filter(F.mode == "inv_skin_del"),
      Limit(seconds=3)
 )
 async def inventory_skin_delete(
@@ -231,21 +231,3 @@ async def inventory_skin_delete(
      if getattr(result, "__name__", "") == "SkinDelete":
           text = result.text.format(callback_data.skin_from_compress)
      await query.answer(text=text)
-     
-     
-     
-@callback_router.callback_query(
-     PaginateItem.filter(F.data == "inv_skin_graph")
-)
-async def inventory_skin_delete(
-     query: CallbackQuery,
-     callback_data: PaginateItem
-):
-     ...
-     
-     
-     
-     
-
-     
-     

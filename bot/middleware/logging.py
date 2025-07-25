@@ -25,5 +25,4 @@ class LogMiddleware(BaseMiddleware):
                return await handler(event, data)
           except Exception as ex:
                logging_.bot.error(msg="error", exc_info=ex)
-               await BotException.send_notify(msg=f"ERROR: {ex} COMMAND: {command}")
                return await event.answer("Произошла ошибка. Повторите запрос позднее")

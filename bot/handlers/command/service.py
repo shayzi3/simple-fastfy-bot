@@ -2,10 +2,10 @@ import uuid
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.models import Skin, User
+from bot.db.models import Skin, User, UserSkin
 from bot.db.repository import SkinRepository, UserRepository, UserSkinRepository
 from bot.infrastracture.http.steam import SteamHttpClient
-from bot.responses import AnyResponse, isresponse
+from bot.responses import AnyResponse, InvenotoryEmpty, isresponse
 
 
 class CommandService:
@@ -70,6 +70,22 @@ class CommandService:
                returning=False
           )
           return "\n".join(skin_not_found_at_user)
+     
+     
+     async def inventory(
+          self,
+          user: User,
+          session: AsyncSession
+     ) -> list[UserSkin] | AnyResponse:
+          skins = await self.user_skin_repository.read(
+               session=session,
+               all=True,
+               user_id=user.id
+          )
+          if not skins:
+               return InvenotoryEmpty
+          return skins
+          
           
                     
           

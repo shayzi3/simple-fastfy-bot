@@ -29,11 +29,15 @@ class User(UserMixin, Base):
           cascade="all, delete-orphan",
           back_populates="user"
      )
-  
      
+     
+  
      
 class Skin(SkinMixin, Base):
      __tablename__ = "skins"
+     __table_args__ = (
+          Index("idx_skin_update_mode", "update_mode"),
+     )
      
      name: Mapped[str] = mapped_column(primary_key=True)
      price: Mapped[float] = mapped_column(nullable=True)

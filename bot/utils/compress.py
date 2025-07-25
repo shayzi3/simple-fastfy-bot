@@ -3,7 +3,7 @@
 
 class CompressSkinName:
      phrases_compress = {
-          "(Battle-Scared)": "BS",
+          "(Battle-Scarred)": "BS",
           "(Well-Worn)": "WW",
           "(Field-Tested)": "FT",
           "(Minimal Wear)": "MW",
@@ -11,7 +11,7 @@ class CompressSkinName:
           "StatTrak™": "ST"
      }
      phrases_from_compress = {
-          "BS": "(Battle-Scared)",
+          "BS": "(Battle-Scarred)",
           "WW": "(Well-Worn)",
           "FT": "(Field-Tested)",
           "MW": "(Minimal Wear)",
@@ -21,9 +21,7 @@ class CompressSkinName:
      
      @classmethod
      def compress(cls, name: str, from_compress: bool) -> str:
-          strings_new_parts = []
-          phrases = cls.phrases_compress if from_compress is False else cls.phrases_from_compress
-          for part in name.split():
-               phrase = phrases.get(part)
-               strings_new_parts.append(phrase if phrase else part)
-          return " ".join(strings_new_parts)
+          phrases = cls.phrases_from_compress if from_compress else cls.phrases_compress
+          for key, value in phrases.items():
+               name = name.replace(key, value)
+          return name

@@ -7,7 +7,7 @@ class UserMixin:
           
      @classmethod
      def selectinload(cls):
-          return (cls.skins,)
+          return (selectinload(cls.skins),)
      
      @classmethod
      def returning(cls):

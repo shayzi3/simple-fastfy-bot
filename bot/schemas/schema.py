@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from math import ceil
 from typing import Any
@@ -15,7 +17,7 @@ class SteamUser:
      
      
      @classmethod
-     def validate(cls, obj: dict[str, Any]) -> "SteamUser" | AnyResponse:
+     def validate(cls, obj: dict[str, Any]) -> SteamUser | AnyResponse:
           player = obj.get("response").get("players")
           if not player:
                return SteamUserNotFound
@@ -35,9 +37,9 @@ class SteamSkins:
      skins: list[str]
      
      @classmethod
-     def validate(cls, pages: int, obj: list[dict[str, Any]]) -> "SteamSkins":
+     def validate(cls, obj: list[dict[str, Any]]) -> "SteamSkins":
           return cls(
-               pages=ceil(len(pages) / 5),
+               pages=ceil(len(obj) / 5),
                skins=[
                     CompressSkinName.compress(
                          from_compress=False,

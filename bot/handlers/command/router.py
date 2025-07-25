@@ -23,7 +23,7 @@ command_router = Router(name="command_router")
 
 
 
-@command_router.message(Command("start"), Limit(seconds=3))
+@command_router.message(Command("start"), Limit(seconds=1))
 async def start(
      message: Message,
      _: Annotated[User, Depend(get_user)]
@@ -46,7 +46,6 @@ async def settings(
                steam_tied=True if user.steam_id else False
           )
      )
-     
      
    
 @command_router.message(Command("skip"))
@@ -75,10 +74,16 @@ async def skin_search(
 @command_router.message(Command("inventory"), Limit(seconds=5))
 async def inventory(
      message: Message,
-     user: Annotated[User, Depend(get_user_rel)],
+     user: Annotated[User, Depend(get_user)],
+     session: Annotated[AsyncSession, Depend(async_db_session)],
+     service: Annotated[CommandService, Depend(get_command_service)]
 ):
-     if not user.skins:
-          return await message.answer("Ваш инвентарь пуст")
+     user_skins = await service.inventory(
+          user=user,
+          session=session
+     )
+     if isresponse(user_skins):
+          return await message.answer(text=user_skins.text)
      
      await message.answer(
           text="Инвентарь",
@@ -87,30 +92,17 @@ async def inventory(
                     CompressSkinName.compress(
                          name=skin.skin_name,
                          from_compress=False
-                    ) for skin in user.skins
+                    ) for skin in user_skins
                ]
           )
      )
-     
-     
      
      
 @command_router.message(Command("help"))
 async def help(message: Message):
      ...
 
-    
-     
-     
-@command_router.message(Command("skin_price_history"), Limit(seconds=3))
-async def skin_price_history(
-     message: Message,
-     user: Annotated[User, Depend(get_user)]
-):
-     ...
-     
-     
-
+         
 @command_router.message(Command("skins_from_steam"), Limit(minutes=10))
 async def skins_from_steam(
      message: Message,

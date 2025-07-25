@@ -35,7 +35,9 @@ async def steam_skins_button(
      query: str = ""
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
-     for skin_name in skins.skins[offset:5 + offset]:
+     
+     offset_skins = skins.skins[offset:5 + offset]
+     for skin_name in offset_skins:
           builder.add(
                InlineKeyboardButton(
                     text=skin_name,
@@ -57,7 +59,8 @@ async def steam_skins_button(
                ).pack()
           ),
           InlineKeyboardButton(
-               text=f"{current_page}/{skins.pages}"
+               text=f"{current_page}/{skins.pages}",
+               callback_data="empty"
           ),
           InlineKeyboardButton(
                text=">",
@@ -70,7 +73,7 @@ async def steam_skins_button(
                ).pack()
           )
      )
-     builder.adjust(1, 1, 1, 1, 1, 3)
+     builder.adjust(*[1 for _ in range(len(offset_skins))], 3)
      return builder.as_markup()
      
 
@@ -82,7 +85,8 @@ async def inventory_button(
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
-     for skin_name in skins[offset:5 + offset]:
+     offset_skins = skins[offset:5 + offset]
+     for skin_name in offset_skins:
           builder.add(
                InlineKeyboardButton(
                     text=skin_name,
@@ -105,7 +109,8 @@ async def inventory_button(
                ).pack()
           ),
           InlineKeyboardButton(
-               text=f"{current_page}/{pages}"
+               text=f"{current_page}/{pages}",
+               callback_data="empty"
           ),
           InlineKeyboardButton(
                text=">",
@@ -117,7 +122,7 @@ async def inventory_button(
                ).pack()
           )
      )
-     builder.adjust(1, 1, 1, 1, 1, 3)
+     builder.adjust(*[1 for _ in range(len(offset_skins))], 3)
      return builder.as_markup()
 
 

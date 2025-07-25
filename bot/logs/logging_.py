@@ -52,12 +52,6 @@ class Logger:
           return BaseLogger(
                path=path + "/db/"
           )
-     
-     @property
-     def http_webhook(self) -> BaseLogger:
-          return BaseLogger(
-               path=path + "/http/webhook/"
-          )
           
      @property
      def http_steam(self) -> BaseLogger:

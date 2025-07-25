@@ -62,9 +62,10 @@ class Repository(Generic[SQLMODEL]):
           result = result.scalar()
           await session.commit()
           
-          value = False if not result else True
-          logging_.db.info(f"INSERT INTO {cls.model.__tablename__} DATA {values}. Success: {value}")
-          return value
+          logging_.db.info(f"INSERT INTO {cls.model.__tablename__} DATA {values}")
+          if returning:
+               value = False if not result else True
+               return value
                
      
      @classmethod
@@ -74,7 +75,7 @@ class Repository(Generic[SQLMODEL]):
           values: dict[str, Any],
           returning: bool = True,
           **update_where
-     ) -> bool:
+     ) -> bool | None:
           sttm = (
                update(cls.model).
                filter_by(**update_where).
@@ -87,9 +88,10 @@ class Repository(Generic[SQLMODEL]):
           result = result.scalar()
           await session.commit()
           
-          value = False if not result else True
-          logging_.db.info(f"UPDATE {cls.model.__tablename__} WHERE {update_where} DATA {values}. Success: {value}")
-          return value
+          logging_.db.info(f"UPDATE {cls.model.__tablename__} WHERE {update_where} DATA {values}")
+          if returning:
+               value = False if not result else True
+               return value
      
      
      @classmethod
@@ -98,7 +100,7 @@ class Repository(Generic[SQLMODEL]):
           session: AsyncSession,
           returning: bool = True,
           **delete_where
-     ) -> bool:
+     ) -> bool | None:
           sttm = (
                delete(cls.model).
                filter_by(**delete_where)
@@ -110,6 +112,7 @@ class Repository(Generic[SQLMODEL]):
           result = result.scalar()
           await session.commit()
           
-          value = False if not result else True
-          logging_.db.info(f"DELETE {cls.model.__tablename__} WHERE {delete_where}. Success: {value}")
-          return value
+          logging_.db.info(f"DELETE {cls.model.__tablename__} WHERE {delete_where}")
+          if returning:
+               value = False if not result else True
+               return value

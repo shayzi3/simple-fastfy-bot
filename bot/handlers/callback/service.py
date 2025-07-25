@@ -3,12 +3,13 @@ from math import ceil
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.models import Skin, User
+from bot.db.models import User, UserSkin
 from bot.db.repository import SkinRepository, UserRepository, UserSkinRepository
 from bot.infrastracture.http.steam import SteamHttpClient
 from bot.responses import (
     AnyResponse,
     DataUpdate,
+    InvenotoryEmpty,
     SkinCreate,
     SkinDelete,
     SkinNotExists,
@@ -97,8 +98,17 @@ class CallbackService:
      async def inventory_paginate(
           self,
           callback_data: Paginate,
-          user_skins: list[Skin]
-     ) -> Paginate:
+          session: AsyncSession,
+          user: User
+     ) -> tuple[Paginate, list[UserSkin]] | AnyResponse:
+          user_skins = await self.user_skin_repository.read(
+               session=session,
+               all=True,
+               user_id=user.id
+          )
+          if not user_skins:
+               return InvenotoryEmpty
+          
           pages = ceil(len(user_skins) / 5)
           if callback_data.all_pages != pages:
                callback_data.all_pages = pages
@@ -113,7 +123,7 @@ class CallbackService:
           elif "right" in callback_data.mode:
                callback_data.offset = callback_data.offset + 5
                callback_data.current_page = callback_data.current_page + 1
-          return callback_data          
+          return callback_data, user_skins        
      
      
      async def inventory_skin_delete(
