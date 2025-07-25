@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable
 from aiogram.dispatcher.middlewares.base import BaseMiddleware
 from aiogram.types import Message
 
-from bot.exception import BotException
+from bot.alert import BotException
 from bot.logs.logging_ import logging_
 
 

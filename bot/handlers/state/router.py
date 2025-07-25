@@ -76,16 +76,16 @@ async def steam_user(
      if message.text.isdigit() is False:
           return await message.answer("ID должен быть числом!")
      
-     result = await service.steam_user(steamid=int(message.text))
+     result = await service.steam_user(steam_id=int(message.text))
      if isresponse(result):
           return await message.answer(result.text)
-     
+
      await message.answer_photo(
           photo=URLInputFile(url=result.steam_avatar),
           caption=f"{result.steam_name} \n{link('Steam профиль', result.steam_profile_link)}",
           parse_mode=ParseMode.MARKDOWN,
           reply_markup=await steam_profile_button(
-               steamid=result.steam_id
+               steam_id=result.steam_id
           )
      )
      await state.clear()

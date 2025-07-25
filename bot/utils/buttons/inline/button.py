@@ -8,7 +8,8 @@ from bot.utils.filter.callback import Paginate, PaginateItem, SteamProfileCallba
 
 
 async def settings_button(
-     steam_tied: bool
+     steam_tied: bool,
+     steam_profile_link: str | None
 ) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
@@ -23,6 +24,14 @@ async def settings_button(
                callback_data="settings_update_skin_percent"
           )
      )
+     if steam_profile_link is not None:
+          builder.add(
+               InlineKeyboardButton(
+                    text="Steam Профиль",
+                    url=steam_profile_link,
+                    callback_data="empty"
+               )
+          )
      builder.adjust(1, 1)
      return builder.as_markup()
 
@@ -165,13 +174,13 @@ async def delete_button() -> InlineKeyboardMarkup:
      return builder.as_markup()
 
 
-async def steam_profile_button(steamid: int) -> InlineKeyboardMarkup:
+async def steam_profile_button(steam_id: int) -> InlineKeyboardMarkup:
      builder = InlineKeyboardBuilder()
      
      builder.add(
           InlineKeyboardButton(
                text="Аккаунт мой",
-               callback_data=SteamProfileCallback(steamid=steamid).pack()
+               callback_data=SteamProfileCallback(steam_id=steam_id).pack()
           ),
           InlineKeyboardButton(
                text="Аккаунт не мой",

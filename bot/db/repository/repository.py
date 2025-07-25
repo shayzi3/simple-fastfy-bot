@@ -55,15 +55,17 @@ class Repository(Generic[SQLMODEL]):
                insert(cls.model).
                values(values)
           )
+          
           if returning is True:
                sttm = sttm.returning(cls.model.returning())
                
           result = await session.execute(sttm)
-          result = result.scalar()
+          if returning is True:
+               result = result.scalar()
           await session.commit()
           
           logging_.db.info(f"INSERT INTO {cls.model.__tablename__} DATA {values}")
-          if returning:
+          if returning is True:
                value = False if not result else True
                return value
                
@@ -85,11 +87,12 @@ class Repository(Generic[SQLMODEL]):
                sttm = sttm.returning(cls.model.returning())
                
           result = await session.execute(sttm)
-          result = result.scalar()
+          if returning is True:
+               result = result.scalar()
           await session.commit()
           
           logging_.db.info(f"UPDATE {cls.model.__tablename__} WHERE {update_where} DATA {values}")
-          if returning:
+          if returning is True:
                value = False if not result else True
                return value
      
@@ -109,10 +112,11 @@ class Repository(Generic[SQLMODEL]):
                sttm = sttm.returning(cls.model.returning())
                
           result = await session.execute(sttm)
-          result = result.scalar()
+          if returning is True:
+               result = result.scalar()
           await session.commit()
           
           logging_.db.info(f"DELETE {cls.model.__tablename__} WHERE {delete_where}")
-          if returning:
+          if returning is True:
                value = False if not result else True
                return value

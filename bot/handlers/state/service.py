@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot.db.models import User
 from bot.db.repository import SkinRepository, UserRepository
 from bot.infrastracture.http.steam import SteamHttpClient
-from bot.responses import AnyResponse, DataUpdate, InvalidSteamID
+from bot.responses import AnyResponse, DataUpdate
 from bot.schemas import SteamSkins, SteamUser
 
 
@@ -18,8 +18,8 @@ class StateService:
           return await self.http_client.skin_search(query=query)
      
      
-     async def steam_user(self, steamid: int) -> AnyResponse | SteamUser:
-          return await self.http_client.steam_user(steamid=steamid)
+     async def steam_user(self, steam_id: int) -> AnyResponse | SteamUser:
+          return await self.http_client.steam_user(steam_id=steam_id)
      
      
      async def update_skin_percent(

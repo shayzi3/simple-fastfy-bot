@@ -31,3 +31,8 @@ class SkinNotExists(AnyResponse):
      
 class InvenotoryEmpty(AnyResponse):
      text = "Инвентарь пуст"
+     
+     
+     
+class SteamSkinsExistsInInventory(AnyResponse):
+     text = "Все предметы из инвентаря Steam уже есть у вас."

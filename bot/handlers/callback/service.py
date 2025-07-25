@@ -3,16 +3,16 @@ from math import ceil
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.db.models import User, UserSkin
+from bot.db.models import Skin, User
 from bot.db.repository import SkinRepository, UserRepository, UserSkinRepository
 from bot.infrastracture.http.steam import SteamHttpClient
 from bot.responses import (
     AnyResponse,
     DataUpdate,
-    InvenotoryEmpty,
     SkinCreate,
     SkinDelete,
     SkinNotExists,
+    TryLater,
     isresponse,
 )
 from bot.schemas import SteamSkins
@@ -77,6 +77,7 @@ class CallbackService:
           return SkinCreate
      
      
+     
      async def steam_paginate(
           self,
           callback_data: Paginate
@@ -95,21 +96,26 @@ class CallbackService:
           return (skins, callback_data)
      
      
+     async def inventory_skin(
+          self,
+          session: AsyncSession,
+          skin_name: str
+     ) -> Skin | AnyResponse:
+          skin = await self.skin_repository.read(
+               session=session,
+               name=skin_name
+          )
+          if skin is None:
+               return TryLater
+          return skin
+          
+     
      async def inventory_paginate(
           self,
           callback_data: Paginate,
-          session: AsyncSession,
           user: User
-     ) -> tuple[Paginate, list[UserSkin]] | AnyResponse:
-          user_skins = await self.user_skin_repository.read(
-               session=session,
-               all=True,
-               user_id=user.id
-          )
-          if not user_skins:
-               return InvenotoryEmpty
-          
-          pages = ceil(len(user_skins) / 5)
+     ) -> Paginate | AnyResponse:
+          pages = ceil(len(user.skins) / 5)
           if callback_data.all_pages != pages:
                callback_data.all_pages = pages
                callback_data.offset = 0
@@ -123,7 +129,7 @@ class CallbackService:
           elif "right" in callback_data.mode:
                callback_data.offset = callback_data.offset + 5
                callback_data.current_page = callback_data.current_page + 1
-          return callback_data, user_skins        
+          return callback_data
      
      
      async def inventory_skin_delete(

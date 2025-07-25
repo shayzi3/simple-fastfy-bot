@@ -24,13 +24,13 @@ class SteamUser:
           
           steam_user = player[0]
           return cls(
-               steam_id=steam_user.get("steamid"),
+               steam_id=int(steam_user.get("steamid")),
                steam_name=steam_user.get("personaname"),
                steam_avatar=steam_user.get("avatar"),
                steam_profile_link=steam_user.get("profileurl")
           )
           
-          
+         
 @dataclass
 class SteamSkins:
      pages: int

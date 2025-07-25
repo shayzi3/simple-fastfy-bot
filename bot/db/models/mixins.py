@@ -1,3 +1,4 @@
+
 from sqlalchemy.orm import selectinload
 
 
@@ -17,6 +18,13 @@ class UserMixin:
      def order_by(cls):
           return cls.id
      
+     def steam_account_info(self) -> str:
+          return (
+               f"*Nickname:* {self.steam_name}\n"
+               f"*SteamID:* {self.steam_id}\n"
+               f"*Процент:* {self.skin_percent}"
+          )
+     
      
      
 class SkinMixin:
@@ -30,6 +38,15 @@ class SkinMixin:
      @classmethod
      def order_by(cls):
           return cls.name
+     
+     def skin_info(self) -> str:
+          return (
+               f"{self.name}\n"
+               f"<b>Price now:</b> {self.price}\n"
+               f"<b>price_at_1_day:</b> {self.price_at_1_day}\n"
+               f"<b>price_at_7_day:</b> {self.price_at_7_day}\n"
+               f"<b>price_at_30_day:</b> {self.price_at_30_day}"
+          )
      
      
      
@@ -62,12 +79,3 @@ class UserSkinMixin:
      @classmethod
      def order_by(cls):
           return cls.skin_name
-     
-     def skin_info(self) -> str:
-          return (
-               f"{self.skin_name}\n"
-               f"*Price now:* {self.price}\n"
-               f"*price_at_1_day:* {self.skin.price_at_1_day}\n"
-               f"*price_at_7_day:* {self.skin.price_at_7_day}\n"
-               f"*price_at_30_day:* {self.skin.price_at_30_day}"
-          )

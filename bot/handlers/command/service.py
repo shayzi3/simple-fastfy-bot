@@ -5,7 +5,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot.db.models import Skin, User, UserSkin
 from bot.db.repository import SkinRepository, UserRepository, UserSkinRepository
 from bot.infrastracture.http.steam import SteamHttpClient
-from bot.responses import AnyResponse, InvenotoryEmpty, isresponse
+from bot.responses import (
+    AnyResponse,
+    InvenotoryEmpty,
+    SteamSkinsExistsInInventory,
+    isresponse,
+)
 
 
 class CommandService:
@@ -38,6 +43,9 @@ class CommandService:
                     select_data.append(Skin.name == skin)
                     skin_not_found_at_user.append(skin)
           
+          if not skin_not_found_at_user:
+               return SteamSkinsExistsInInventory
+          
           skin_exists_in_table_skins = await self.skin_repository.read_all_with_or(
                session=session,
                read_data=select_data,
@@ -51,7 +59,7 @@ class CommandService:
           if create_skins_in_table_skins:
                await self.skin_repository.create(
                     session=session,
-                    create_data=create_skins_in_table_skins,
+                    values=create_skins_in_table_skins,
                     returning=False
                )
                
@@ -66,7 +74,7 @@ class CommandService:
                )
           await self.user_skin_repository.create(
                session=session,
-               create_data=create_skins_at_user,
+               values=create_skins_at_user,
                returning=False
           )
           return "\n".join(skin_not_found_at_user)

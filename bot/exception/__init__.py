@@ -1,1 +1,0 @@
-from .exep import BotException

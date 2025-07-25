@@ -9,4 +9,4 @@ async def callback(
      _: timedelta,
      time_last: datetime
 ):
-     await event.answer(f"До следуюшего использования осталось: {ceil(time_last.total_seconds())}")
+     await event.answer(f"До следуюшего использования осталось: {ceil(time_last.total_seconds())} секунд")

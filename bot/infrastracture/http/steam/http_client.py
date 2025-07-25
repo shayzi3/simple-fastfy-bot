@@ -61,7 +61,6 @@ class SteamHttpClient:
                               return TryLater
 
                          data = await response.json()
-                         pages = data["data"]["pages"]
                          skins = data["data"]["items"]
                          if not skins:
                               return SkinNotFound
@@ -89,14 +88,13 @@ class SteamHttpClient:
                          if response.status != 200:
                               return InventoryLock
                                         
-                    data = await response.json()
-                    skins = set()
-                    for skin in data.get("descriptions"):
-                         skin_name = skin.get("market_hash_name")
-                         if skin.get("tradable") == 1:
-                              skins.add(skin_name)
-                    return list(skins)
-               
+                         data = await response.json()
+                         skins = set()
+                         for skin in data.get("descriptions"):
+                              skin_name = skin.get("market_hash_name")
+                              if skin.get("tradable") == 1:
+                                   skins.add(skin_name)
+                         return list(skins)
                except Exception as ex:
                     logging_.http_steam.error("error", exc_info=ex)
                     return TryLater

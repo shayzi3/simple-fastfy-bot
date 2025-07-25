@@ -28,17 +28,11 @@ callback_router = Router(name="callback_router")
 
 
 
-@callback_router.callback_query(F.data == "delete_message")
-async def delete_message(query: CallbackQuery):
-     await query.message.delete()
-     
-
-
 @callback_router.callback_query(
-     F.data == "settings_update_skin_pecent", 
+     F.data == "settings_update_skin_percent", 
      Limit(seconds=3)
 )
-async def setting_update_skin_percent(
+async def settings_update_skin_percent(
      query: CallbackQuery,
      state: FSMContext
 ):
@@ -144,39 +138,38 @@ async def steam_paginate(
     
 @callback_router.callback_query(
      PaginateItem.filter(F.mode == "inv_skin"),
-     Limit(seconds=3)
+     Limit(seconds=2)
 ) 
 async def inventory_skin(
      query: CallbackQuery,
      callback_data: PaginateItem,
-     user: Annotated[User, Depend(get_user_rel)]
+     session: Annotated[AsyncSession, Depend(async_db_session)],
+     service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
-     if any(
-          [skin.skin_name == callback_data.skin_from_compress for skin in user.skins]
-     ) is False:
-          return await query.answer("Такого предмета нет в инвентаре")
-     
-     current_skin = next(
-          (skin for skin in user.skins if skin.skin_name == callback_data.skin_from_compress)
+     current_skin = await service.inventory_skin(
+          session=session,
+          skin_name=callback_data.skin_from_compress
      )
+     if isresponse(current_skin):
+          return await query.answer(text=current_skin.text)
+     
      await query.message.answer(
           text=current_skin.skin_info(),
           reply_markup=await inventory_item_button(
                compress_skin_name=callback_data.skin
           ),
-          parse_mode=ParseMode.MARKDOWN_V2
+          parse_mode=ParseMode.HTML
      )
      
      
 @callback_router.callback_query(
      Paginate.filter(F.mode.contains("inv_paginate")),
-     Limit(seconds=3)
+     Limit(seconds=2)
 )
 async def inventory_paginate(
      query: CallbackQuery,
      callback_data: Paginate,
-     user: Annotated[User, Depend(get_user)],
-     session: Annotated[AsyncSession, Depend(async_db_session)],
+     user: Annotated[User, Depend(get_user_rel)],
      service: Annotated[CallbackService, Depend(get_callback_service)]
 ):
      if callback_data.all_pages == ceil(len(user.skins) / 5):
@@ -189,13 +182,11 @@ async def inventory_paginate(
      
      result = await service.inventory_paginate(
           callback_data=callback_data.model_copy(),
-          session=session,
           user=user
      )
      if isresponse(result):
           return await query.answer(text=result.text)
      
-     paginate, user_skins = result
      await query.message.edit_reply_markup(
           inline_message_id=query.inline_message_id,
           reply_markup=await inventory_button(
@@ -203,10 +194,10 @@ async def inventory_paginate(
                     CompressSkinName.compress(
                          name=skin.skin_name,
                          from_compress=False
-                    ) for skin in user_skins
+                    ) for skin in user.skins
                ],
-               offset=paginate.offset,
-               current_page=paginate.current_page
+               offset=result.offset,
+               current_page=result.current_page
           )
      )
      

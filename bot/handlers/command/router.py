@@ -4,7 +4,7 @@ from aiogram import Router
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import Message, URLInputFile
 from aiogram_tool.depend import Depend
 from aiogram_tool.limit import Limit
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -39,12 +39,14 @@ async def settings(
      message: Message,
      user: Annotated[User, Depend(get_user)]
 ):
-     # steam profile
-     await message.answer(
-          text="Настройки",
+     await message.answer_photo(
+          photo=URLInputFile(url=user.steam_avatar),
+          caption=user.steam_account_info(),
           reply_markup=await settings_button(
-               steam_tied=True if user.steam_id else False
-          )
+               steam_tied=True if user.steam_id else False,
+               steam_profile_link=user.steam_profile_link
+          ),
+          parse_mode=ParseMode.MARKDOWN_V2
      )
      
    
@@ -124,8 +126,8 @@ async def skins_from_steam(
      
      await msg.delete()
      await message.answer(
-          text=f"*Список добавленных предметов:* \n{result}",
-          parse_mode=ParseMode.MARKDOWN_V2
+          text=f"<b>Список добавленных предметов</b> \n\n{result}",
+          parse_mode=ParseMode.HTML
      )
      
      

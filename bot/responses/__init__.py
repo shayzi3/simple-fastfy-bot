@@ -5,6 +5,7 @@ from .error import (
     InventoryLock,
     SkinNotExists,
     SkinNotFound,
+    SteamSkinsExistsInInventory,
     SteamUserNotFound,
     TryLater,
 )
