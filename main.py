@@ -8,10 +8,16 @@ from bot.core.bot import bot, dp
 from bot.handlers import __routers__
 from bot.middleware import __middlewares__
 from bot.utils.limit_callback import callback
+from bot.worker.update_prices import PriceUpdateWorker
 
 
 @dp.startup()
 async def startup() -> None:
+     price_update = PriceUpdateWorker()
+     
+     await price_update.run()
+     
+     
      dp.include_routers(*__routers__)
      for middleware in __middlewares__:
           for event in dp.resolve_used_update_types():
@@ -32,12 +38,11 @@ async def startup() -> None:
                BotCommand(command="/skins_from_steam", description="Добавить предметы из Steam в инвентарь")
           ]
      )
+     print("bot started")
      
 
-     
 
 async def main() -> None:
-     print("bot started")
      await dp.start_polling(bot)
      
 

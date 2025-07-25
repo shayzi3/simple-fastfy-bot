@@ -1,3 +1,4 @@
+import asyncio
 import json
 import random
 
@@ -5,7 +6,7 @@ import aiofiles
 import aiohttp
 
 from bot.core.config import base_config
-from bot.logs.logging_ import logging_
+from bot.logging_ import logging_
 from bot.responses import AnyResponse, InventoryLock, SkinNotFound, TryLater
 from bot.schemas import SteamSkins, SteamUser
 
@@ -98,3 +99,37 @@ class SteamHttpClient:
                except Exception as ex:
                     logging_.http_steam.error("error", exc_info=ex)
                     return TryLater
+               
+               
+     async def skin_price_and_volume(
+          self,
+          skin_name: str,
+          timer: int = 0
+     ) -> tuple[float, int]:
+          await asyncio.sleep(timer)
+          url = (
+               self.base_url +
+               f"/market/priceoverview/"
+               f"?currency=5&appid=730&market_hash_name={skin_name.replace('&', '%26')}"
+          )
+          headers = await self._get_headers()
+          async with aiohttp.ClientSession(headers=headers) as session:
+               async with session.get(url=url) as response:
+                    if response.status != 200:
+                         return await self.skin_price_and_volume(
+                              skin_name=skin_name,
+                              timer=timer + 5
+                         )
+                         
+                    data = await response.json()
+                    price = data.get("lowest_price")
+                    volume = data.get("volume")
+                    if price is None:
+                         price = data.get("median_price")
+                         
+          # 72,97 руб -> 72.97
+          return (float(price.replace(",", ".").split()[0]), int(volume.replace(",", "")))
+                    
+                    
+                              
+                    

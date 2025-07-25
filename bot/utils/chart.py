@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
 
 from bot.constant import TEST_MODE
-from bot.logs.logging_ import logging_
+from bot.logging_ import logging_
 
 path = "/data/charts/"
 if TEST_MODE is True:

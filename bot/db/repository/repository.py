@@ -4,7 +4,7 @@ from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot.db.models import Base
-from bot.logs.logging_ import logging_
+from bot.logging_ import logging_
 
 SQLMODEL = TypeVar("SQLMODEL", bound=Base)
 

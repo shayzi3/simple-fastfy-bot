@@ -59,5 +59,16 @@ class Logger:
                path=path + "/http/steam/"
           )
           
+     @property
+     def worker_update_prices(self) -> BaseLogger:
+          return BaseLogger(
+               path=path + "/workers/update_prices/"
+          )
+          
+     @property
+     def worker_check_prices(self) -> BaseLogger:
+          return BaseLogger(
+               path=path + "/workers/check_prices/"
+          )
           
 logging_ = Logger()
