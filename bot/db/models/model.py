@@ -45,6 +45,12 @@ class Skin(SkinMixin, Base):
      price_at_7_day: Mapped[float] = mapped_column(nullable=True)
      price_at_30_day: Mapped[float] = mapped_column(nullable=True)  
      update_mode: Mapped[SkinUpdateMode] = mapped_column(default=SkinUpdateMode.HIGH)
+     
+     price_history: Mapped[list["SkinPriceHistory"]] = relationship(
+          uselist=True,
+          cascade="all, delete-orphan",
+          back_populates="skin"
+     )
     
      
      
@@ -60,6 +66,8 @@ class SkinPriceHistory(SkinPriceHistoryMixin, Base):
      price: Mapped[float] = mapped_column()
      volume: Mapped[int] = mapped_column()
      timestamp: Mapped[datetime] = mapped_column(server_default=func.now())
+     
+     skin: Mapped["Skin"] = relationship(back_populates="price_history")
      
      
      

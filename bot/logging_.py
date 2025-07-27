@@ -71,4 +71,10 @@ class Logger:
                path=path + "/workers/check_prices/"
           )
           
+     @property
+     def worker_update_prices_at_days(self) -> BaseLogger:
+          return BaseLogger(
+               path=path + "/workers/update_prices_days/"
+          )
+          
 logging_ = Logger()

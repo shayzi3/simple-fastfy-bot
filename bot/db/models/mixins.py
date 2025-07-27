@@ -39,6 +39,10 @@ class SkinMixin:
      def order_by(cls):
           return cls.name
      
+     @classmethod
+     def selectiload(cls):
+          return (selectinload(cls.price_history),)
+     
      def skin_info(self) -> str:
           return (
                f"{self.name}\n"
@@ -61,6 +65,10 @@ class SkinPriceHistoryMixin:
      @classmethod
      def order_by(cls):
           return cls.timestamp
+     
+     @classmethod
+     def selectinload(cls):
+          return (selectinload(cls.skin),)
      
      
      

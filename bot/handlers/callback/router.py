@@ -221,4 +221,6 @@ async def inventory_skin_delete(
      text = result.text
      if getattr(result, "__name__", "") == "SkinDelete":
           text = result.text.format(callback_data.skin_from_compress)
+          
      await query.answer(text=text)
+     await query.message.delete()

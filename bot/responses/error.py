@@ -6,7 +6,7 @@ class TryLater(AnyResponse):
      
      
 
-class SkinNotFound:
+class SkinNotFound(AnyResponse):
      text = "По запросу {} ничего не найдено"
           
           

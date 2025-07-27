@@ -17,7 +17,7 @@ class PriceUpdateBaseWorker:
      
      
      async def _process(self, mode: SkinUpdateMode) -> None:
-          logging_.worker_update_prices.info(f"UPDATE PRICES MODE {mode}")
+          logging_.worker_update_prices.info(f"UPDATE PRICE START MODE {mode}")
           
           async with async_db_session() as session:
                skins = await self.skin_repository.read(
