@@ -47,3 +47,29 @@ class SteamSkins:
                     ) for skin in obj
                ]
           )
+    
+    
+    
+@dataclass
+class NotifySkin:
+     skin_name: str
+     price: float
+     price_percent: float
+     change_price_at_day: int
+     
+     
+     def pretty(self) -> str:
+          return (
+               f"Изменение цены за {self.change_price_at_day} дней в процентах: {self.price_percent}\n"
+               f"Нынешняя цена: {self.price}"
+          )
+     
+     
+@dataclass
+class NotifyData:
+     skins: list[NotifySkin]
+     
+     def pretty_skins(self) -> str:
+          text = f"{self.skins[0].skin_name}\n\n"
+          body = "\n\n".join([skin.pretty() for skin in self.skins])
+          return text + body

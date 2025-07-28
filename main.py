@@ -8,17 +8,20 @@ from bot.core.bot import bot, dp
 from bot.handlers import __routers__
 from bot.middleware import __middlewares__
 from bot.utils.limit_callback import callback
-from bot.worker.update_prices import PriceUpdateWorker
-from bot.worker.update_prices_at_days import UpdatePricesAtDaysWorker
+from bot.worker.check_price import CheckPriceWorker
+from bot.worker.update_price_at_days import UpdatePriceAtDaysWorker
+from bot.worker.update_skin_price import UpdateSkinPriceWorker
 
 
 @dp.startup()
 async def startup() -> None:
-     price_update_worker = PriceUpdateWorker()
-     update_price_at_days_worker = UpdatePricesAtDaysWorker()
+     price_update_worker = UpdateSkinPriceWorker()
+     update_price_at_days_worker = UpdatePriceAtDaysWorker()
+     check_price_worker = CheckPriceWorker()
      
      await price_update_worker.run()
      await update_price_at_days_worker.run()
+     await check_price_worker.run()
      
      dp.include_routers(*__routers__)
      for middleware in __middlewares__:

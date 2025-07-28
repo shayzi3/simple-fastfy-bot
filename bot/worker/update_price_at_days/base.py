@@ -6,7 +6,7 @@ from bot.db.session import async_db_session
 from bot.logging_ import logging_
 
 
-class UpdatePricesAtDaysBaseWorker:
+class UpdatePriceAtDaysBaseWorker:
      def __init__(self):
           self.skin_repository = SkinRepository
           self.skin_price_history = SkinPriceHistoryRepository
@@ -24,7 +24,7 @@ class UpdatePricesAtDaysBaseWorker:
                time = 0.5
                for skin in skins:
                     gather_funcs.append(
-                         self.__process_update_price_skins_at_days(
+                         self.__update_price_at_days_process(
                               skin_name=skin.name,
                               sleep=time
                          )
@@ -34,7 +34,7 @@ class UpdatePricesAtDaysBaseWorker:
                
          
          
-     async def __process_update_price_skins_at_days(
+     async def __update_price_at_days_process(
           self, 
           skin_name: str,
           sleep: int

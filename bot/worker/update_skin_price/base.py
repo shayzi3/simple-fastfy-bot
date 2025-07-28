@@ -9,7 +9,7 @@ from bot.logging_ import logging_
 from bot.schemas.enums import SkinUpdateMode
 
 
-class PriceUpdateBaseWorker:
+class UpdateSkinPriceBaseWorker:
      def __init__(self):
           self.skin_repository = SkinRepository
           self.skin_price_repository = SkinPriceHistoryRepository
@@ -17,7 +17,7 @@ class PriceUpdateBaseWorker:
      
      
      async def _process(self, mode: SkinUpdateMode) -> None:
-          logging_.worker_update_prices.info(f"UPDATE PRICE START MODE {mode}")
+          logging_.worker_update_prices.info(f"PROCESS START MODE {mode}")
           
           async with async_db_session() as session:
                skins = await self.skin_repository.read(
@@ -27,11 +27,11 @@ class PriceUpdateBaseWorker:
                )
           gather_funcs = []
           for skin in skins:
-               gather_funcs.append(self.__process_update_skin_price(skin.price, skin.name))
+               gather_funcs.append(self.__update_skin_price_process(skin.price, skin.name))
           await asyncio.gather(*gather_funcs)
                
                
-     async def __process_update_skin_price(
+     async def __update_skin_price_process(
           self,
           last_price: float,
           skin_name: str
