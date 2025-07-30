@@ -1,7 +1,6 @@
 test.py
 venv
 /data
-fastfy-data/
-test_env.env
-prod_env.env
+test.env
 __pycache__/
+migrations/versions/
