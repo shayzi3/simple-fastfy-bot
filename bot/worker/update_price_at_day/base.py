@@ -13,7 +13,7 @@ class UpdatePriceAtDaysBaseWorker:
           
           
      async def _process(self) -> None:
-          logging_.worker_update_prices_at_days.info("START PROCESS")
+          logging_.worker_update_price_at_day.info("START PROCESS")
           
           gather_funcs = []
           async with async_db_session() as session:
@@ -78,4 +78,4 @@ class UpdatePriceAtDaysBaseWorker:
                     returning=False,
                     name=skin_name
                )
-          logging_.worker_update_prices_at_days.info(f"SKIN PRICE AT DAYS UPDATED {skin_name}")
+          logging_.worker_update_price_at_day.info(f"SKIN PRICE AT DAYS UPDATED {skin_name}")

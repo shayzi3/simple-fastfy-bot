@@ -13,12 +13,12 @@ class UpdateCheckSkinPriceWorker(UpdateCheckSkinPriceBaseWorker):
      
      
      async def run(self) -> None:
-          logging_.worker_update_check_prices.info("START WORKER")
+          logging_.worker_update_check_skin_price.info("START WORKER")
           
           functions = [
                self.__update_check_skin_price(
                     mode=SkinUpdateMode.HIGH, 
-                    sleep=timedelta(hours=1)
+                    sleep=timedelta(seconds=15)
                ),
                self.__update_check_skin_price(
                     mode=SkinUpdateMode.MEDIUM_WELL, 
@@ -42,7 +42,7 @@ class UpdateCheckSkinPriceWorker(UpdateCheckSkinPriceBaseWorker):
           mode: SkinUpdateMode, 
           sleep: timedelta
      ) -> None:
-          logging_.worker_update_check_prices_at_days.info(f"MODE {mode} START")
+          logging_.worker_update_check_skin_price.info(f"MODE {mode} START")
           
           await asyncio.sleep(sleep.total_seconds())
           await self._process(mode=mode)

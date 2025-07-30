@@ -18,7 +18,7 @@ else:
           bot_token: str = os.environ["BOT_TOKEN"]
           sql_url: str = os.environ["SQL_URL"]
           steam_token: str = os.environ["STEAM_TOKEN"]
-          alert_chanel: str = os.environ["ALERT_CHANNEL"]
+          alert_channel: str = os.environ["ALERT_CHANNEL"]
      
      
 base_config = BaseConfig()

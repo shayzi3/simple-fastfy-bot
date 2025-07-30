@@ -12,7 +12,7 @@ class UpdatePriceAtDaysWorker(UpdatePriceAtDaysBaseWorker):
           
           
      async def run(self) -> None:
-          logging_.worker_update_prices_at_days.info("UPDATE PRICE AT DAYS START")
+          logging_.worker_update_price_at_day.info("UPDATE PRICE AT DAYS START")
           
           asyncio.create_task(self.__update_price_at_days())
           

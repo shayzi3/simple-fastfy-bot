@@ -8,6 +8,6 @@ class Alert:
      async def notify(cls, msg: str) -> None:
           async with bot as session:
                await session.send_message(
-                    chat_id=base_config.alert_chanel,
+                    chat_id=base_config.alert_channel,
                     text=msg
                )

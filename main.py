@@ -10,7 +10,7 @@ from bot.handlers import __routers__
 from bot.middleware import __middlewares__
 from bot.utils.limit_callback import callback
 from bot.worker.update_check_skin_price import UpdateCheckSkinPriceWorker
-from bot.worker.update_price_at_days import UpdatePriceAtDaysWorker
+from bot.worker.update_price_at_day import UpdatePriceAtDaysWorker
 
 
 @dp.startup()

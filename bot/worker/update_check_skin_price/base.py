@@ -51,7 +51,6 @@ class UpdateCheckSkinPriceBaseWorker:
           )
           
           update_time = datetime.now()
-          percent = ((skin_price[0] - skin.price)/skin.price)*100
           async with async_db_session() as session:
                await self.skin_repository.update(
                     session=session,
@@ -74,14 +73,16 @@ class UpdateCheckSkinPriceBaseWorker:
                     },
                     returning=False
                )
-               await self.__check_skin_price(
-                    session=session,
-                    skin=skin,
-                    percent=percent,
-                    new_skin_price=skin_price[0],
-                    update_time=update_time
-               )
-          logging_.worker_update_prices.info(f"UPDATE SKIN PRICE {skin.name}")
+               if skin.price is not None:
+                    percent = ((skin_price[0] - skin.price)/skin.price)*100
+                    await self.__check_skin_price(
+                         session=session,
+                         skin=skin,
+                         percent=percent,
+                         new_skin_price=skin_price[0],
+                         update_time=update_time
+                    )
+          logging_.worker_update_check_skin_price.info(f"UPDATE SKIN PRICE {skin.name}")
           
           
      async def __check_skin_price(
@@ -99,22 +100,22 @@ class UpdateCheckSkinPriceBaseWorker:
                all=True,
                skin_name=skin.name
           )
-          for skin_at_user in skins_at_users:
-               if skin_at_user.user.check_percent(percent):
-                    gather_funcs.append(
-                         self.__send_notify(
-                              last_price=skin.price,
-                              new_price=new_skin_price,
-                              percent=percent,
-                              last_update=skin.last_update.strftime("%d-%m-%Y %H:%M:%S"),
-                              update=update_time.strftime("%d-%m-%Y %H:%M:%S"),
-                              skin_name=skin.name,
-                              telegram_id=skin_at_user.user.id
+          if skins_at_users:
+               for skin_at_user in skins_at_users:
+                    if skin_at_user.user.check_percent(percent):
+                         gather_funcs.append(
+                              self.__send_notify(
+                                   last_price=skin.price,
+                                   new_price=new_skin_price,
+                                   percent=percent,
+                                   last_update=skin.last_update.strftime("%d-%m-%Y %H:%M:%S"),
+                                   update=update_time.strftime("%d-%m-%Y %H:%M:%S"),
+                                   skin_name=skin.name,
+                                   telegram_id=skin_at_user.user.id
+                              )
                          )
-                    )
-          if gather_funcs:
-               await asyncio.gather(*gather_funcs)
-          
+               if gather_funcs:
+                    await asyncio.gather(*gather_funcs)
           
      async def __send_notify(
           self,
@@ -138,4 +139,5 @@ class UpdateCheckSkinPriceBaseWorker:
                     text=text,
                     parse_mode=ParseMode.HTML
                )
+          logging_.worker_update_check_skin_price.info(f"SEND NOTIFY {telegram_id}. Skin: {skin_name}")
                
