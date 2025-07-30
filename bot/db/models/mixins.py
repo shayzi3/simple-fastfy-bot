@@ -24,6 +24,11 @@ class UserMixin:
                f"*SteamID:* {self.steam_id}\n"
                f"*Процент:* {self.skin_percent}"
           )
+          
+     def check_percent(self, percent: float) -> bool:
+          if percent <= 0:
+               percent *= -1
+          return percent >= self.skin_percent
      
      
      

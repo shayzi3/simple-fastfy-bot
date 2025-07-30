@@ -8,20 +8,17 @@ from bot.core.bot import bot, dp
 from bot.handlers import __routers__
 from bot.middleware import __middlewares__
 from bot.utils.limit_callback import callback
-from bot.worker.check_price import CheckPriceWorker
+from bot.worker.update_check_skin_price import UpdateCheckSkinPriceWorker
 from bot.worker.update_price_at_days import UpdatePriceAtDaysWorker
-from bot.worker.update_skin_price import UpdateSkinPriceWorker
 
 
 @dp.startup()
 async def startup() -> None:
-     price_update_worker = UpdateSkinPriceWorker()
+     update_check_price_worker = UpdateCheckSkinPriceWorker()
      update_price_at_days_worker = UpdatePriceAtDaysWorker()
-     check_price_worker = CheckPriceWorker()
      
-     await price_update_worker.run()
+     await update_check_price_worker.run()
      await update_price_at_days_worker.run()
-     await check_price_worker.run()
      
      dp.include_routers(*__routers__)
      for middleware in __middlewares__:
@@ -43,7 +40,11 @@ async def startup() -> None:
                BotCommand(command="/skins_from_steam", description="Добавить предметы из Steam в инвентарь")
           ]
      )
-     print("bot started")
+     
+     
+@dp.shutdown()
+async def shutdown() -> None:
+     ...
      
 
 

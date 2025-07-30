@@ -16,11 +16,11 @@ class SkinUpdateMode(Enum):
           last_price: float | None, 
           new_price: float
      ) -> "SkinUpdateMode":
-          mode = SkinUpdateMode.LOW
+          mode = SkinUpdateMode.HIGH
           if volume >= 10000:
-               mode = SkinUpdateMode.HIGH
+               mode = SkinUpdateMode.LOW
           
-          elif volume >= 3000:
+          elif volume >= 2000:
                mode = SkinUpdateMode.MEDIUM_WELL
           
           elif volume >= 500:

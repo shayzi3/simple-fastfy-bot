@@ -32,7 +32,7 @@ class User(UserMixin, Base):
      
      
   
-     
+
 class Skin(SkinMixin, Base):
      __tablename__ = "skins"
      __table_args__ = (
@@ -45,6 +45,7 @@ class Skin(SkinMixin, Base):
      price_at_7_day: Mapped[float] = mapped_column(nullable=True)
      price_at_30_day: Mapped[float] = mapped_column(nullable=True)  
      update_mode: Mapped[SkinUpdateMode] = mapped_column(default=SkinUpdateMode.HIGH)
+     last_update: Mapped[datetime] = mapped_column(nullable=True)
      
      price_history: Mapped[list["SkinPriceHistory"]] = relationship(
           uselist=True,
