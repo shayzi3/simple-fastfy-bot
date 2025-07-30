@@ -4,6 +4,7 @@ from aiogram.types.bot_command import BotCommand
 from aiogram_tool.depend import setup_depend_tool
 from aiogram_tool.limit import setup_limit_tool
 
+from bot.alert import Alert
 from bot.core.bot import bot, dp
 from bot.handlers import __routers__
 from bot.middleware import __middlewares__
@@ -40,13 +41,14 @@ async def startup() -> None:
                BotCommand(command="/skins_from_steam", description="Добавить предметы из Steam в инвентарь")
           ]
      )
+     await Alert.notify(f"bot started")
+     
      
      
 @dp.shutdown()
 async def shutdown() -> None:
-     ...
+     await Alert.notify("bot shutdown")
      
-
 
 async def main() -> None:
      await dp.start_polling(bot)

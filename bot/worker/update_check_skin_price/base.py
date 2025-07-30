@@ -132,9 +132,10 @@ class UpdateCheckSkinPriceBaseWorker:
                f"Цена <b>{update}</b> {new_price}р\n"
                f"Изменение цены составило <b>{percent}</b>%"
           )
-          await bot.send_message(
-               chat_id=telegram_id, 
-               text=text,
-               parse_mode=ParseMode.HTML
-          )
+          async with bot as session:
+               await session.send_message(
+                    chat_id=telegram_id, 
+                    text=text,
+                    parse_mode=ParseMode.HTML
+               )
                

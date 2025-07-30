@@ -1,1 +1,1 @@
-from .alerts import BotException
+from .alerts import Alert

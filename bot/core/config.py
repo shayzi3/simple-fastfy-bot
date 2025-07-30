@@ -10,13 +10,15 @@ if TEST_MODE is True:
           bot_token: str
           sql_url: str
           steam_token: str
+          alert_channel: str
           
           model_config = SettingsConfigDict(env_file="bot/core/test_env.env")
 else:
      class BaseConfig(BaseModel):
           bot_token: str = os.environ["BOT_TOKEN"]
-          SQL_URL: str = os.environ["SQL_URL"]
+          sql_url: str = os.environ["SQL_URL"]
           steam_token: str = os.environ["STEAM_TOKEN"]
+          alert_chanel: str = os.environ["ALERT_CHANNEL"]
      
      
 base_config = BaseConfig()
