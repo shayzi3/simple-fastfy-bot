@@ -1,20 +1,24 @@
-import asyncio
+from contextlib import asynccontextmanager
 
+import uvicorn
 from aiogram.types.bot_command import BotCommand
 from aiogram_tool.depend import setup_depend_tool
 from aiogram_tool.limit import setup_limit_tool
+from fastapi import FastAPI
 
 from bot.alert import Alert
 from bot.core.bot import bot, dp
+from bot.core.config import base_config
 from bot.handlers import __routers__
+from bot.infrastracture.http.webhook import webhook_router
 from bot.middleware import __middlewares__
 from bot.utils.limit_callback import callback
 from bot.worker.update_check_skin_price import UpdateCheckSkinPriceWorker
 from bot.worker.update_price_at_day import UpdatePriceAtDaysWorker
 
 
-@dp.startup()
-async def startup() -> None:
+@asynccontextmanager
+async def lifespan(_: FastAPI):
      update_check_price_worker = UpdateCheckSkinPriceWorker()
      update_price_at_days_worker = UpdatePriceAtDaysWorker()
      
@@ -41,18 +45,23 @@ async def startup() -> None:
                BotCommand(command="/skins_from_steam", description="Добавить предметы из Steam в инвентарь")
           ]
      )
+     await bot.set_webhook(
+          url=base_config.webhook_full_path,
+          secret_token=base_config.webhook_secret_token,
+          drop_pending_updates=True
+     )
      await Alert.notify(f"bot started")
-     
-     
-     
-@dp.shutdown()
-async def shutdown() -> None:
-     await Alert.notify("bot shutdown")
+     yield
+     await bot.delete_webhook(
+          drop_pending_updates=True
+     )
+     await Alert.notify(f"bot shutdown")
      
 
-async def main() -> None:
-     await dp.start_polling(bot)
+app = FastAPI(lifespan=lifespan)
+app.include_router(webhook_router)
+     
      
 
 if __name__ == "__main__":
-     asyncio.run(main())
+     uvicorn.run("main:app", port=8083, host="0.0.0.0")

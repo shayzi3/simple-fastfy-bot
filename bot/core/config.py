@@ -19,6 +19,13 @@ class BaseConfig(BaseModel):
      prod_sql_url: str = os.environ.get("PROD_SQL_URL")
      steam_token: str = os.environ["STEAM_TOKEN"]
      alert_channel: str = os.environ["ALERT_CHANNEL"]
+     webhook_secret_token: str = os.environ["WEBHOOK_SECRET_TOKEN"]
+     webhook: str = os.environ["WEBHOOK"]
+     
+     
+     @property
+     def webhook_full_path(self) -> str:
+          return self.webhook + "/webhook/telegram/bot"
      
      
 base_config = BaseConfig()
