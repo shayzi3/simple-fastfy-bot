@@ -15,12 +15,14 @@ class UpdatePriceAtDaysBaseWorker:
      async def _process(self) -> None:
           logging_.worker_update_price_at_day.info("START PROCESS")
           
-          gather_funcs = []
+          
           async with async_db_session() as session:
                skins = await self.skin_repository.read(
                     session=session,
                     all=True
                )
+          if skins:
+               gather_funcs = []
                time = 0.5
                for skin in skins:
                     gather_funcs.append(
@@ -30,7 +32,7 @@ class UpdatePriceAtDaysBaseWorker:
                          )
                     )
                     time += 0.5
-          await asyncio.gather(*gather_funcs)
+               await asyncio.gather(*gather_funcs)
                
          
          
@@ -51,31 +53,29 @@ class UpdatePriceAtDaysBaseWorker:
                          (datetime.now() - timedelta(days=30), "month")
                     ]
                )
-               day, week, month = [], [], []
-               for skin in skins_price:
-                    if skin.day:
-                         day.append(skin.price)
-                    if skin.week:
-                         week.append(skin.price)
-                    if skin.month:
-                         month.append(skin.price)
-               
-               price_day, price_week, price_month = None, None, None
-               if len(day) >= 2:
-                    price_day = ((day[0] - day[-1])/day[0])*100
-               if len(week) >= 2:
-                    price_week = ((week[0] - week[-1])/week[0])*100
-               if len(month) >= 2:
-                    price_month = ((month[0] - month[-1])/month[0])*100
-               
-               await self.skin_repository.update(
-                    session=session,
-                    values={
-                         "price_at_1_day": price_day,
-                         "price_at_7_day": price_week,
-                         "price_at_30_day": price_month
-                    },
-                    returning=False,
-                    name=skin_name
-               )
-          logging_.worker_update_price_at_day.info(f"SKIN PRICE AT DAYS UPDATED {skin_name}")
+               if skins_price:
+                    day, week, month = [], [], []
+                    for skin in skins_price:
+                         if skin.day:
+                              day.append(skin.price)
+                         if skin.week:
+                              week.append(skin.price)
+                         if skin.month:
+                              month.append(skin.price)
+                    
+                    days = {}
+                    if len(day) >= 2:
+                         days["price_at_1_day"] = ((day[0] - day[-1])/day[0])*100
+                    if len(week) >= 2:
+                         days["price_at_7_day"] = ((week[0] - week[-1])/week[0])*100
+                    if len(month) >= 2:
+                         day["price_at_30_day"] = ((month[0] - month[-1])/month[0])*100
+                    
+                    if days:
+                         await self.skin_repository.update(
+                              session=session,
+                              values=days,
+                              returning=False,
+                              name=skin_name
+                         )
+               logging_.worker_update_price_at_day.info(f"SKIN PRICE AT DAYS UPDATED {skin_name}")

@@ -34,9 +34,10 @@ class UpdateCheckSkinPriceBaseWorker:
                     update_mode=mode
                )
           gather_funcs = []
-          for skin in skins:
-               gather_funcs.append(self.__update_skin_price_process(skin))
-          await asyncio.gather(*gather_funcs)
+          if skins:
+               for skin in skins:
+                    gather_funcs.append(self.__update_skin_price_process(skin))
+               await asyncio.gather(*gather_funcs)
                
                
      async def __update_skin_price_process(
